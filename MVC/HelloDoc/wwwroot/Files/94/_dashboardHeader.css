@@ -4,7 +4,6 @@
     height: 50px;
     margin-left: 10px;
     align-items: center;
-    justify-content: center;
 }
 
 header {
@@ -49,46 +48,25 @@ header {
 
 #side-bar {
     display: none;
-    top: 60px;
+    top: 80px;
     background-color: white;
     width: 225px;
+    height: 100vh;
     position: absolute;
-    z-index: 10000;
+    z-index: 1;
 }
 
 button {
     border: 1px solid cadetblue;
     border-radius: 10px;
-    color: cadetblue;
 }
-
-a {
-    text-decoration: none;
-    color: cadetblue;
-}
-
-#header-buttom {
-    display: flex;
-}
-
-.name {
-    color: cadetblue;
-}
-
-.slectedButton {
-    background-color: cadetblue;
-    color: white;
-}
-
 
 /* -------------------media-queries-------------------*/
 @media screen and (max-width: 778px) {
 
-    #logo-image {
-        margin-left: 1vh;
-    }
-
-    #header-buttom, #button-text, #welcome-text {
+    #header-buttom,
+    #button-text,
+    #welcome-text {
         display: none;
     }
 
@@ -107,4 +85,5 @@ a {
     #logo-image {
         width: 100px;
     }
+
 }

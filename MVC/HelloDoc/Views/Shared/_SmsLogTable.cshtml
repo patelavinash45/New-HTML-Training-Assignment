@@ -74,7 +74,7 @@
     <div class="accordion accordion-flush w-100" id="accordionFlushExample">
         <div class="accordion-item">
             <h2 class="accordion-header" id="panelsStayOpen-headingOne">
-                <button class="accordion-button collapsed h-100" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-controls="panelsStayOpen-collapseOne">
+                <button class="accordion-button collapsed h-100" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-@item.Id" aria-controls="panelsStayOpen-collapseOne">
                     <div class="d-flex flex-column align-items-baseline">
                         @item.Name
                         <div>
@@ -87,7 +87,7 @@
                 </button>
                 <hr class="h1">
             </h2>
-            <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingOne">
+            <div id="panelsStayOpen-@item.Id" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingOne">
                 <div class="accordion-body row">
                     <div>
                         <i class="bi bi-person-fill rounded-circle border border-1 border-primary p-2"></i>

@@ -94,11 +94,11 @@
 
         public string? RequesterMobile { get; set; }
 
-        public DateTime? BirthDate { get; set; }
+        public string BirthDate { get; set; }
 
         public DateTime? DateOfService { get; set; }
 
-        public DateTime? RequestdDate { get; set; }
+        public string RequestdDate { get; set; }
 
         public string? Street { get; set; }
 

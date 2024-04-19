@@ -1,5 +1,6 @@
 var IdList = [];
-$(document).on("click","#mainCheckBox",function () {
+$(document).on("click", "#mainCheckBox", function () {
+    $("#notSelected").text("");
     if ($(this).is(':checked')) {
         $('.checkBox').prop('checked', true);
         var temp = $('.checkBox');
@@ -15,6 +16,9 @@ $(document).on("click","#mainCheckBox",function () {
 });
 
 $(document).on("click", "#downloadAll", function () {
+    if (IdList.length == 0) {
+        $("#notSelected").text("Please, First Select File(s)");
+    }
     for (let i = 0; i < IdList.length; i++) {
         var id = "." + IdList[i];
         $(id)[0].click();
@@ -22,6 +26,9 @@ $(document).on("click", "#downloadAll", function () {
 });
 
 $(document).on("click", "#deleteAll", function () {
+    if (IdList.length == 0) {
+        $("#notSelected").text("Please, First Select File(s)");
+    }
     if (IdList.length > 0) {
         $.ajax({
             url: "/Admin/DeleteAllFiles",
@@ -38,6 +45,9 @@ $(document).on("click", "#deleteAll", function () {
 })
 
 $(document).on("click", "#sendMail", function () {
+    if (IdList.length == 0) {
+        $("#notSelected").text("Please, First Select File(s)");
+    }
     if (IdList.length > 0) {
         $.ajax({
             url: "/Admin/SendMail",
@@ -53,7 +63,8 @@ $(document).on("click", "#sendMail", function () {
     }
 })
 
-function onCheckboxChnage(fileId,totalcount) {
+function onCheckboxChnage(fileId, totalcount) {
+    $("#notSelected").text("");
     var id = $(fileId).attr("id");
     if ($(fileId).is(":checked")) {
         IdList.push(id);

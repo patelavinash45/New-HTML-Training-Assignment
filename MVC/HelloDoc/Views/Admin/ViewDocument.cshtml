@@ -44,7 +44,7 @@
             </div>
             <span asp-validation-for="File" class="text-danger"></span>
         </form>
-        <div class="d-flex justify-content-between align-content-center mt-3 mb-3">
+        <div class="d-flex justify-content-between align-content-center mt-3 mb-1">
             <span class="h3 w-100">
                 Documents
             </span>
@@ -69,7 +69,10 @@
                 </button>
             </div>
         </div>
-        <div class="table-responsive">
+        <div class="d-flex justify-content-end mb-2">
+            <span id="notSelected" class="text-danger mx-2"></span>
+        </div>
+        <div class="table-responsive mt-2">
             <table class="table">
                 <thead class="table-dark">
                     <tr>

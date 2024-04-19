@@ -68,7 +68,7 @@ namespace Services.Implementation.AdminServices
                 CreatedDate = DateTime.Now,
             };
             int roleId = await _roleRepository.addRole(role); 
-            if(roleId > 0)
+            if(roleId > 0 && model.SelectedMenus.Count > 0)
             {
                 await _roleRepository.addRoleMenus(
                         model.SelectedMenus.Select(menuId =>
@@ -78,6 +78,10 @@ namespace Services.Implementation.AdminServices
                             MenuId = menuId,
                         }).ToList()
                 );
+                return true;
+            }
+            else if(roleId > 0)
+            {
                 return true;
             }
             return false;

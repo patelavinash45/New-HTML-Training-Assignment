@@ -33,7 +33,7 @@ function changeCheckBox(doc) {
 }
 
 $(document).on("submit", "#createRoleForm", function (e) {
-    if (selectedMenus.length == 0) {
+    if (selectedMenus.length == 0 && $("#type").val() != 1) {
         e.preventDefault();
         $("#menuValidation").text("Select Any One Filed");
     }

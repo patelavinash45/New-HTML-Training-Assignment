@@ -77,6 +77,8 @@ namespace Services.ViewModels.Admin
 
     public class EmailSmsLogTableData
     {
+        public int Id { get; set; }
+
         public string Name { get; set; }
 
         public string Action { get; set; }

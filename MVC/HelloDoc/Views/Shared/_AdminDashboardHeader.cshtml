@@ -76,11 +76,23 @@
                 Partners
             </div>
         </a>
-        <a asp-controller="Admin" asp-action="Access" class="mx-2">
-            <div class="mx-2 h6">
+        <div class="mx-2">
+            <button class="h6 bg-transparent border-0 h-auto" data-bs-toggle="dropdown" aria-expanded="false">
                 Access
-            </div>
-        </a>
+            </button>
+            <ul class="dropdown-menu">
+                <li>
+                    <a class="dropdown-item" asp-controller="Admin" asp-action="Access">
+                        Access
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" asp-controller="Admin" asp-action="CreateAdmin">
+                        Create Admin
+                    </a>
+                </li>
+            </ul>
+        </div>
         <div class="mx-2">
             <button class="h6 bg-transparent border-0 h-auto" data-bs-toggle="dropdown" aria-expanded="false">
                 Records
@@ -115,7 +127,7 @@
         </div>
     </div>
 </header>
-<div id="side-bar">
+<div id="side-bar" class="w-100">
     <a asp-controller="Admin" asp-action="Dashboard" class="d-flex justify-content-center border m-2 rounded-start">
         <div class="mt-1 h6">
             Dashboard
@@ -158,12 +170,24 @@
             Partners
         </div>
     </a>
-    <a asp-controller="Admin" asp-action="Access" class="d-flex justify-content-center border m-2 rounded-start">
-        <div class="mt-1 h6">
-            Access
-        </div>
-    </a>
     <div class="mt-1 h6 d-flex justify-content-center border m-2 rounded-start">
+        <button class="h6 bg-transparent border-0 h-auto" data-bs-toggle="dropdown" aria-expanded="false">
+            Access
+        </button>
+        <ul class="dropdown-menu">
+            <li>
+                <a class="dropdown-item" asp-controller="Admin" asp-action="Access">
+                    Access
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-item" asp-controller="Admin" asp-action="CreateAdmin">
+                    Create Admin
+                </a>
+            </li>
+         </ul>
+    </div>
+    <div class="mt-1 h6 d-flex justify-content-center border m-2 rounded-start mb-4">
         <button class="h6 bg-transparent border-0 h-auto" data-bs-toggle="dropdown" aria-expanded="false">
             Providers
         </button>

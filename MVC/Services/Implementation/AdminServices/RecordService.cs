@@ -80,6 +80,7 @@ namespace Services.Implementation.AdminServices
             return _logsService.getAllEmailLogs(predicat)
                 .Select(emailLog => new EmailSmsLogTableData()
                 {
+                    Id = (int)emailLog.EmailLogId,
                     Name = emailLog.Name,
                     Action = emailLog.SubjectName,
                     CreatedDate = emailLog.CreateDate,
@@ -106,15 +107,16 @@ namespace Services.Implementation.AdminServices
             && (model.CreatedDate == null || DateOnly.FromDateTime(a.CreateDate) == model.CreatedDate)
             && (model.SendDate == null || DateOnly.FromDateTime(a.SentDate) == model.SendDate);
             return _logsService.getAllSMSLogs(predicat)
-                .Select(emailLog => new EmailSmsLogTableData()
+                .Select(smslog => new EmailSmsLogTableData()
                 {
-                    Name = emailLog.Name,
-                    Action = emailLog.Smstemplate,
-                    CreatedDate = emailLog.CreateDate,
-                    SendDate = emailLog.SentDate,
-                    Send = emailLog.IsSmssent[0] ? "Yes" : "No",
-                    RoleName = emailLog.Role.Name,
-                    Phone = emailLog.MobileNumber,
+                    Id = (int)smslog.SmslogId,
+                    Name = smslog.Name,
+                    Action = smslog.Smstemplate,
+                    CreatedDate = smslog.CreateDate,
+                    SendDate = smslog.SentDate,
+                    Send = smslog.IsSmssent[0] ? "Yes" : "No",
+                    RoleName = smslog.Role.Name,
+                    Phone = smslog.MobileNumber,
                 }).ToList();
         }
 

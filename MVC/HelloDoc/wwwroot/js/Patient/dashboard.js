@@ -20,12 +20,12 @@ function changeTab(element1, element2) {
     /*//document.getElementById("side-bar").style.display = "none";*/
 }
 
-function sidebar() {
-    var temp = document.getElementById("header-buttom").style.display;
+function sidebar() {  /// for mobile view silebar
+    var temp = $("#header-buttom").css("display");
     if (temp == "none") {
-        document.getElementById("header-buttom").style.display = "flex";
+        $("#header-buttom").css("display", "flex");
     } else {
-        document.getElementById("header-buttom").style.display = "none";
+        $("#header-buttom").css("display", "none");
     }
 }
 
