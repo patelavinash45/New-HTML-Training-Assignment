@@ -81,7 +81,9 @@ namespace Services.Implementation.AdminServices
             (requesterTypeId == 0 || a.Request.RequestTypeId == requesterTypeId)
             && (regionId == 0 || a.RegionId == regionId)
             && (!statusList[status].Contains(1) || a.Physician == null)
-            && (patientName == null || a.FirstName.ToLower().Contains(patientName) || a.LastName.ToLower().Contains(patientName))
+            && (patientName == null || a.FirstName.ToLower().Contains(patientName) 
+                                    || a.LastName.ToLower().Contains(patientName)
+                                    || $"{a.FirstName} {a.LastName}".ToLower().Contains(patientName.ToLower()))
             && (statusList[status].Contains(a.Status));
             int totalRequests = _requestClientRepository.countRequestClientByStatusAndFilter(predicate);
             List<RequestClient> requestClients = _requestClientRepository.getRequestClientByStatus(predicate, skip: skip);
