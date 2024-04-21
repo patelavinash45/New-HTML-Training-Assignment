@@ -5,6 +5,7 @@
     string role = httpContextAccessor.HttpContext.Session.GetString("role");
     Layout = $"_{role}Layout";
     ViewData["Title"] = "Encounter Form";
+    ViewBag.JsFile = "/js/request.js";
     ViewBag.CssFile = "/css/Admin/encounterForm.css";
     ViewBag.Header = $"_{role}DashboardHeader";
 }

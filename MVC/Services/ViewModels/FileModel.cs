@@ -6,7 +6,7 @@
 
         public int RequestId { get; set; }
 
-        public string FileName { get; set; } = null!;
+        public string FileName { get; set; } = null;
 
         public DateTime CreatedDate { get; set; }
 

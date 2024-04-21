@@ -103,6 +103,7 @@ namespace Services.Implementation.AdminServices
 
         public Agreement getUserDetails(String token)
         {
+            Agreement agreement = new Agreement();
             try
             {
                 JwtSecurityToken jwtSecurityToken = new JwtSecurityToken(token);
@@ -110,17 +111,35 @@ namespace Services.Implementation.AdminServices
                 {
                     int requestId = int.Parse(jwtSecurityToken.Claims.FirstOrDefault(a => a.Type == "requestId").Value);
                     RequestClient requestClient = _requestClientRepository.getRequestClientByRequestId(requestId);
-                    Agreement agreement = new Agreement()
+                    if(requestClient.Status == 5)
                     {
-                        FirstName = requestClient.FirstName,
-                        LastName = requestClient.LastName,
-                        RequestId = requestId,
-                    };
-                    return agreement;
+                        agreement = new Agreement()
+                        {
+                            IsValid = true,
+                            FirstName = requestClient.FirstName,
+                            LastName = requestClient.LastName,
+                            RequestId = requestId,
+                        };
+                        return agreement;
+                    }
+                    else
+                    {
+                        agreement = new Agreement()
+                        {
+                            IsValid = false,
+                            Message = "Agreement Already Agreed",
+                        };
+                        return agreement;
+                    }
                 }
             }
             catch (Exception ex) { }
-            return null;
+            agreement = new Agreement()
+            {
+                IsValid = false,
+                Message = "Link Is Not Valid",
+            };
+            return agreement;
         }
 
         public bool SendRequestLink(SendLink model,HttpContext httpContext)
@@ -344,9 +363,18 @@ namespace Services.Implementation.AdminServices
             }
             else
             {
+                RequestClient requestClient = _requestClientRepository.getRequestClientByRequestId(requestId);  
                 return new EncounterForm() 
                 { 
                     IsAdmin = isAdmin,
+                    FirstName = requestClient.FirstName,
+                    LastName = requestClient.LastName,
+                    Email = requestClient.Email,
+                    Mobile = requestClient.PhoneNumber,
+                    Location = $"{requestClient.Street}, {requestClient.City}, {requestClient.State}, {requestClient.ZipCode}",
+                    BirthDate = requestClient.IntYear != null ? DateTime.Parse(requestClient.IntYear + "-" + requestClient.StrMonth
+                                                                   + "-" + requestClient.IntDate) : null,
+                    Date = DateTime.Now,
                 };
             }
         }
@@ -356,87 +384,58 @@ namespace Services.Implementation.AdminServices
             Encounter encounter = _encounterRepository.getEncounter(requestId);
             if (encounter == null)
             {
-                Encounter _encounter = new Encounter()
-                {
-                    IsFinalize = model.IsFinalize,
-                    FinalizeBy = model.IsFinalize?aspNetUserId:null,
-                    RequestId = requestId,
-                    FirstName = model.FirstName,
-                    LastName = model.LastName,
-                    Location = model.Location,
-                    Email = model.Email,
-                    IntYear = model.BirthDate.Value.Year,
-                    IntDate = model.BirthDate.Value.Day,
-                    StrMonth = model.BirthDate.Value.Month.ToString(),
-                    Date = model.Date,
-                    PhoneNumber = model.Mobile,
-                    IllnessOrInjury = model.HistoryOfIllness,
-                    MedicalHistory = model.MedicalHistory,
-                    Medications = model.Medications,
-                    Allergies = model.Allergies,
-                    Temperature = model.Temp,
-                    HeartRate = model.HeartRate,
-                    RespiratoryRate = model.RespiratoryRate,
-                    BloodPressure1 = model.BloodPressure1,
-                    BloodPressure2 = model.BloodPressure2,
-                    O2 = model.O2,
-                    Pain = model.Pain,
-                    Heent = model.Heent,
-                    Cv = model.CV,
-                    Chest = model.Chest,
-                    Abd = model.ABD,
-                    Extr = model.Extra,
-                    Skin = model.Skin,
-                    Neuro = model.Neuro,
-                    Other = model.Other,
-                    Diagnosis = model.Diagnosis,
-                    TreatmentPlan = model.TreatmentPlan,
-                    MedicationsDispensed = model.Dispensed,
-                    Procedures = model.Procedures,
-                    Followup = model.FollowUp,
-                };
-                return await _encounterRepository.addEncounter(_encounter);
+                encounter = new Encounter();
+                encounter = setEncounterProperties(encounter, model, aspNetUserId, requestId);
+                return await _encounterRepository.addEncounter(encounter);
             }
             else
             {
-                encounter.IsFinalize = model.IsFinalize;
-                encounter.FirstName = model.FirstName;
-                encounter.LastName = model.LastName;
-                encounter.Location = model.Location;
-                encounter.Email = model.Email;
-                encounter.IntYear = model.BirthDate.Value.Year;
-                encounter.IntDate = model.BirthDate.Value.Day;
-                encounter.StrMonth = model.BirthDate.Value.Month.ToString();
-                encounter.Date = model.Date;
-                encounter.PhoneNumber = model.Mobile;
-                encounter.IllnessOrInjury = model.HistoryOfIllness;
-                encounter.MedicalHistory = model.MedicalHistory;
-                encounter.Medications = model.Medications;
-                encounter.Allergies = model.Allergies;
-                encounter.Temperature = model.Temp;
-                encounter.HeartRate = model.HeartRate;
-                encounter.RespiratoryRate = model.RespiratoryRate;
-                encounter.BloodPressure1 = model.BloodPressure2;
-                encounter.BloodPressure2 = model.BloodPressure2;
-                encounter.O2 = model.O2;
-                encounter.Pain = model.Pain;
-                encounter.Heent = model.Heent;
-                encounter.Cv = model.CV;
-                encounter.Chest = model.Chest;
-                encounter.Abd = model.ABD;
-                encounter.Extr = model.Extra;
-                encounter.Skin = model.Skin;
-                encounter.Neuro = model.Neuro;
-                encounter.Other = model.Other;
-                encounter.Diagnosis = model.Diagnosis;
-                encounter.TreatmentPlan = model.TreatmentPlan;
-                encounter.MedicationsDispensed = model.Dispensed;
-                encounter.Procedures = model.Procedures;
-                encounter.Followup = model.FollowUp;
+                encounter = setEncounterProperties(encounter, model, aspNetUserId, requestId);
                 encounter.ModifiedDate = DateTime.Now;
                 encounter.ModifiedBy = aspNetUserId.ToString();
+                return await _encounterRepository.updateEncounter(encounter);
             }
-            return await _encounterRepository.updateEncounter(encounter);
+        }
+
+        private Encounter setEncounterProperties(Encounter encounter, EncounterForm model, int aspNetUserId, int requestId)
+        {
+            encounter.IsFinalize = model.IsFinalize;
+            encounter.FinalizeBy = model.IsFinalize ? aspNetUserId : null;
+            encounter.RequestId = requestId;
+            encounter.FirstName = model.FirstName;
+            encounter.LastName = model.LastName;
+            encounter.Location = model.Location;
+            encounter.Email = model.Email;
+            encounter.IntYear = model.BirthDate.Value.Year;
+            encounter.IntDate = model.BirthDate.Value.Day;
+            encounter.StrMonth = model.BirthDate.Value.Month.ToString();
+            encounter.Date = model.Date;
+            encounter.PhoneNumber = model.Mobile;
+            encounter.IllnessOrInjury = model.HistoryOfIllness;
+            encounter.MedicalHistory = model.MedicalHistory;
+            encounter.Medications = model.Medications;
+            encounter.Allergies = model.Allergies;
+            encounter.Temperature = model.Temp;
+            encounter.HeartRate = model.HeartRate;
+            encounter.RespiratoryRate = model.RespiratoryRate;
+            encounter.BloodPressure1 = model.BloodPressure2;
+            encounter.BloodPressure2 = model.BloodPressure2;
+            encounter.O2 = model.O2;
+            encounter.Pain = model.Pain;
+            encounter.Heent = model.Heent;
+            encounter.Cv = model.CV;
+            encounter.Chest = model.Chest;
+            encounter.Abd = model.ABD;
+            encounter.Extr = model.Extra;
+            encounter.Skin = model.Skin;
+            encounter.Neuro = model.Neuro;
+            encounter.Other = model.Other;
+            encounter.Diagnosis = model.Diagnosis;
+            encounter.TreatmentPlan = model.TreatmentPlan;
+            encounter.MedicationsDispensed = model.Dispensed;
+            encounter.Procedures = model.Procedures;
+            encounter.Followup = model.FollowUp;
+            return encounter;
         }
 
         public ViewCase getRequestDetails(int requestId, bool isAdmin)

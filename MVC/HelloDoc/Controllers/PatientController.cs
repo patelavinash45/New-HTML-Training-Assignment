@@ -213,7 +213,13 @@ namespace HelloDoc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ResetPassword(ResetPassword model)
         {
-            return await _loginService.resetPasswordLinkSend(model.Email,HttpContext) ? RedirectToAction("PatientSite", "Patient") : View(null);
+            if(await _loginService.resetPasswordLinkSend(model.Email, HttpContext))
+            {
+                _notyfService.Success("Successfully Email Send");
+                return RedirectToAction("PatientSite", "Patient");
+            }
+            _notyfService.Error("Email Not Found");
+            return View(null);
         }
 
         [HttpPost]

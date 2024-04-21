@@ -281,11 +281,11 @@ namespace HelloDoc.Controllers
         public IActionResult Agreement(String token)
         {
             Agreement agreement = _adminDashboardService.getUserDetails(token);
-            if (agreement != null)
+            if (agreement.IsValid)
             {
                 return View(agreement);
             }
-            _notyfService.Error("Link is Invalid");
+            _notyfService.Error(agreement.Message);
             return RedirectToAction("PatientSite", "Patient");
         }
 
@@ -461,14 +461,28 @@ namespace HelloDoc.Controllers
 
         public async Task<IActionResult> AgreementAgree(Agreement model)
         {
-            await _viewNotesService.agreementAgree(model);
-            return RedirectToAction("Dashboard", "Patient");
+            if (await _viewNotesService.agreementAgree(model))
+            {
+                _notyfService.Success("Successfully Agreed");
+            }
+            else
+            {
+                _notyfService.Error("Faild!");
+            }
+            return RedirectToAction("PatientSite", "Patient");
         }
 
         public async Task<IActionResult> AgreementDeclined(Agreement model)
         {
-            await _viewNotesService.agreementDeclined(model);
-            return RedirectToAction("Dashboard", "Patient");
+            if (await _viewNotesService.agreementDeclined(model))
+            {
+                _notyfService.Success("Successfully Declined");
+            }
+            else
+            {
+                _notyfService.Error("Faild!");
+            }
+            return RedirectToAction("PatientSite", "Patient");
         }
 
         [HttpGet]  /// set requestId in session

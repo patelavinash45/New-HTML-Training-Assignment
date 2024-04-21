@@ -118,38 +118,42 @@ namespace Services.Implementation.AuthServices
             {
                 var request = httpContext.Request;
                 int aspNetUserId = _aspRepository.checkUser(email);
-                List<Claim> claims = new List<Claim>()
+                if(aspNetUserId != 0) 
                 {
-                    new Claim("aspNetUserId", aspNetUserId.ToString()),
-                };
-                String token = _jwtService.genrateJwtTokenForSendMail(claims, DateTime.Now.AddDays(1));
-                await _aspRepository.setToken(token: token, aspNetUserId: aspNetUserId);
-                string link = request.Scheme+"://"+request.Host+"/Patient/Newpassword?token=" + token;
-                MailMessage mailMessage = new MailMessage
-                {
-                    From = new MailAddress("tatva.dotnet.avinashpatel@outlook.com"),
-                    Subject = "Reset Password Link",
-                    IsBodyHtml = true,
-                };
-                string templatePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/EmailTemplate/resetPasswordEmail.cshtml");
-                string body = File.ReadAllText(templatePath).Replace("EmailLink", link);
-                mailMessage.Body = body;
-                mailMessage.To.Add("tatva.dotnet.avinashpatel@outlook.com");
-                SmtpClient smtpClient = new SmtpClient("smtp.office365.com")
-                {
-                    UseDefaultCredentials = false,
-                    DeliveryMethod = SmtpDeliveryMethod.Network,
-                    EnableSsl = true,
-                    Port = 587,
-                    Credentials = new NetworkCredential(userName: "tatva.dotnet.avinashpatel@outlook.com", password: "Avinash@6351"),
-                };
-                smtpClient.SendMailAsync(mailMessage);
-                return true;
+                    List<Claim> claims = new List<Claim>()
+                    {
+                        new Claim("aspNetUserId", aspNetUserId.ToString()),
+                    };
+                    String token = _jwtService.genrateJwtTokenForSendMail(claims, DateTime.Now.AddDays(1));
+                    await _aspRepository.setToken(token: token, aspNetUserId: aspNetUserId);
+                    string link = request.Scheme + "://" + request.Host + "/Patient/Newpassword?token=" + token;
+                    MailMessage mailMessage = new MailMessage
+                    {
+                        From = new MailAddress("tatva.dotnet.avinashpatel@outlook.com"),
+                        Subject = "Reset Password Link",
+                        IsBodyHtml = true,
+                    };
+                    string templatePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/EmailTemplate/resetPasswordEmail.cshtml");
+                    string body = File.ReadAllText(templatePath).Replace("EmailLink", link);
+                    mailMessage.Body = body;
+                    mailMessage.To.Add("tatva.dotnet.avinashpatel@outlook.com");
+                    SmtpClient smtpClient = new SmtpClient("smtp.office365.com")
+                    {
+                        UseDefaultCredentials = false,
+                        DeliveryMethod = SmtpDeliveryMethod.Network,
+                        EnableSsl = true,
+                        Port = 587,
+                        Credentials = new NetworkCredential(userName: "tatva.dotnet.avinashpatel@outlook.com", password: "Avinash@6351"),
+                    };
+                    smtpClient.SendMailAsync(mailMessage);
+                    return true;
+                }
             }
             catch (Exception ex)
             {
                 return false;
             }
+            return false;
         }
 
         public SetNewPassword validatePasswordLink(string token)
@@ -167,6 +171,10 @@ namespace Services.Implementation.AuthServices
                     setNewPassword.IsValidLink = _aspRepository.checkToken(token: token, aspNetUserId: aspNetUserId);
                     setNewPassword.AspNetUserId = aspNetUserId;
                     return setNewPassword;
+                }
+                else
+                {
+                    setNewPassword.ErrorMessage = "Link is Expired";
                 }
             }
             catch(Exception ex)

@@ -54,9 +54,11 @@ namespace Services.ViewModels.Admin
         public bool isUpdate { get; set; }
 
         [StringLength(100)]
+        [RegularExpression(@"^[a-zA-Z]+(?: [a-zA-Z]+)*$", ErrorMessage = "The FirstName is not valid")]
         public string FirstName { get; set; }
 
         [StringLength(100)]
+        [RegularExpression(@"^[a-zA-Z]+(?: [a-zA-Z]+)*$", ErrorMessage = "The LastName is not valid")]
         public string LastName { get; set; }
 
         public string Password { get; set; }
@@ -69,12 +71,16 @@ namespace Services.ViewModels.Admin
         public string UserName { get; set; }
 
         [StringLength(50)]
+        [DataType(DataType.EmailAddress, ErrorMessage = "The Email is not valid")]
         public string Email { get; set; }
 
         [StringLength(20)]
+        [RegularExpression(@"^(?:\+?91)?\s*([1-9]\d{4})\s*(\d{5})$", ErrorMessage = "The Phone is not valid")]
         public string Phone { get; set; }
 
         [StringLength(20)]
+        [Display(Name = "Mobile")]
+        [RegularExpression(@"^(?:\+?91)?\s*([1-9]\d{4})\s*(\d{5})$", ErrorMessage = "The Mobile is not valid")]
         public string Phone2 { get; set; }
 
         [StringLength(500)]
@@ -141,9 +147,11 @@ namespace Services.ViewModels.Admin
         public bool isUpdate { get; set; }
 
         [StringLength(100)]
+        [RegularExpression(@"^[a-zA-Z]+(?: [a-zA-Z]+)*$", ErrorMessage = "The FirstName is not valid")]
         public string FirstName { get; set; }
 
         [StringLength(100)]
+        [RegularExpression(@"^[a-zA-Z]+(?: [a-zA-Z]+)*$", ErrorMessage = "The LastName is not valid")]
         public string LastName { get; set; }
 
         public string Password { get; set; }
@@ -158,16 +166,21 @@ namespace Services.ViewModels.Admin
         public string UserName { get; set; }
 
         [StringLength(50)]
+        [DataType(DataType.EmailAddress, ErrorMessage = "The Email is not valid")]
         public string Email { get; set; }
 
-        [StringLength(50)]
-        public string SynchronizationEmail { get; set; }
-
         [StringLength(20)]
+        [RegularExpression(@"^(?:\+?91)?\s*([1-9]\d{4})\s*(\d{5})$", ErrorMessage = "The Phone is not valid")]
         public string Phone { get; set; }
 
         [StringLength(20)]
+        [Display(Name = "Mobile")]
+        [RegularExpression(@"^(?:\+?91)?\s*([1-9]\d{4})\s*(\d{5})$", ErrorMessage = "The Mobile is not valid")]
         public string Phone2 { get; set; }
+
+        [StringLength(50)]
+        [DataType(DataType.EmailAddress, ErrorMessage = "The SynchronizationEmail is not valid")]
+        public string SynchronizationEmail { get; set; }
 
         [StringLength(500)]
         public string MedicalLicance { get; set; }

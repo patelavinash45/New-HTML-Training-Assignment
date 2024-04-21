@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using DocumentFormat.OpenXml.Office2016.Presentation.Command;
+using Microsoft.AspNetCore.Http;
 using Repositories.DataModels;
 using Repositories.Interfaces;
 using Services.Interfaces.AdminServices;
@@ -32,14 +33,14 @@ namespace Services.Implementation.AdminServices
         public ViewNotes GetNotes(int RequestId)
         {
             RequestNote requestNote = _requestNotesRepository.GetRequestNoteByRequestId(RequestId);
-            List<string> transferNotes = _requestSatatusLogRepository.GetRequestStatusLogByRequestId(RequestId)
-                                                                     .Select(requestStatusLog => requestStatusLog.Notes).ToList();
             return new ViewNotes()
             {
                 RequestId = RequestId,
                 AdminNotes = requestNote!=null?requestNote.AdminNotes:null,
                 PhysicianNotes = requestNote != null ? requestNote.PhysicianNotes : null,
-                TransferNotes = transferNotes,
+                TransferNotes = _requestSatatusLogRepository.GetRequestStatusLogByRequestId(RequestId)
+                                    .ToDictionary(requestStatusLog => requestStatusLog.CreatedDate.ToString("MMM dd,yyy"),
+                                                  requestStatusLog => requestStatusLog.Notes != null ? requestStatusLog.Notes : ""),
             };
         }
 
@@ -193,7 +194,7 @@ namespace Services.Implementation.AdminServices
                 Body = "To Further Proceed to your Request : " + link,
             };
             //mailMessage.To.Add(model.Email);
-            mailMessage.To.Add("tatva.dotnet.avinashpatel@outlook.com");
+            mailMessage.To.Add("avinashspatel70@gmail.com");
             SmtpClient smtpClient = new SmtpClient("smtp.office365.com")
             {
                 UseDefaultCredentials = false,

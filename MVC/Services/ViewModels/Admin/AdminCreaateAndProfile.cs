@@ -9,14 +9,15 @@ namespace Services.ViewModels.Admin
         public string Password { get; set; }
 
         [StringLength(100)]
+        [RegularExpression(@"^[a-zA-Z]+(?: [a-zA-Z]+)*$", ErrorMessage = "The FirstName is not valid")]
         public string FirstName { get; set; }
 
         [StringLength(100)]
+        [RegularExpression(@"^[a-zA-Z]+(?: [a-zA-Z]+)*$", ErrorMessage = "The LastName is not valid")]
         public string LastName { get; set; }
 
         [StringLength(50)]
-        [RegularExpression("^(([A-Za-z0-9]+_+)|([A-Za-z0-9]+\\-+)|([A-Za-z0-9]+\\.+)|([A-Za-z0-9]+\\++))*[A-Za-z0-9]+@((\\w+\\-+)|(\\w+\\.))*" +
-            "\\w{1,63}\\.[a-zA-Z]{2,6}$", ErrorMessage = "Invalid Email")]
+        [DataType(DataType.EmailAddress, ErrorMessage = "The Email is not valid")]
         public string Email { get; set; }
 
         [StringLength(50)]
@@ -27,6 +28,7 @@ namespace Services.ViewModels.Admin
         public string Phone { get; set; }
 
         [StringLength(20)]
+        [RegularExpression(@"^(?:\+?91)?\s*([1-9]\d{4})\s*(\d{5})$", ErrorMessage = "The Mobile is not valid")]
         public string Mobile { get; set; }
 
         [StringLength(500)]

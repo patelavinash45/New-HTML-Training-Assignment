@@ -43,7 +43,6 @@ namespace Services.ViewModels.Physician
     {
         public List<FileModel>? FileList { get; set; }
 
-        [Required(ErrorMessage = "File Is Required")]
         public IFormFile File { get; set; }
 
         public string? FirstName { get; set; }

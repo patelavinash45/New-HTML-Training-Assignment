@@ -56,7 +56,7 @@ namespace Services.Implementation.AdminServices
         public async Task<bool> requestAddToCloseCase(int requestId)
         {
             RequestClient requestClient = _requestClientRepository.getRequestClientByRequestId(requestId);
-            requestClient.Status = 8;
+            requestClient.Status = 9;
             return await _requestClientRepository.updateRequestClient(requestClient);
         }
     }

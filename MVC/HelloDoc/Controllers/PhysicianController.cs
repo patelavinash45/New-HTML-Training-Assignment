@@ -133,10 +133,12 @@ namespace HelloDoc.Controllers
             int requestId = HttpContext.Session.GetInt32("requestId").Value;
             if(await _physicianDashboardService.concludeCare(requestId, model))
             {
+                _notyfService.Success("Successfully Concluded");
                 return RedirectToAction("Dashboard", "Physician");
             }
             else
             {
+                _notyfService.Warning("Encounter Is not Finalize");
                 return RedirectToAction("EncounterForm", "Admin");
             }
         }

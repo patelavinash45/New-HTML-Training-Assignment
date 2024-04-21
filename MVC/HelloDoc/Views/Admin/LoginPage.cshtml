@@ -16,7 +16,7 @@
         <form asp-controller="Admin" asp-action="LoginPage"
             class="col-xl-6 col-md-6 col-lg-6 col-12 d-flex flex-column justify-content-center align-items-center vh-100">
             <span class="d-flex justify-content-end" id="back-button">
-                <a class="mt-4 mb-5 backto-patientsite" asp-controller="Patient" asp-action="PatientSite">
+                <a class="mb-5 backto-patientsite" asp-controller="Patient" asp-action="PatientSite">
                     <i class="bi bi-chevron-left bi-xl"></i>
                     Back
                 </a>
@@ -42,7 +42,7 @@
                 <i class="bi bi-eye input-group-text bg-transparent" id="passwordIcon"></i>
             </div>
             <span asp-validation-for="PasswordHash" class="text-danger w-50"></span>
-            <button type="submit" class="button w-50 mt-4 fs-4">
+            <button type="submit" class="button w-50 mt-2 fs-4">
                 Log In
             </button>
             <a class="mt-3 text-primary" asp-controller="Patient" asp-action="ResetPassword"> Forgot Password? </a>

@@ -56,12 +56,15 @@ namespace Services.ViewModels.Admin
         public string Zip { get; set; }
 
         [StringLength(100)]
+        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "The         public string PhoneNumber { get; set; }\r\n is not valid")]
         public string PhoneNumber { get; set; }
 
         [StringLength(50)]
+        [DataType(DataType.EmailAddress, ErrorMessage = "The Email is not valid")]
         public string Email { get; set; }
 
         [StringLength(100)]
+        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "The BusinessContact is not valid")]
         public string BusinessContact { get; set; }
     }
 }

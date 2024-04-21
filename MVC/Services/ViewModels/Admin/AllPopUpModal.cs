@@ -46,14 +46,16 @@ namespace Services.ViewModels.Admin
 
     public class SendLink
     {
+        [RegularExpression(@"^[a-zA-Z]+(?: [a-zA-Z]+)*$", ErrorMessage = "The FirstName is not valid")]
         public string FirstName { get; set; }
 
+        [RegularExpression(@"^[a-zA-Z]+(?: [a-zA-Z]+)*$", ErrorMessage = "The LastName is not valid")]
         public string LastName { get; set; }
 
-        [RegularExpression("^(([A-Za-z0-9]+_+)|([A-Za-z0-9]+\\-+)|([A-Za-z0-9]+\\.+)|([A-Za-z0-9]+\\++))*[A-Za-z0-9]+@((\\w+\\-+)|(\\w+\\.))*" +
-            "\\w{1,63}\\.[a-zA-Z]{2,6}$", ErrorMessage = "Invalid Email")]
+        [DataType(DataType.EmailAddress, ErrorMessage = "The Email is not valid")]
         public string Email { get; set; }
 
+        [RegularExpression(@"^(?:\+?91)?\s*([1-9]\d{4})\s*(\d{5})$", ErrorMessage = "The Mobile is not valid")]
         public string Mobile { get; set; }
     }
 
@@ -64,6 +66,10 @@ namespace Services.ViewModels.Admin
 
     public class Agreement
     {
+        public bool IsValid { get; set; } = false;
+
+        public string? Message { get; set; }
+
         public int RequestId { get; set; }
 
         public string? FirstName { get; set; }
@@ -74,8 +80,6 @@ namespace Services.ViewModels.Admin
 
         public string Number { get; set; }
 
-        [RegularExpression("^(([A-Za-z0-9]+_+)|([A-Za-z0-9]+\\-+)|([A-Za-z0-9]+\\.+)|([A-Za-z0-9]+\\++))*[A-Za-z0-9]+@((\\w+\\-+)|(\\w+\\.))*" +
-            "\\w{1,63}\\.[a-zA-Z]{2,6}$", ErrorMessage = "Invalid Email")]
         public string Email { get; set; }
     }
 }

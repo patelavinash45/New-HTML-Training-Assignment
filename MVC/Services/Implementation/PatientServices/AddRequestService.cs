@@ -83,9 +83,9 @@ namespace Services.Implementation.PatientServices
                     CreatedBy = aspNetUserId,
                     CreatedDate = DateTime.Now,
                     House = model.House,
-                    IntYear = model.BirthDate.Value.Year,
-                    IntDate = model.BirthDate.Value.Day,
-                    StrMonth = model.BirthDate.Value.Month.ToString(),
+                    IntYear = model.BirthDate.Year,
+                    IntDate = model.BirthDate.Day,
+                    StrMonth = model.BirthDate.Month.ToString(),
                 };
                 userId = await _userRepository.addUser(user);
                 AspNetUserRole aspNetUserRole = new()
@@ -195,9 +195,9 @@ namespace Services.Implementation.PatientServices
                     CreatedBy = aspNetUserId,
                     CreatedDate = DateTime.Now,
                     House = model.House,
-                    IntYear = model.BirthDate.Value.Year,
-                    IntDate = model.BirthDate.Value.Day,
-                    StrMonth = model.BirthDate.Value.Month.ToString(),
+                    IntYear = model.BirthDate.Year,
+                    IntDate = model.BirthDate.Day,
+                    StrMonth = model.BirthDate.Month.ToString(),
                 };
                 userId = await _userRepository.addUser(user);
                 AspNetUserRole aspNetUserRole = new()

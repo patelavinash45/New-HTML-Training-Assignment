@@ -46,6 +46,10 @@ a {
     .w-25 {
         width: 40% !important;
     }
+
+    #back-button{
+        width: 320px;
+    }
 }
 
 @media screen and (max-width: 767px) {

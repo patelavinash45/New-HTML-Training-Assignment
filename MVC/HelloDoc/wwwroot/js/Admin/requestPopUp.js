@@ -316,3 +316,7 @@ function encounter() {
 
 //// download pdf popup
 
+$(document).on("click", ".downloadPdf", function () {
+    $("#downloadReport").modal('hide');
+})
+

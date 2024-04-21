@@ -62,7 +62,7 @@ namespace Services.Implementation.PhysicianServices
         public async Task<bool> concludeCare(int requestId, ConcludeCare model)
         {
             Encounter encounter = _encounterRepository.getEncounter(requestId);
-            if ((bool)encounter.IsFinalize)
+            if (encounter!=null && (bool)encounter.IsFinalize)
             {
                 RequestClient requestClient = _requestClientRepository.getRequestClientAndRequestByRequestId(requestId);
                 requestClient.Status = 8;
@@ -124,7 +124,7 @@ namespace Services.Implementation.PhysicianServices
                 PdfDocument pdf = new PdfDocument(writer);
                 iText.Layout.Document document = new iText.Layout.Document(pdf);
                 Div div = new Div();
-                document.Add(new Paragraph("Medical Report").SetTextAlignment(TextAlignment.CENTER).SetFontSize(20));
+                document.Add(new Paragraph("Medical Report"));
                 document.Add(new Paragraph($"Patient Name: \t\t {encounterForm.FirstName + " " + encounterForm.LastName}"));
                 div.Add(new Paragraph($"Email:\t\t {encounterForm.Email}"));
                 div.Add(new Paragraph($"Mobile Number:\t\t {encounterForm.Mobile}"));

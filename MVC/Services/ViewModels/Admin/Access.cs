@@ -1,4 +1,6 @@
-﻿namespace Services.ViewModels.Admin
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Services.ViewModels.Admin
 {
     public class Access
     {
@@ -18,6 +20,7 @@
     {
         public bool IsUpdate { get; set; } = false;
 
+        [StringLength(50)]
         public string RoleName { get; set; }
 
         public int SlectedAccountType { get; set; }

@@ -17,9 +17,11 @@ namespace Services.ViewModels.Admin
         public string LastName { get; set; }
 
         [StringLength(50)]
+        [DataType(DataType.EmailAddress, ErrorMessage = "The Email is not valid")]
         public string? Email { get; set; } 
 
         [StringLength(20)]
+        [RegularExpression(@"^(?:\+?91)?\s*([1-9]\d{4})\s*(\d{5})$", ErrorMessage = "The Mobile is not valid")]
         public string Mobile { get; set; }
 
         [StringLength(100)]
