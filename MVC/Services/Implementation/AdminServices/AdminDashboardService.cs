@@ -113,7 +113,7 @@ namespace Services.Implementation.AdminServices
                 {
                     int requestId = int.Parse(jwtSecurityToken.Claims.FirstOrDefault(a => a.Type == "requestId").Value);
                     RequestClient requestClient = _requestClientRepository.getRequestClientByRequestId(requestId);
-                    if(requestClient.Status == 5)
+                    if(requestClient.Status < 4)
                     {
                         agreement = new Agreement()
                         {

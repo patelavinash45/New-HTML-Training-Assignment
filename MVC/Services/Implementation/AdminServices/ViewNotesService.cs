@@ -1,5 +1,4 @@
-﻿using DocumentFormat.OpenXml.Office2016.Presentation.Command;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Repositories.DataModels;
 using Repositories.Interfaces;
 using Services.Interfaces.AdminServices;
@@ -194,7 +193,7 @@ namespace Services.Implementation.AdminServices
                 Body = "To Further Proceed to your Request : " + link,
             };
             //mailMessage.To.Add(model.Email);
-            mailMessage.To.Add("avinashspatel70@gmail.com");
+            mailMessage.To.Add("tatva.dotnet.avinashpatel@outlook.com");
             SmtpClient smtpClient = new SmtpClient("smtp.office365.com")
             {
                 UseDefaultCredentials = false,
