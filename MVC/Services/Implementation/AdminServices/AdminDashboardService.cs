@@ -513,6 +513,8 @@ namespace Services.Implementation.AdminServices
                                                                    + "-" + requestClient.IntDate).ToString("MMM dd, yyyy") : "-",
                     RequestdDate = requestClient.Request.CreatedDate.ToString("MMM dd, yyyy"),
                     Email = requestClient.Email,
+                    Isfinalize = requestClient.Request.Encounters.FirstOrDefault(a => a.RequestId == requestClient.RequestId) != null ?
+                                  (bool)requestClient.Request.Encounters.FirstOrDefault(a => a.RequestId == requestClient.RequestId).IsFinalize ? 1 : 0 : 0,
                     DateOfService = requestClient.Request.Encounters.FirstOrDefault(a => a.RequestId == requestClient.RequestId) != null ?
                                   requestClient.Request.Encounters.FirstOrDefault(a => a.RequestId == requestClient.RequestId).Date.Value.ToString("MMM dd, yyyy") : "-",
                 }).ToList();

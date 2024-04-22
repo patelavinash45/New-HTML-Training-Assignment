@@ -153,8 +153,14 @@ function navigatToSendOrder(requestId) {
     navigation("SendOrder", requestId);
 }
 
-function navigatToEncounterForm(requestId) {
-    navigation("EncounterForm", requestId);
+function navigatToEncounterForm(requestId, isFinaliz) {
+    if (!isFinaliz) {
+        navigation("EncounterForm", requestId);
+    }
+    else { 
+        $(".patientRequestId").val(requestId);
+        $("#downloadReport").modal('show');
+    }
 }
 
 function navigatToCloseCase(requestId) {
@@ -272,12 +278,8 @@ $("#requestSupportForm").submit(function (e) {
 ///  physician Encounter
 
 function checkEncounter(isEncounter, requestId, isFinaliz) {
-    if (isEncounter == 1 && !isFinaliz) {
-        navigatToEncounterForm(requestId);
-    }
-    else if (isEncounter == 1 && isFinaliz) {
-        $(".patientRequestId").val(requestId);
-        $("#downloadReport").modal('show');
+    if (isEncounter == 1) {
+        navigatToEncounterForm(requestId, isFinaliz);
     }
     else {
         $(".patientRequestId").val(requestId);
