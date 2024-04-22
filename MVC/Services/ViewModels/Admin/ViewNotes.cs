@@ -14,6 +14,6 @@ namespace Services.ViewModels.Admin
         [StringLength(500)]
         public string NewNotes { get; set; }
 
-        public Dictionary<String,String>? TransferNotes { get; set; }
+        public List<Tuple<String, String>>? TransferNotes { get; set; }
     }
 }

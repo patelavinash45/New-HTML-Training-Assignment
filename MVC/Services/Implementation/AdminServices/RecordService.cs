@@ -48,7 +48,7 @@ namespace Services.Implementation.AdminServices
                         RequestId = requestClient.RequestId,
                         PatientName = $"{requestClient.FirstName} {requestClient.LastName}",
                         PhysicianName = requestClient.Physician != null ? $"{requestClient.Physician.FirstName} {requestClient.Physician.LastName}" : "-",
-                        Address = $"{requestClient.Street},{requestClient.City},{requestClient.State},{requestClient.ZipCode}",
+                        Address = $"{requestClient.Street}, {requestClient.City}, {requestClient.State}, {requestClient.ZipCode}",
                         RequestType = requestClient.Request.RequestTypeId,
                         DateOfService = requestClient.Request.AcceptedDate,
                         Email = requestClient.Email,

@@ -35,11 +35,12 @@ namespace Services.Implementation.AdminServices
             return new ViewNotes()
             {
                 RequestId = RequestId,
-                AdminNotes = requestNote!=null?requestNote.AdminNotes:null,
+                AdminNotes = requestNote != null ? requestNote.AdminNotes : null,
                 PhysicianNotes = requestNote != null ? requestNote.PhysicianNotes : null,
                 TransferNotes = _requestSatatusLogRepository.GetRequestStatusLogByRequestId(RequestId)
-                                    .ToDictionary(requestStatusLog => requestStatusLog.CreatedDate.ToString("MMM dd,yyy"),
-                                                  requestStatusLog => requestStatusLog.Notes != null ? requestStatusLog.Notes : ""),
+                                     .Select(requestStatusLog =>
+                                                    new Tuple<string, string>(requestStatusLog.CreatedDate.ToString("MMM dd,yyy"),
+                                                                             requestStatusLog.Notes != null ? requestStatusLog.Notes : "")).ToList(),
             };
         }
 

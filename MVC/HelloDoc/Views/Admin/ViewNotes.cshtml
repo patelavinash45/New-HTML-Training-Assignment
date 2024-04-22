@@ -33,13 +33,13 @@
                     </h4>
                     @foreach(var item in Model.TransferNotes)
                     {
-                        if (item.Value != null)
+                        if (item != null)
                         {
                             count++;
                             <div class="d-flex">
                                 <i class="bi bi-@count-square h4 me-2"></i>
-                                @item.Value
-                                (@item.Key)
+                                @item.Item2
+                                ( @item.Item1 )
                             </div>
                         }
                     }
