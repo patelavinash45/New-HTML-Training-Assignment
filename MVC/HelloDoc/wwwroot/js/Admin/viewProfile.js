@@ -192,6 +192,8 @@ $(document).on("click", "#administratorForm", function () {
             contentType: "application/json",
             data: {
                 data1: data1,
+                firstName: $("#firstName").val(),
+                lastName: $("#lastName").val(),
             },
             success: function (response) {
                 window.location.href = response.redirect;

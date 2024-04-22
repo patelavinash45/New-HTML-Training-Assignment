@@ -96,7 +96,7 @@
 
         public string BirthDate { get; set; }
 
-        public DateTime? DateOfService { get; set; }
+        public string? DateOfService { get; set; }
 
         public string RequestdDate { get; set; }
 

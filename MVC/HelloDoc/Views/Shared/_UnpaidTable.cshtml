@@ -136,7 +136,7 @@
             <div class="accordion-item">
                 <h2 class="accordion-header" id="flush-headingOne">
                     <button class="accordion-button collapsed pb-5 fw-normal" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                            data-bs-target="#flush-@data.RequestId" aria-expanded="false" aria-controls="flush-collapseOne">
                         <div class="col-7">
                             <div class="mb-2">
                                 @data.FirstName @data.LastName
@@ -156,7 +156,7 @@
                         </div>
                     </button>
                 </h2>
-                <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                <div id="flush-@data.RequestId" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
                     <button class="border border-1 rounded-pill d-flex justify-content-center p-2 border-primary viewcase bg-white fw-bold"
                             onclick="navigatToViewCase(@data.RequestId)">
                         View Case

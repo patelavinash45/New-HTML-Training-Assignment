@@ -124,6 +124,7 @@ namespace Services.Implementation.AdminServices
         public async Task<bool> assignRequest(AssignAndTransferPopUp model)
         {
             RequestClient requestClient = _requestClientRepository.getRequestClientByRequestId(model.RequestId);
+            requestClient.Status = 1;
             requestClient.PhysicianId = model.SelectedPhysician;
             if(await _requestClientRepository.updateRequestClient(requestClient))
             {

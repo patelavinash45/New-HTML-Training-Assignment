@@ -280,7 +280,7 @@ namespace Services.Implementation.PhysicianServices
                     Street = requestClient.Street,
                     ZipCode = requestClient.ZipCode,
                     City = requestClient.City,
-                    Notes = requestClient.Symptoms,
+                    Notes = requestClient.Symptoms != null ? requestClient.Symptoms : "-",
                     RequesterType = requestClient.Request.RequestTypeId,
                     Email = requestClient.Email,
                     IsEncounter = requestClient.Request.CallType != null ? 1 : 0,

@@ -63,11 +63,11 @@
                         <span asp-validation-for="SelectedRole" class="text-danger"></span>
                     </div>
                     <div class="form-floating col-xl-6 col-md-6 col-lg-6">
-                        <select asp-for="Status" class="form-select" id="role">
+                        <select asp-for="Status" class="form-select" id="status">
                             <option value="0">Pending</option>
                             <option value="1">Active</option>
                         </select>
-                        <label for="role">Status</label>
+                        <label for="status">Status</label>
                         <span asp-validation-for="Status" class="text-danger"></span>
                     </div>
                 </div>
@@ -129,9 +129,8 @@
                 </div>
                 <div class="row">
                     <div class="form-floating col-xl-6 col-md-6 col-lg-6">
-                        <input asp-for="SynchronizationEmail" class="form-control" id="email" placeholder="Email"
-                            type="email" />
-                        <label for="email">Synchronization Email</label>
+                        <input asp-for="SynchronizationEmail" class="form-control" id="synemail" placeholder="Email" type="email" />
+                        <label for="synemail">Synchronization Email</label>
                         <span asp-validation-for="SynchronizationEmail" class="text-danger"></span>
                     </div>
                     <div class="col-xl-6 col-md-6 col-lg-6">
@@ -154,7 +153,7 @@
                     Edit
                 </button>
                 <div class="edit" id="edit2">
-                    <button class="px-3 me-2 text-white fw-bold bottomButtons" type="submit" id="administratorForm">
+                    <button class="px-3 me-2 text-white fw-bold bottomButtons" type="submit">
                         Save Changes
                     </button>
                     <button class="px-3 bg-white cancleButton fw-bold" type="reset" id="cancel2">
@@ -215,7 +214,7 @@
                     Edit
                 </button>
                 <div class="edit" id="edit3">
-                    <button class="px-3 me-2 text-white fw-bold bottomButtons" type="submit" id="administratorForm">
+                    <button class="px-3 me-2 text-white fw-bold bottomButtons" type="submit" >
                         Save Changes
                     </button>
                     <button class="px-3 bg-white cancleButton fw-bold" type="reset" id="cancel3">
@@ -245,8 +244,7 @@
                 <div class="row">
                     <div class="col-xl-6 col-md-6 col-lg-6">
                         <div class="input-group-text border-0 bg-transparent form-floating p-0">
-                            <input asp-for="Photo" class="form-control" placeholder="Select Photo" type="file"
-                                id="file-picker">
+                            <input asp-for="Photo" class="form-control" placeholder="Select Photo" type="file" id="file-picker" accept="image/png, image/gif, image/jpeg">
                             <label for="file-picker">Select Photo</label>
                             <button class="uploadButtons uploadButtonFilepicker text-white fs-5" type="button">
                                 <i class="bi bi-cloud-arrow-up-fill "></i>
@@ -261,7 +259,7 @@
                             <div class="d-flex">
                                 <div class="input-group-text border-0 bg-transparent form-floating p-0">
                                     <input asp-for="Signature" class="form-control" placeholder="Select Signature"
-                                           type="file" id="Signature">
+                                           type="file" id="Signature" accept="image/png, image/gif, image/jpeg">
                                     <label for="file-picker">Select Signature</label>
                                     <button class="uploadButtons uploadButtonFilepicker text-white fs-5" type="button">
                                         <i class="bi bi-cloud-arrow-up-fill "></i>
@@ -308,7 +306,7 @@
                     Edit
                 </button>
                 <div class="edit" id="edit4">
-                    <button class="px-3 me-2 text-white fw-bold bottomButtons" type="submit" id="administratorForm">
+                    <button class="px-3 me-2 text-white fw-bold bottomButtons" type="submit">
                         Save Changes
                     </button>
                     <button class="px-3 bg-white cancleButton fw-bold" type="reset" id="cancel4">
@@ -441,7 +439,7 @@
                     Edit
                 </button>
                 <div class="edit" id="edit5">
-                    <button class="px-3 me-2 text-white fw-bold bottomButtons" type="submit" id="administratorForm">
+                    <button class="px-3 me-2 text-white fw-bold bottomButtons" type="submit">
                         Save Changes
                     </button>
                     <button class="px-3 bg-white cancleButton fw-bold me-2" type="reset" id="cancel5">
@@ -450,7 +448,7 @@
                 </div>
                 @if(role == "Admin")
                 {
-                    <button class="px-3 text-white fw-bold bottomButtons bg-danger border-danger" type="button" id="editbutton1">
+                    <button class="px-3 text-white fw-bold bottomButtons bg-danger border-danger" type="button">
                         Delete Account
                     </button>
                 }

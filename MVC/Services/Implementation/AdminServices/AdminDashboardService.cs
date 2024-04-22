@@ -505,15 +505,16 @@ namespace Services.Implementation.AdminServices
                     Street = requestClient.Street,
                     ZipCode = requestClient.ZipCode,
                     City = requestClient.City,
-                    Notes = requestClient.Symptoms,
+                    Notes = requestClient.Symptoms != null ? requestClient.Symptoms: "-",
                     RegionId = requestClient.RegionId,
-                    PhysicianName = requestClient.Physician != null ? requestClient.Physician.FirstName + " " + requestClient.Physician.LastName : "",
+                    PhysicianName = requestClient.Physician != null ? requestClient.Physician.FirstName + " " + requestClient.Physician.LastName : "-",
                     RequesterType = requestClient.Request.RequestTypeId,
                     BirthDate = requestClient.IntYear != null ? DateTime.Parse(requestClient.IntYear + "-" + requestClient.StrMonth
-                                                                   + "-" + requestClient.IntDate).ToString("MMM dd, yyyy") : "",
+                                                                   + "-" + requestClient.IntDate).ToString("MMM dd, yyyy") : "-",
                     RequestdDate = requestClient.Request.CreatedDate.ToString("MMM dd, yyyy"),
                     Email = requestClient.Email,
-                    DateOfService = null,
+                    DateOfService = requestClient.Request.Encounters.FirstOrDefault(a => a.RequestId == requestClient.RequestId) != null ?
+                                  requestClient.Request.Encounters.FirstOrDefault(a => a.RequestId == requestClient.RequestId).Date.Value.ToString("MMM dd, yyyy") : "-",
                 }).ToList();
             int totalPages = totalRequests % 10 != 0 ? (totalRequests / 10) + 1 : totalRequests / 10;
             return new TableModel()

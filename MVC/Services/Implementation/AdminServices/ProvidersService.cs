@@ -413,6 +413,7 @@ namespace Services.Implementation.AdminServices
                 {
                     return await _userRepository.deletePhysicianRegions(physicianRegionsDelete);
                 }
+                return true;
             }
             return false;
         }

@@ -29,8 +29,7 @@ namespace Services.Implementation.AuthServices
 
         public UserDataModel auth(Login model,List<int> userType)
         {
-            AspNetUserRole aspNetUserRole = _aspRepository.
-                           validateAspNetUserRole(email: model.Email, password: genrateHash(model.PasswordHash));
+            AspNetUserRole aspNetUserRole = _aspRepository.validateAspNetUserRole(email: model.Email, password: genrateHash(model.PasswordHash));
             if (aspNetUserRole != null)
             {
                 if(userType.Contains(aspNetUserRole.RoleId))

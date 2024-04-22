@@ -133,6 +133,7 @@ namespace Services.Implementation
                 {
                     return await _userRepository.deleteAdminRgions(adminRegionsDelete);
                 }
+                return true;
             }
             return false;
         }

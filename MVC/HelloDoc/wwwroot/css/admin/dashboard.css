@@ -87,7 +87,7 @@ button:disabled{
     border-color: #e9e0e5;
 }
 
-#tocloseOption {
+#closeOption {
     background-color: #e5eef5;
     color: #1a6eb7;
     border-color: #e9f2f5;
@@ -102,7 +102,7 @@ button:disabled{
  #newOption:hover,
  #activeOption:hover,
  #concludeOption:hover,
- #tocloseOption:hover,
+ #closeOption:hover,
  #unpaidOption:hover,
  #pendingOption:hover {
      box-shadow: 10px 10px 5px #AAA;

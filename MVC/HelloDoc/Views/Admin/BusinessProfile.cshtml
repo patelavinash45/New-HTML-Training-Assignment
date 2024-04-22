@@ -20,14 +20,14 @@
             <h3> Add Business</h3>
         }
         <a asp-controller="Admin" asp-action="Partners">
-            <button class="bg-white px-3 fw-medium">
+            <button class="bg-white px-3 fw-bold">
                 <i class="bi bi-chevron-left"> </i>
                 Back
             </button>
         </a>
     </div>
     <form class="partnersList" asp-controller="Admin" asp-action="@Model.AspAction">
-        <h5 class="fw-medium">
+        <h5 class="fw-bold">
             Details
         </h5>
         <div class="row">
@@ -104,17 +104,17 @@
         <div class="d-flex justify-content-end mt-3 mb-2">
             @if (Model.IsUpdate)
             {
-                <button class="px-3 me-2 text-white fw-medium bottomButtons">
+                <button class="px-3 me-2 text-white fw-bold bottomButtons">
                     Update
                 </button>
             }
             else
             {
-                <button class="px-3 me-2 text-white fw-medium bottomButtons">
+                <button class="px-3 me-2 text-white fw-bold bottomButtons">
                     Submit
                 </button>
             }
-            <button class="px-3 bg-white cancleButton fw-medium" type="reset">
+            <button class="px-3 bg-white cancleButton fw-bold" type="reset">
                 Cancel
             </button>
         </div>

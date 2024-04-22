@@ -1,5 +1,6 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Spreadsheet;
 using HelloDoc.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Repositories.DataModels;
@@ -27,7 +28,6 @@ namespace HelloDoc.Controllers
         private readonly IAccessService _accessService;
         private readonly IPartnersService _partnersService;
         private readonly IRecordService _recordService;
-        private List<string> roles = new List<string> { "Admin", "Physician" };
 
         public AdminController(INotyfService notyfService, IAdminDashboardService adminDashboardService, 
                                 IViewNotesService viewNotesService, ILoginService loginService, IViewDocumentsServices viewDocumentsServices,
@@ -65,6 +65,7 @@ namespace HelloDoc.Controllers
             HttpContext.Session.Remove("aspNetUserId");
             HttpContext.Session.Remove("role");
             Response.Cookies.Delete("jwtToken");
+            _notyfService.Success("Successfully Logout");
             return RedirectToAction("LoginPage", "Admin");
         }
 
@@ -838,11 +839,13 @@ namespace HelloDoc.Controllers
         }
 
         [HttpGet]   //  Edit Administrator Information view profile
-        public async Task<IActionResult> EditAdministratorInformation(String data1)
+        public async Task<IActionResult> EditAdministratorInformation(String data1, String firstName, String lastName)
         {
             int aspNetUserId = HttpContext.Session.GetInt32("aspNetUserId").Value;
             if (await _viewProfileService.editEditAdministratorInformastion(data1, aspNetUserId))
             {
+                HttpContext.Session.SetString("firstName", firstName);
+                HttpContext.Session.SetString("lastName", lastName);
                 _notyfService.Success("Successfully Updated");
             }
             else

@@ -1,4 +1,5 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using DocumentFormat.OpenXml.Wordprocessing;
 using HelloDoc.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Services.Interfaces;
@@ -132,6 +133,7 @@ namespace HelloDoc.Controllers
             HttpContext.Session.Remove("aspNetUserId");
             HttpContext.Session.Remove("role");
             Response.Cookies.Delete("jwtToken");
+            _notyfService.Success("Successfully Logout");
             return RedirectToAction("LoginPage", "Patient");
         }
 
@@ -200,6 +202,8 @@ namespace HelloDoc.Controllers
             int aspNetUserId = HttpContext.Session.GetInt32("aspNetUserId").Value;
             if (await _viewProfileService.updatePatientProfile(model, aspNetUserId))
             {
+                HttpContext.Session.SetString("firstName", model.FirstName);
+                HttpContext.Session.SetString("lastName", model.LastName);
                 _notyfService.Success("Successfully Updated");
             }
             else
