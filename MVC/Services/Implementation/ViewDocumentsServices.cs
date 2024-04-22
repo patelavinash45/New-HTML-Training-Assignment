@@ -25,9 +25,10 @@ namespace Services.Implementation
 
         public ViewDocument getDocumentList(int requestId, int aspNetUserId)
         {
-            RequestClient requestClient = _requestClientRepository.getRequestClientByRequestId(requestId);
+            RequestClient requestClient = _requestClientRepository.getRequestClientAndRequestByRequestId(requestId);
             return new ViewDocument()
             {
+                ConformationNumber = requestClient.Request.ConfirmationNumber,
                 FirstName = requestClient.FirstName,
                 LastName = requestClient.LastName,
                 FileList = _requestWiseFileRepository.getFilesByrequestId(requestId)

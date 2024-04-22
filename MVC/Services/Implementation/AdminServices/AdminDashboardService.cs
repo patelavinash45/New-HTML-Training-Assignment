@@ -304,9 +304,10 @@ namespace Services.Implementation.AdminServices
 
         public ConcludeCare getConcludeCare(int requestId)
         {
-            RequestClient requestClient = _requestClientRepository.getRequestClientByRequestId(requestId);
+            RequestClient requestClient = _requestClientRepository.getRequestClientAndRequestByRequestId(requestId);
             return new ConcludeCare()
             {
+                ConformationNumber = requestClient.Request.ConfirmationNumber,
                 FirstName = requestClient.FirstName,
                 LastName = requestClient.LastName,
                 FileList = _requestWiseFileRepository.getFilesByrequestId(requestId)

@@ -70,5 +70,17 @@ namespace Repositories.Implementation
             _dbContext.RoleMenus.RemoveRange(roleMenus);
             return await _dbContext.SaveChangesAsync() > 0;
         }
+
+        public Admin getRoleWithRoleMenusAndAdmin(int aspNetUserId, int menuId)
+        {
+            return _dbContext.Admins.Include(a => a.Role).ThenInclude(a => a.RoleMenus.Where(x => x.MenuId == menuId))
+                                                 .FirstOrDefault(a => a.AspNetUserId == aspNetUserId);
+        }
+
+        public Physician getRoleWithRoleMenusAndPhysician(int aspNetUserId, int menuId)
+        {
+            return _dbContext.Physicians.Include(a => a.Role).ThenInclude(a => a.RoleMenus.Where(x => x.MenuId == menuId))
+                                                 .FirstOrDefault(a => a.AspNetUserId == aspNetUserId);
+        }
     }
 }

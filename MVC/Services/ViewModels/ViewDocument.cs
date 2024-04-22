@@ -5,6 +5,8 @@ namespace Services.ViewModels
 {
     public class ViewDocument
     { 
+        public string? ConformationNumber { get; set; }
+
         public List<FileModel>? FileList { get; set; }
 
         [Required(ErrorMessage ="File Is Required")]

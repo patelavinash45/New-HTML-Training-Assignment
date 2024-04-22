@@ -23,7 +23,7 @@ namespace HelloDoc.Controllers
             _adminDashboardService = adminDashboardService; 
         }
 
-        [Authorization("Physician")]
+        [Authorization(25,"Physician")]
         public IActionResult Dashboard()
         {
             int aspNetUserId = HttpContext.Session.GetInt32("aspNetUserId").Value;
@@ -38,6 +38,7 @@ namespace HelloDoc.Controllers
             return tableModel.TableDatas.Count != 0 ? PartialView(partialViewName, tableModel) : PartialView("_NoTableDataFound");
         }
 
+        [Authorization(26, "Physician")]
         public IActionResult Scheduling()
         {
             int aspNetUserId = HttpContext.Session.GetInt32("aspNetUserId").Value;

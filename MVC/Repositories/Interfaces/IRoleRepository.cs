@@ -23,5 +23,9 @@ namespace Repositories.Interfaces
         Task<bool> updateRole(Role role);
 
         Task<bool> deleteRoleMenus(List<RoleMenu> roleMenus);
+
+        Admin getRoleWithRoleMenusAndAdmin(int aspNetUserId, int menuId);
+
+        Physician getRoleWithRoleMenusAndPhysician(int aspNetUserId, int menuId);
     }
 }

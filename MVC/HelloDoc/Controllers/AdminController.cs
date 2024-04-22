@@ -69,7 +69,7 @@ namespace HelloDoc.Controllers
             return RedirectToAction("LoginPage", "Admin");
         }
 
-        [Authorization("Admin")]
+        [Authorization(6,"Admin")]
         public IActionResult Dashboard()
         {
             return View(_adminDashboardService.getallRequests());
@@ -122,19 +122,19 @@ namespace HelloDoc.Controllers
             return View(_providersService.getCreateProvider());
         }
 
-        [Authorization("Admin")]
+        [Authorization(4,"Admin")]
         public IActionResult CreateAdmin()
         {
             return View(_accessService.GetAdminCreaateAndProfile());
         }
 
-        [Authorization("Admin")]
+        [Authorization(8,"Admin")]
         public IActionResult Providers()
         {
             return View(_providersService.getProviders(regionId: 0));
         }
 
-        [Authorization("Admin")]
+        [Authorization(16,"Admin")]
         public IActionResult Partners()
         {
             return View(_partnersService.getPartnersData());
@@ -146,7 +146,7 @@ namespace HelloDoc.Controllers
             return View(_partnersService.addBusiness(isUpdate: false,venderId: 0));
         }
 
-        [Authorization("Admin")]
+        [Authorization(7,"Admin")]
         public IActionResult Access()
         {
             return View(_accessService.getAccessData());
@@ -164,19 +164,19 @@ namespace HelloDoc.Controllers
             return View(_accessService.getCreateRole());
         }
 
-        [Authorization("Admin")]
+        [Authorization(20,"Admin")]
         public IActionResult Records()
         {
             return View(_recordService.getRecords(new Records()));
         }
 
-        [Authorization("Admin")]
+        [Authorization(13,"Admin")]
         public IActionResult EmailLogs()
         {
             return View(_recordService.getEmailLog(new EmailSmsLogs()));
         }
 
-        [Authorization("Admin")]
+        [Authorization(17,"Admin")]
         public IActionResult SMSLogs()
         {
             return View(_recordService.getSMSlLog(new EmailSmsLogs()));
@@ -195,20 +195,20 @@ namespace HelloDoc.Controllers
             return View(_recordService.getPatientRecord(userId,pageNo: 1));
         }
 
-        [Authorization("Admin")]
+        [Authorization(2,"Admin")]
         public IActionResult BlockHistory()
         {
             return View(_recordService.getBlockHistory(new BlockHistory(), pageNo: 1));
         }
 
-        [Authorization("Admin")]
+        [Authorization(5,"Admin")]
         public IActionResult ViewProfile()
         {
             int aspNetUseId = HttpContext.Session.GetInt32("aspNetUserId").Value;
             return View(_viewProfileService.GetAdminViewProfile(aspNetUseId));
         }
 
-        [Authorization("Admin")]
+        [Authorization(3,"Admin")]
         public IActionResult ProviderScheduling()
         {
             return View(_providersService.getProviderSchedulingData());
@@ -227,7 +227,7 @@ namespace HelloDoc.Controllers
             return View(_closeCaseService.getDaetails(requestId));
         }
 
-        [Authorization("Admin")]
+        [Authorization(24,"Admin")]
         public IActionResult ProviderLocation()
         {
             return View();

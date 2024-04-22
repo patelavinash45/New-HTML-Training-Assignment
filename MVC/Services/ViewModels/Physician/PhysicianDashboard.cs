@@ -36,11 +36,12 @@ namespace Services.ViewModels.Physician
         public SchedulingTableMonthWise TableData { get; set; }
 
         public CreateShift CreateShift { get; set; }
-
     }
 
     public class ConcludeCare
     {
+        public string? ConformationNumber { get; set; }
+
         public List<FileModel>? FileList { get; set; }
 
         public IFormFile File { get; set; }
@@ -50,7 +51,6 @@ namespace Services.ViewModels.Physician
         public string? LastName { get; set; }
 
         public string Notes { get; set; }
-
     }
 
 }

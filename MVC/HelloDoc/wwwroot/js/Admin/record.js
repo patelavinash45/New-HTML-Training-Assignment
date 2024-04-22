@@ -99,7 +99,7 @@ function getPatientHistory(pageNo) {
 }
 
 function navigateToLastPage(totalRequestCount) {       /// for last page in pagination
-    var lastPageNo = getotalRequestCount % 10 != 0 ? parseInt(totalRequestCount / 10, 10) + 1 : parseInt(totalRequestCount / 10, 10);
+    var lastPageNo = totalRequestCount % 5 != 0 ? parseInt(totalRequestCount / 5, 10) + 1 : parseInt(totalRequestCount / 5, 10);
     getPatientHistory(lastPageNo);
 }
 
@@ -158,7 +158,7 @@ function navigatToViewDocuments(requestId) {
 }
 
 function navigateToLastPagePatinetRecord(totalRequestCount) {       /// for last page in pagination
-    var lastPageNo = getotalRequestCount % 10 != 0 ? parseInt(totalRequestCount / 10, 10) + 1 : parseInt(totalRequestCount / 10, 10);
+    var lastPageNo = totalRequestCount % 5 != 0 ? parseInt(totalRequestCount / 5, 10) + 1 : parseInt(totalRequestCount / 5, 10);
     getPatientRecord(lastPageNo);
 }
 
@@ -196,7 +196,7 @@ function getBlckHistoryData(pageNo) {
 }
 
 function navigateToLastPageBlockHistory(totalRequestCount) {       /// for last page in pagination
-    var lastPageNo = getotalRequestCount % 10 != 0 ? parseInt(totalRequestCount / 10, 10) + 1 : parseInt(totalRequestCount / 10, 10);
+    var lastPageNo = totalRequestCount % 5 != 0 ? parseInt(totalRequestCount / 5, 10) + 1 : parseInt(totalRequestCount / 5, 10);
     getPatientRecord(lastPageNo);
 }
 

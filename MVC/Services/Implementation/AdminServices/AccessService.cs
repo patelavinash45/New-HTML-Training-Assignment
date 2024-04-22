@@ -105,7 +105,7 @@ namespace Services.Implementation.AdminServices
             return new AdminCreaateAndProfile()
             {
                 Regions = _requestClientRepository.getAllRegions().ToDictionary(region => region.RegionId, region => region.Name),
-                Roles = _roleRepository.getRolesByUserType(2).Select(role => role.Name).ToList(),
+                Roles = _roleRepository.getRolesByUserType(2).ToDictionary(role => role.RoleId, role => role.Name),
             };
         }
 
@@ -149,7 +149,7 @@ namespace Services.Implementation.AdminServices
                 Zip = model.ZipCode,
                 AltPhone = model.Phone,
                 Status = model.Status,
-                Role = model.SelectedRole,
+                RoleId = model.SelectedRole,
             };
             if(await _userRepository.addAdmin(admin))
             {

@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 using Repositories.DataModels;
 
 namespace Repositories.DataContext;
@@ -103,6 +105,8 @@ public partial class HalloDocDbContext : DbContext
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.AdminCreatedByNavigations).HasConstraintName("Admin_CreatedBy_fkey");
 
             entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.AdminModifiedByNavigations).HasConstraintName("Admin_ModifiedBy_fkey");
+
+            entity.HasOne(d => d.Role).WithMany(p => p.Admins).HasConstraintName("RoleId");
         });
 
         modelBuilder.Entity<AdminRegion>(entity =>
@@ -235,6 +239,8 @@ public partial class HalloDocDbContext : DbContext
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.PhysicianCreatedByNavigations).HasConstraintName("Physician_CreatedBy_fkey");
 
             entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.PhysicianModifiedByNavigations).HasConstraintName("Physician_ModifiedBy_fkey");
+
+            entity.HasOne(d => d.Role).WithMany(p => p.Physicians).HasConstraintName("RoleId");
         });
 
         modelBuilder.Entity<PhysicianLocation>(entity =>

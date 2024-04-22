@@ -184,6 +184,8 @@ namespace Services.ViewModels.Admin
         public int Ststus { get; set; }
 
         public int CountDocument { get; set; }
+
+        public bool Isfinalize { get; set; }
     }
 
     public class BlockHistory

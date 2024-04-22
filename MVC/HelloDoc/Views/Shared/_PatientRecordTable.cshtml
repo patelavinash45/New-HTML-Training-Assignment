@@ -53,14 +53,24 @@
                         @item.Ststus
                     </td>
                     <td>
-                        <button class="bg-white px-3 fw-bold">
-                            View
-                        </button>
+                        @if(item.Isfinalize)
+                        {
+                            <a asp-controller="Physician" asp-action="GeneratePDF" asp-route-requestId="@item.RequestId">
+                                <button class="bg-white px-3 fw-bold">
+                                    Download Report
+                                </button>
+                            </a>
+                        }
+                        else
+                        {
+                            <span>
+                                -
+                            </span>
+                        }
                     </td>
                     <td>
                         <div class="dropdown">
-                            <button class="p-2 dropdown-toggle bg-white fw-bold" type="button"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
+                            <button class="p-2 dropdown-toggle bg-white fw-bold" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Actions
                             </button>
                             <ul class="dropdown-menu">
@@ -98,7 +108,7 @@
                 <button class="accordion-button collapsed h-100" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-@item.RequestId" aria-controls="panelsStayOpen-collapseOne">
                     <div class="d-flex flex-column">
                         @item.Name
-                        @item.Conformation
+                        (@item.Conformation)
                     </div>
                 </button>
                 <hr class="h1">
@@ -129,12 +139,17 @@
                             Status : @item.Ststus
                         </span>
                     </div>
-                    <button class="bg-white px-3 fw-bold mb-3 mt-3" onclick="navigatToViewCase(@item.RequestId)">
+                    <button class="bg-white px-3 fw-bold mb-2 mt-3" onclick="navigatToViewCase(@item.RequestId)">
                         View Case
                     </button>
+                    <a asp-controller="Physician" asp-action="GeneratePDF" asp-route-requestId="@item.RequestId" class="w-100 mx-0 px-0">
+                        <button class="bg-white px-3 fw-bold mb-2 w-100">
+                            Download Report
+                        </button>
+                    </a>
                     @if (item.CountDocument > 0)
                     {
-                        <button class="bg-white px-3 fw-bold">
+                        <button class="bg-white px-3 fw-bold mb-2">
                             (@item.CountDocument) Documents
                         </button>
                     }

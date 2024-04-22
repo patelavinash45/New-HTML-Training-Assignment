@@ -42,7 +42,13 @@ public partial class Role
     public virtual AspNetRole AccountTypeNavigation { get; set; } = null!;
 
     [InverseProperty("Role")]
+    public virtual ICollection<Admin> Admins { get; set; } = new List<Admin>();
+
+    [InverseProperty("Role")]
     public virtual ICollection<EmailLog> EmailLogs { get; set; } = new List<EmailLog>();
+
+    [InverseProperty("Role")]
+    public virtual ICollection<Physician> Physicians { get; set; } = new List<Physician>();
 
     [InverseProperty("Role")]
     public virtual ICollection<RoleMenu> RoleMenus { get; set; } = new List<RoleMenu>();

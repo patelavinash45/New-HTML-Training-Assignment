@@ -15,5 +15,7 @@ namespace Services.Interfaces.AuthServices
 
         Task<bool> changePassword(int aspNetUserId, String password);
 
+        bool validateAccess(int aspNetUserId, int menuId, bool isAdmin);
+
     }
 }

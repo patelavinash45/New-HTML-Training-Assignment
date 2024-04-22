@@ -56,9 +56,9 @@ namespace Services.ViewModels.Admin
         public short? Status { get; set; }
 
         [Required(ErrorMessage = "The Role field is required.")]
-        public string SelectedRole { get; set; }
+        public int SelectedRole { get; set; }
 
-        public List<string>? Roles { get; set; }
+        public Dictionary<int, string>? Roles { get; set; }
 
     }
 }

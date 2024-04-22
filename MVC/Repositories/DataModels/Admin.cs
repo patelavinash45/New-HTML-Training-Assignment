@@ -57,8 +57,7 @@ public partial class Admin
 
     public bool? IsDeleted { get; set; }
 
-    [StringLength(50)]
-    public string? Role { get; set; }
+    public int? RoleId { get; set; }
 
     [InverseProperty("Admin")]
     public virtual ICollection<AdminRegion> AdminRegions { get; set; } = new List<AdminRegion>();
@@ -80,4 +79,8 @@ public partial class Admin
 
     [InverseProperty("Admin")]
     public virtual ICollection<RequestWiseFile> RequestWiseFiles { get; set; } = new List<RequestWiseFile>();
+
+    [ForeignKey("RoleId")]
+    [InverseProperty("Admins")]
+    public virtual Role? Role { get; set; }
 }

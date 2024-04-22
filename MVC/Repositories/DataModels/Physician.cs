@@ -139,6 +139,10 @@ public partial class Physician
     [InverseProperty("Physician")]
     public virtual ICollection<RequestWiseFile> RequestWiseFiles { get; set; } = new List<RequestWiseFile>();
 
+    [ForeignKey("RoleId")]
+    [InverseProperty("Physicians")]
+    public virtual Role? Role { get; set; }
+
     [InverseProperty("Physician")]
     public virtual ICollection<Shift> Shifts { get; set; } = new List<Shift>();
 }

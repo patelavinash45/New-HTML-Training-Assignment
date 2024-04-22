@@ -216,6 +216,8 @@ namespace Services.Implementation.AdminServices
                                               Conformation = requestClient.Request.ConfirmationNumber,
                                               ProviderName = requestClient.Physician != null ? $"{requestClient.Physician.FirstName} {requestClient.Physician.LastName}" : "-",
                                               Ststus = requestClient.Status,
+                                              Isfinalize = requestClient.Request.Encounters.FirstOrDefault(a => a.RequestId == requestClient.RequestId) != null ?
+                                                            (bool)requestClient.Request.Encounters.FirstOrDefault(a => a.RequestId == requestClient.RequestId).IsFinalize : false,
                                               CountDocument = requestClient.Request.RequestWiseFiles != null ? requestClient.Request.RequestWiseFiles.Count : 0,
                                           }).ToList(),
             };

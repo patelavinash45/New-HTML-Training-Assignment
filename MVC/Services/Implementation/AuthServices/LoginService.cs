@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using Microsoft.AspNetCore.Http;
 using Repositories.DataModels;
 using Repositories.Interface;
 using Repositories.Interfaces;
@@ -18,13 +19,14 @@ namespace Services.Implementation.AuthServices
         private readonly IAspRepository _aspRepository;
         private readonly IUserRepository _userRepository;
         private readonly IJwtService _jwtService;
+        private readonly IRoleRepository _roleRepository;
 
-        public LoginService(IAspRepository aspRepository,
-                                       IUserRepository userRepository,IJwtService jwtService)
+        public LoginService(IAspRepository aspRepository, IUserRepository userRepository, IJwtService jwtService, IRoleRepository roleRepository)
         {
             _aspRepository = aspRepository;
             _userRepository = userRepository;
             _jwtService = jwtService;
+            _roleRepository = roleRepository;
         }
 
         public UserDataModel auth(Login model,List<int> userType)
@@ -188,6 +190,27 @@ namespace Services.Implementation.AuthServices
             AspNetUser aspNetUser = _aspRepository.getUser(aspNetUserId);
             aspNetUser.PasswordHash = genrateHash(password);
             return _aspRepository.changePassword(aspNetUser);
+        }
+
+        public bool validateAccess(int aspNetUserId, int menuId, bool isAdmin)
+        {
+            if(isAdmin)
+            {
+                Admin admin = _roleRepository.getRoleWithRoleMenusAndAdmin(aspNetUserId, menuId);
+                if (admin.Role.RoleMenus.Count == 1)
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                Physician physician = _roleRepository.getRoleWithRoleMenusAndPhysician(aspNetUserId, menuId);
+                if (physician.Role.RoleMenus.Count == 1)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         private string genrateHash(string password)
