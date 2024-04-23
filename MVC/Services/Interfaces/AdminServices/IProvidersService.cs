@@ -16,7 +16,7 @@ namespace Services.Interfaces.AdminServices
 
         EditProvider getEditProvider(int physicianId);
 
-        Task<bool> createProvider(CreateProvider model);
+        Task<String> createProvider(CreateProvider model);
 
         ProviderScheduling getProviderSchedulingData();
 
@@ -30,7 +30,7 @@ namespace Services.Interfaces.AdminServices
 
         RequestShiftModel getRequestShiftTableDate(int regionId, bool isMonth, int pageNo);
 
-        Task<bool> changeShiftDetails(string dataList,bool isApprove);
+        Task<bool> changeShiftDetails(string dataList,bool isApprove, int aspNetUserId);
 
         ViewShift getShiftDetails(int shiftDetailsId);
 

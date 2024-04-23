@@ -80,7 +80,7 @@ namespace Services.Implementation.AdminServices
             Func<RequestClient, bool> predicate = a =>
             (requesterTypeId == 0 || a.Request.RequestTypeId == requesterTypeId)
             && (regionId == 0 || a.RegionId == regionId)
-            && (!statusList[status].Contains(1) || a.Physician == null)
+            //&& (!statusList[status].Contains(1) || a.Physician == null)
             && (patientName == null || a.FirstName.ToLower().Contains(patientName) 
                                     || a.LastName.ToLower().Contains(patientName)
                                     || $"{a.FirstName} {a.LastName}".ToLower().Contains(patientName.ToLower()))
@@ -508,7 +508,7 @@ namespace Services.Implementation.AdminServices
                     City = requestClient.City,
                     Notes = requestClient.Symptoms != null ? requestClient.Symptoms: "-",
                     RegionId = requestClient.RegionId,
-                    PhysicianName = requestClient.Physician != null ? requestClient.Physician.FirstName + " " + requestClient.Physician.LastName : "-",
+                    PhysicianName = requestClient.Physician != null ? $"{ requestClient.Physician.FirstName } { requestClient.Physician.LastName }" : "-",
                     RequesterType = requestClient.Request.RequestTypeId,
                     BirthDate = requestClient.IntYear != null ? DateTime.Parse(requestClient.IntYear + "-" + requestClient.StrMonth
                                                                    + "-" + requestClient.IntDate).ToString("MMM dd, yyyy") : "-",
@@ -597,7 +597,7 @@ namespace Services.Implementation.AdminServices
         {
             using (var sha256 = SHA256.Create())
             {
-                byte[] hashPassword = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+                byte[] hashPassword = sha256.ComputeHash(Encoding.UTF8.GetBytes(password.Trim()));
                 return BitConverter.ToString(hashPassword).Replace("-", "").ToLower();
             }
         }

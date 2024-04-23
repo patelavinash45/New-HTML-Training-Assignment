@@ -59,13 +59,14 @@ namespace Services.Implementation.AdminServices
             };
         }
 
-        public async Task<bool> createRole(CreateRole model)
+        public async Task<bool> createRole(CreateRole model, int aspNetUserId)
         {
             Role role = new Role()
             {
                 Name = model.RoleName,
                 AccountType = model.SlectedAccountType,
                 CreatedDate = DateTime.Now,
+                CreatedBy = aspNetUserId.ToString(),
             };
             int roleId = await _roleRepository.addRole(role); 
             if(roleId > 0 && model.SelectedMenus.Count > 0)
@@ -87,17 +88,21 @@ namespace Services.Implementation.AdminServices
             return false;
         }
 
-        public async Task<bool> delete(int roleId,int aspNetUserId)
+        public async Task<String> delete(int roleId,int aspNetUserId)
         {
-            if(await _roleRepository.deleteRoleMenus(_roleRepository.getAllRoleMenusByRole(roleId)))
+            if(roleId != 14 && roleId!=15)
             {
-                Role role = _roleRepository.getRoleByRoleId(roleId);
-                role.IsDeleted = new BitArray(1, true);
-                role.ModifiedDate = DateTime.Now;
-                role.ModifiedBy = aspNetUserId.ToString();
-                return await _roleRepository.updateRole(role);
+                if (await _roleRepository.deleteRoleMenus(_roleRepository.getAllRoleMenusByRole(roleId)))
+                {
+                    Role role = _roleRepository.getRoleByRoleId(roleId);
+                    role.IsDeleted = new BitArray(1, true);
+                    role.ModifiedDate = DateTime.Now;
+                    role.ModifiedBy = aspNetUserId.ToString();
+                    return await _roleRepository.updateRole(role) ? "" : "Faild !!";
+                }
+                return "Faild !!";
             }
-            return false;
+            return "This Role can not be Delete";
         }
 
         public AdminCreaateAndProfile GetAdminCreaateAndProfile()
@@ -109,62 +114,66 @@ namespace Services.Implementation.AdminServices
             };
         }
 
-        public async Task<bool> createAdmin(AdminCreaateAndProfile model)
+        public async Task<String> createAdmin(AdminCreaateAndProfile model)
         {
-            int aspNetRoleId = _aspRepository.checkUserRole(role: "Admin");
-            if (aspNetRoleId == 0)
+            if(_aspRepository.checkUser(model.Email) == 0)
             {
-                AspNetRole aspNetRole = new()
+                int aspNetRoleId = _aspRepository.checkUserRole(role: "Admin");
+                if (aspNetRoleId == 0)
                 {
-                    Name = "Physician",
-                };
-                aspNetRoleId = await _aspRepository.addUserRole(aspNetRole);
-            }
-            AspNetUser aspNetUser = new()
-            {
-                UserName = model.FirstName,
-                Email = model.Email,
-                PhoneNumber = model.Phone,
-                PasswordHash = genrateHash(model.Password),
-                CreatedDate = DateTime.Now,
-            };
-            int aspNetUserId = await _aspRepository.addUser(aspNetUser);
-            AspNetUserRole aspNetUserRole = new()
-            {
-                UserId = aspNetUserId,
-                RoleId = aspNetRoleId,
-            };
-            await _aspRepository.addAspNetUserRole(aspNetUserRole);
-            Admin admin = new Admin()
-            {
-                AspNetUserId = aspNetUserId,
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                Email = model.Email,
-                Mobile = model.Mobile,
-                Address1 = model.Address1,
-                Address2 = model.Address2,
-                City = model.City,
-                RegionId = int.Parse(model.SelectedRegion),
-                Zip = model.ZipCode,
-                AltPhone = model.Phone,
-                Status = model.Status,
-                RoleId = model.SelectedRole,
-            };
-            if(await _userRepository.addAdmin(admin))
-            {
-                List<AdminRegion> adminRegions = new List<AdminRegion>();
-                foreach (String regionId in model.SelectedRegions)
-                {
-                    adminRegions.Add(new AdminRegion()
+                    AspNetRole aspNetRole = new()
                     {
-                        AdminId = admin.AdminId,
-                        RegionId = int.Parse(regionId),
-                    });
+                        Name = "Admin",
+                    };
+                    aspNetRoleId = await _aspRepository.addUserRole(aspNetRole);
                 }
-                await _userRepository.addAdminRgions(adminRegions);
+                AspNetUser aspNetUser = new()
+                {
+                    UserName = model.FirstName,
+                    Email = model.Email,
+                    PhoneNumber = model.Phone,
+                    PasswordHash = genrateHash(model.Password),
+                    CreatedDate = DateTime.Now,
+                };
+                int aspNetUserId = await _aspRepository.addUser(aspNetUser);
+                AspNetUserRole aspNetUserRole = new()
+                {
+                    UserId = aspNetUserId,
+                    RoleId = aspNetRoleId,
+                };
+                await _aspRepository.addAspNetUserRole(aspNetUserRole);
+                Admin admin = new Admin()
+                {
+                    AspNetUserId = aspNetUserId,
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    Email = model.Email,
+                    Mobile = model.Mobile,
+                    Address1 = model.Address1,
+                    Address2 = model.Address2,
+                    City = model.City,
+                    RegionId = int.Parse(model.SelectedRegion),
+                    Zip = model.ZipCode,
+                    AltPhone = model.Phone,
+                    Status = model.Status,
+                    RoleId = model.SelectedRole,
+                };
+                if (await _userRepository.addAdmin(admin))
+                {
+                    List<AdminRegion> adminRegions = new List<AdminRegion>();
+                    foreach (String regionId in model.SelectedRegions)
+                    {
+                        adminRegions.Add(new AdminRegion()
+                        {
+                            AdminId = admin.AdminId,
+                            RegionId = int.Parse(regionId),
+                        });
+                    }
+                    return await _userRepository.addAdminRgions(adminRegions) ? "" : "Faild !!";
+                }
+                return "Faild !!";
             }
-            return false;
+            return "Email Already Exits";
         }
 
         public CreateRole getEditRole(int roleId)
@@ -227,7 +236,7 @@ namespace Services.Implementation.AdminServices
         {
             using (var sha256 = SHA256.Create())
             {
-                byte[] hashPassword = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+                byte[] hashPassword = sha256.ComputeHash(Encoding.UTF8.GetBytes(password.Trim()));
                 return BitConverter.ToString(hashPassword).Replace("-", "").ToLower();
             }
         }

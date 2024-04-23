@@ -25,6 +25,11 @@ namespace Repositories.Implementation
             return _dbContext.RequestWiseFiles.Where(a => a.RequestId == requestId && a.IsDeleted != new BitArray(1, true)).ToList();
         }
 
+        public List<RequestWiseFile> getRequestWiseFilesByIds(List<int> ids)
+        {
+            return _dbContext.RequestWiseFiles.Where(a => ids.Contains(a.RequestWiseFileId)).ToList();
+        }
+
         public RequestWiseFile getFilesByrequestWiseFileId(int requestWiseFileId)
         {
             return _dbContext.RequestWiseFiles.FirstOrDefault(a => a.RequestWiseFileId == requestWiseFileId);

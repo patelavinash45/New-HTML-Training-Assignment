@@ -76,15 +76,15 @@ namespace Services.Implementation
                 From = new MailAddress("tatva.dotnet.avinashpatel@outlook.com"),
                 Subject = "Document List",
                 IsBodyHtml = true,
-                Body = "All The Documents For RequestId : " + requestId.ToString(),
+                Body = $"All The Documents For RequestId : {requestId.ToString()}",
             };
-            foreach (var id in ids)
-            {
-                RequestWiseFile requestWiseFile = _requestWiseFileRepository.getFilesByrequestWiseFileId(id);
-                string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files/"+requestWiseFile.RequestId.ToString());
-                path = Path.Combine(path, requestWiseFile.FileName);
-                mailMessage.Attachments.Add(new Attachment(path));
-            }
+            _requestWiseFileRepository.getRequestWiseFilesByIds(ids)
+                .ForEach(requestWiseFile =>
+                {
+                    string path = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot/Files/{requestWiseFile.RequestId.ToString()}");
+                    path = Path.Combine(path, requestWiseFile.FileName);
+                    mailMessage.Attachments.Add(new Attachment(path));
+                });
             //RequestClient requestClient = _requestClientRepository.GetRequestClientByRequestId(requestId);
             //mailMessage.To.Add(requestClient.Email);
             mailMessage.To.Add("tatva.dotnet.avinashpatel@outlook.com");

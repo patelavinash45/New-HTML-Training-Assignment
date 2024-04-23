@@ -60,23 +60,6 @@ function clearCase() {
     })
 }
 
-//$("#assignForm").submit(function (e) {
-//    if ($("#assignRequestRegion").val() == null) {
-//        e.preventDefault();
-//        $("#assignValidationforRegions").css("display", "block");
-//    }
-//    else {
-//        $("#assignValidationforRegions").css("display", "none");
-//    }
-//    if ($("#assignRequestPhysician").val() == null) {
-//        e.preventDefault();
-//        $("#assignValidationPhysician").css("display", "block");
-//    }
-//    else {
-//        $("#assignValidationPhysician").css("display", "none");
-//    }
-//})
-
 $("#transferForm").submit(function (e) {
     if ($("#transferRequestRegion").val() == null) {
         e.preventDefault();
@@ -93,16 +76,6 @@ $("#transferForm").submit(function (e) {
         $("#transferValidationPhysician").css("display", "none");
     }
 })
-
-//$("#cacelForm").submit(function (e) {
-//    if ($("#cancelRequestRegions").val() == null) {
-//        e.preventDefault();
-//        $("#cancelValidation").css("display", "block");
-//    }
-//    else {
-//        $("#cancelValidation").css("display", "none");
-//    }
-//})
 
 $("#sendAgreementForm").submit(function (e) {
     if ($("#patientNumber").val().length == 0) {

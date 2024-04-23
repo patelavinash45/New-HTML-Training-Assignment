@@ -14,7 +14,7 @@
 
 <div class="container">
     <div class="d-flex justify-content-between align-items-center mt-2 mb-3">
-        @if(role == "Physician")
+        @if (role == "Physician")
         {
             <h3>
                 View Profile
@@ -46,31 +46,33 @@
                         <span asp-validation-for="UserName" class="text-danger"></span>
                     </div>
                     <div class="form-floating col-xl-6 col-md-6 col-lg-6">
-                        <input asp-for="Password" class="form-control" id="pass" placeholder="Password" type="password"/>
+                        <input asp-for="Password" class="form-control" id="pass" placeholder="Password" type="password" />
                         <label for="pass">Password</label>
                         <span asp-validation-for="Password" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="form-floating col-xl-6 col-md-6 col-lg-6">
-                        <select asp-for="SelectedRole" class="form-select" id="role">
-                            @foreach (var item in Model.Roles)
-                            {
-                                <option value="@item.Key">@item.Value</option>
-                            }
-                        </select>
-                        <label for="role">Role</label>
-                        <span asp-validation-for="SelectedRole" class="text-danger"></span>
+                <fieldset disabled=@(role=="Physician")>
+                    <div class="row">
+                        <div class="form-floating col-xl-6 col-md-6 col-lg-6">
+                            <select asp-for="SelectedRole" class="form-select" id="role">
+                                @foreach (var item in Model.Roles)
+                                {
+                                    <option value="@item.Key">@item.Value</option>
+                                }
+                            </select>
+                            <label for="role">Role</label>
+                            <span asp-validation-for="SelectedRole" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating col-xl-6 col-md-6 col-lg-6">
+                            <select asp-for="Status" class="form-select" id="status">
+                                <option value="0">Pending</option>
+                                <option value="1">Active</option>
+                            </select>
+                            <label for="status">Status</label>
+                            <span asp-validation-for="Status" class="text-danger"></span>
+                        </div>
                     </div>
-                    <div class="form-floating col-xl-6 col-md-6 col-lg-6">
-                        <select asp-for="Status" class="form-select" id="status">
-                            <option value="0">Pending</option>
-                            <option value="1">Active</option>
-                        </select>
-                        <label for="status">Status</label>
-                        <span asp-validation-for="Status" class="text-danger"></span>
-                    </div>
-                </div>
+                </fieldset>
             </fieldset>
             <div class="d-flex justify-content-end mt-3 mb-2">
                 <button class="px-3 text-white fw-bold bottomButtons" type="button" id="editbutton1">
@@ -86,8 +88,8 @@
                 </div>
             </div>
         </form>
-        <form asp-controller="Admin" asp-action="EditphysicianPhysicianInformaction">
-            <h5 class="mt-4">
+        <form asp-controller="Admin" asp-action="EditphysicianPhysicianInformaction" id="InformationForm">
+            <h5>
                 Physician Informaction
             </h5>
             <fieldset disabled id="fieldset2">
@@ -117,7 +119,7 @@
                 <div class="row">
                     <div class="form-floating col-xl-6 col-md-6 col-lg-6">
                         <input asp-for="MedicalLicance" class="form-control" id="licaence"
-                            placeholder="MedicalLicance" />
+                               placeholder="MedicalLicance" />
                         <label for="licaence">Medical Licance</label>
                         <span asp-validation-for="MedicalLicance" class="text-danger"></span>
                     </div>
@@ -133,19 +135,19 @@
                         <label for="synemail">Synchronization Email</label>
                         <span asp-validation-for="SynchronizationEmail" class="text-danger"></span>
                     </div>
-                    <div class="col-xl-6 col-md-6 col-lg-6">
+                    <div class="col-12">
                         @foreach (var item in Model.Regions)
                         {
                             <div class="form-check form-check-inline">
-                                <input name="SelectedRegions" class="form-check-input" type="checkbox" value="@item.Key"
-                                    checked=@Model.SelectedRegions.Contains(item.Key)>
+                                <input name="SelectedRegions" class="form-check-input regioncheckBoxs" type="checkbox" value="@item.Key" 
+                                                                                            checked=@Model.SelectedRegions.Contains(item.Key)>
                                 <label class="form-check-label" for="r-1">
                                     @item.Value
                                 </label>
                             </div>
                         }
                     </div>
-                    <span asp-validation-for="SelectedRegions" class="text-danger"></span>
+                    <span class="text-danger" id="checkboxValidation"></span>
                 </div>
             </fieldset>
             <div class="d-flex justify-content-end mt-3 mb-2">
@@ -163,7 +165,7 @@
             </div>
         </form>
         <form asp-controller="Admin" asp-action="EditphysicianMailAndBillingInformaction">
-            <h5 class="mt-4">
+            <h5>
                 Mailing & Billing Information
             </h5>
             <fieldset disabled id="fieldset3">
@@ -214,7 +216,7 @@
                     Edit
                 </button>
                 <div class="edit" id="edit3">
-                    <button class="px-3 me-2 text-white fw-bold bottomButtons" type="submit" >
+                    <button class="px-3 me-2 text-white fw-bold bottomButtons" type="submit">
                         Save Changes
                     </button>
                     <button class="px-3 bg-white cancleButton fw-bold" type="reset" id="cancel3">
@@ -224,7 +226,7 @@
             </div>
         </form>
         <form enctype="multipart/form-data" asp-controller="Admin" asp-action="EditphysicianProviderProfile">
-            <h5 class="mt-4">
+            <h5>
                 Provider Profile
             </h5>
             <fieldset disabled id="fieldset4">
@@ -236,7 +238,7 @@
                     </div>
                     <div class="form-floating col-xl-6 col-md-6 col-lg-6">
                         <input asp-for="BusinessWebsite" class="form-control" id="website"
-                            placeholder="BusinessWebsite" />
+                               placeholder="BusinessWebsite" />
                         <label for="website">Business Website</label>
                         <span asp-validation-for="BusinessWebsite" class="text-danger"></span>
                     </div>
@@ -295,7 +297,7 @@
                 <div class="row">
                     <div class="form-floating">
                         <textarea asp-for="AdminNotes" class="form-control h-75" id="notes" placeholder="orderDetils"
-                            rows="5"></textarea>
+                                  rows="5"></textarea>
                         <span asp-validation-for="AdminNotes" class="text-danger"></span>
                         <label for="notes">Admin Notes</label>
                     </div>
@@ -317,7 +319,7 @@
             <hr>
         </form>
         <form asp-controller="Admin" asp-action="EditphysicianOnbordingInformaction" enctype="multipart/form-data">
-            <h5 class="mt-4">
+            <h5>
                 Onbording
             </h5>
             <fieldset disabled id="fieldset5">
@@ -335,7 +337,7 @@
                                 @if (Model.AgreementDocPath != null)
                                 {
                                     <a href="@Model.AgreementDocPath" target="_blank"
-                                        class="px-3 me-2 text-white fw-bold bottomButtons d-flex justify-content-center align-items-center">
+                                       class="px-3 me-2 text-white fw-bold bottomButtons d-flex justify-content-center align-items-center">
                                         View
                                     </a>
                                 }
@@ -358,12 +360,12 @@
                     <div class="d-flex align-items-end flex-column">
                         <div class="input-group">
                             <input asp-for="BackgroundDoc" type="file" class="form-control d-none"
-                                id="inputGroupFile02">
+                                   id="inputGroupFile02">
                             <div class="d-flex">
                                 @if (Model.BackgroundDocPath != null)
                                 {
                                     <a href="@Model.BackgroundDocPath" target="_blank"
-                                        class="px-3 me-2 text-white fw-bold bottomButtons d-flex justify-content-center align-items-center">
+                                       class="px-3 me-2 text-white fw-bold bottomButtons d-flex justify-content-center align-items-center">
                                         View
                                     </a>
                                 }
@@ -386,12 +388,12 @@
                     <div class="d-flex align-items-end flex-column">
                         <div class="input-group">
                             <input asp-for="HIPAACompliance" type="file" class="form-control d-none"
-                                id="inputGroupFile03">
+                                   id="inputGroupFile03">
                             <div class="d-flex">
                                 @if (Model.HIPAACompliancePath != null)
                                 {
                                     <a href="@Model.HIPAACompliancePath" target="_blank"
-                                        class="px-3 me-2 text-white fw-bold bottomButtons d-flex justify-content-center align-items-center">
+                                       class="px-3 me-2 text-white fw-bold bottomButtons d-flex justify-content-center align-items-center">
                                         View
                                     </a>
                                 }
@@ -414,12 +416,12 @@
                     <div class="d-flex align-items-end flex-column">
                         <div class="input-group">
                             <input asp-for="NonDisclosureDoc" type="file" class="form-control d-none"
-                                id="inputGroupFile04">
+                                   id="inputGroupFile04">
                             <div class="d-flex">
                                 @if (Model.NonDisclosureDocPath != null)
                                 {
                                     <a href="@Model.NonDisclosureDocPath" target="_blank"
-                                        class="px-3 me-2 text-white fw-bold bottomButtons d-flex justify-content-center align-items-center">
+                                       class="px-3 me-2 text-white fw-bold bottomButtons d-flex justify-content-center align-items-center">
                                         View
                                     </a>
                                 }

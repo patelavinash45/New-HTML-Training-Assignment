@@ -6,7 +6,9 @@ namespace Repositories.Interfaces
     {
         Task<bool> addFile(RequestWiseFile requestWiseFile);
 
-        List<RequestWiseFile> getFilesByrequestId(int requestId);   
+        List<RequestWiseFile> getFilesByrequestId(int requestId);
+        
+        List<RequestWiseFile> getRequestWiseFilesByIds(List<int> ids);
 
         RequestWiseFile getFilesByrequestWiseFileId(int requestWiseFileId);
 

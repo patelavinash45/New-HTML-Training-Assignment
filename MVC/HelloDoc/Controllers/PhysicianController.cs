@@ -23,6 +23,11 @@ namespace HelloDoc.Controllers
             _adminDashboardService = adminDashboardService; 
         }
 
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
+
         [Authorization(25,"Physician")]
         public IActionResult Dashboard()
         {

@@ -1,5 +1,4 @@
-﻿using DocumentFormat.OpenXml.Office.CustomUI;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Services.Interfaces.AuthServices;
 using System.IdentityModel.Tokens.Jwt;
@@ -78,10 +77,10 @@ namespace HelloDoc.Authentication
                                 bool isAdmin = jwtRole == "Admin";
                                 if (!loginService.validateAccess(jwtId, _menuId, isAdmin))
                                 {
-                                    context.HttpContext.Response.Cookies.Delete("jwtToken");
+                                    //context.HttpContext.Response.Cookies.Delete("jwtToken");
                                     context.Result = new RedirectToRouteResult(new RouteValueDictionary(new
                                     {
-                                        Controller = "Patient",
+                                        Controller = jwtRole,
                                         action = "AccessDenied",
                                     }));
                                 }

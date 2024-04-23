@@ -168,7 +168,7 @@ namespace Services.Implementation.AdminServices
                         LastName = user.LastName,
                         Email = user.Email,
                         Phone = user.Mobile,
-                        Address = $"{user.House}, {user.Street}, {user.City}, {user.State}, {user.ZipCode}"
+                        Address = $"{user.Street}, {user.City}, {user.State}, {user.ZipCode}"
                     }).ToList();
             int totalPages = totalPatient % 5 != 0 ? (totalPatient / 5) + 1 : totalPatient / 5;
             model.PatientHistoryTable = new PatientHistoryTable()

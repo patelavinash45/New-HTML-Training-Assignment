@@ -3,6 +3,7 @@
 @{
     Layout = "_AdminLayout";
     ViewData["Title"] = "Physician Account";
+    ViewBag.JsFile = "/js/Admin/provider.js";
     ViewBag.CssFile = "/css/Admin/createProvider.css";
     ViewBag.Header = "_AdminDashboardHeader";
 }
@@ -20,8 +21,7 @@
             </button>
         </a>
     </div>
-    <form class="mb-5 form" enctype="multipart/form-data" asp-controller="Admin" asp-action="CreateProvider"
-        id="providerForm">
+    <form class="mb-5 form" enctype="multipart/form-data" asp-controller="Admin" asp-action="CreateProvider" id="providerForm">
         <h5 class="fw-bold">
             Account Informaction
         </h5>
@@ -45,7 +45,7 @@
                     }
                 </select>
                 <label for="role">Role</label>
-                <span asp-validation-for="SelectedRole" class="text-danger"></span>
+                <span class="text-danger"></span>
             </div>
         </div>
         <h5 class="mt-4">
@@ -91,14 +91,14 @@
                 @foreach (var item in Model.Regions)
                 {
                     <div class="form-check form-check-inline">
-                        <input name="SelectedRegions" class="form-check-input" type="checkbox" value="@item.Key">
+                        <input name="SelectedRegions" class="form-check-input regioncheckBoxs" type="checkbox" value="@item.Key">
                         <label class="form-check-label" for="r-1">
                             @item.Value
                         </label>
                     </div>
                 }
             </div>
-            <span asp-validation-for="SelectedRegions" class="text-danger"></span>
+            <span class="text-danger" id="checkboxValidation"></span>
         </div>
         <h5 class="mt-4">
             Mailing & Billing Information

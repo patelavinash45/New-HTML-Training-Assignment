@@ -18,7 +18,8 @@ namespace Repositories.Implementation
 
         public List<Role> getAllRoles()
         {
-            return _dbContext.Roles.Include(a => a.AccountTypeNavigation).Where(a => a.IsDeleted != new BitArray(1, true)).ToList();
+            return _dbContext.Roles.Include(a => a.AccountTypeNavigation).Where(a => a.IsDeleted != new BitArray(1, true))
+                                                               .OrderByDescending(a => a.RoleId).ToList();
         }
 
         public List<Role> getRolesByUserType(int type)
@@ -76,7 +77,7 @@ namespace Repositories.Implementation
             return _dbContext.Admins.Include(a => a.Role).ThenInclude(a => a.RoleMenus.Where(x => x.MenuId == menuId))
                                                  .FirstOrDefault(a => a.AspNetUserId == aspNetUserId);
         }
-
+        
         public Physician getRoleWithRoleMenusAndPhysician(int aspNetUserId, int menuId)
         {
             return _dbContext.Physicians.Include(a => a.Role).ThenInclude(a => a.RoleMenus.Where(x => x.MenuId == menuId))

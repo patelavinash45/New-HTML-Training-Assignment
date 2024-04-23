@@ -28,9 +28,10 @@ namespace Services.Implementation.AdminServices
                     Uploder = requestWiseFile.Uploder,
                     CreatedDate = requestWiseFile.CreatedDate,
                 }).ToList();
-            RequestClient requestClient = _requestClientRepository.getRequestClientByRequestId(requestId);
+            RequestClient requestClient = _requestClientRepository.getRequestClientAndRequestByRequestId(requestId);
             return new CloseCase()
             {
+                ConformationNumber = requestClient.Request.ConfirmationNumber,
                 FirstName = requestClient.FirstName,
                 LastName = requestClient.LastName,
                 Phone = requestClient.PhoneNumber,

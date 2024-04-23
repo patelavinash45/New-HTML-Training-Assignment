@@ -38,3 +38,21 @@ $(document).on("submit", "#createRoleForm", function (e) {
         $("#menuValidation").text("Select Any One Filed");
     }
 })
+
+/// create Admin - page
+
+$(document).on("submit", "#createdAdminForm", function (e) {
+    if (!$(".regioncheckBoxs").is(":checked")) {
+        e.preventDefault();
+        $("#checkboxValidation").text("This Region Field is required.");
+    }
+})
+
+$(document).on("change", ".regioncheckBoxs", function () {
+    if (!$(".regioncheckBoxs").is(":checked")) {
+        $("#checkboxValidation").text("This Region Field is required.");
+    }
+    else {
+        $("#checkboxValidation").text("");
+    }
+})

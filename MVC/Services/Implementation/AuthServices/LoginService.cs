@@ -1,5 +1,4 @@
-﻿using DocumentFormat.OpenXml.Spreadsheet;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Repositories.DataModels;
 using Repositories.Interface;
 using Repositories.Interfaces;
@@ -127,7 +126,7 @@ namespace Services.Implementation.AuthServices
                     };
                     String token = _jwtService.genrateJwtTokenForSendMail(claims, DateTime.Now.AddDays(1));
                     await _aspRepository.setToken(token: token, aspNetUserId: aspNetUserId);
-                    string link = request.Scheme + "://" + request.Host + "/Patient/Newpassword?token=" + token;
+                    string link = $"{request.Scheme}://{request.Host}/Patient/Newpassword?token={token}";
                     MailMessage mailMessage = new MailMessage
                     {
                         From = new MailAddress("tatva.dotnet.avinashpatel@outlook.com"),
@@ -169,9 +168,16 @@ namespace Services.Implementation.AuthServices
                 if (_jwtService.validateToken(token, out jwtSecurityToken))
                 {
                     int aspNetUserId = int.Parse(jwtSecurityToken.Claims.FirstOrDefault(a => a.Type == "aspNetUserId").Value);
-                    setNewPassword.IsValidLink = _aspRepository.checkToken(token: token, aspNetUserId: aspNetUserId);
-                    setNewPassword.AspNetUserId = aspNetUserId;
-                    return setNewPassword;
+                    if(_aspRepository.checkToken(token: token, aspNetUserId: aspNetUserId))
+                    {
+                        setNewPassword.IsValidLink = true;
+                        setNewPassword.AspNetUserId = aspNetUserId;
+                        return setNewPassword;
+                    }
+                    else
+                    {
+                        setNewPassword.ErrorMessage = "Link is Expired";
+                    }
                 }
                 else
                 {
@@ -189,6 +195,7 @@ namespace Services.Implementation.AuthServices
         {
             AspNetUser aspNetUser = _aspRepository.getUser(aspNetUserId);
             aspNetUser.PasswordHash = genrateHash(password);
+            aspNetUser.ResetPasswordToken = null;
             return _aspRepository.changePassword(aspNetUser);
         }
 
@@ -217,7 +224,7 @@ namespace Services.Implementation.AuthServices
         {
             using (var sha256 = SHA256.Create())
             {
-                byte[] hashPassword = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+                byte[] hashPassword = sha256.ComputeHash(Encoding.UTF8.GetBytes(password.Trim()));
                 return BitConverter.ToString(hashPassword).Replace("-", "").ToLower();
             }
         }

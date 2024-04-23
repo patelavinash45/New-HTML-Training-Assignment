@@ -1,6 +1,5 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using ClosedXML.Excel;
-using DocumentFormat.OpenXml.Spreadsheet;
 using HelloDoc.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Repositories.DataModels;
@@ -67,6 +66,11 @@ namespace HelloDoc.Controllers
             Response.Cookies.Delete("jwtToken");
             _notyfService.Success("Successfully Logout");
             return RedirectToAction("LoginPage", "Admin");
+        }
+
+        public IActionResult AccessDenied()
+        {
+            return View();
         }
 
         [Authorization(6,"Admin")]
@@ -533,7 +537,8 @@ namespace HelloDoc.Controllers
         [HttpPost] //// create roles
         public async Task<IActionResult> CreateRole(CreateRole model)
         {
-            if (await _accessService.createRole(model))
+            int aspNetUserId = HttpContext.Session.GetInt32("aspNetUserId").Value;
+            if (await _accessService.createRole(model,aspNetUserId))
             {
                 _notyfService.Success("Successfully Role Created");
             }
@@ -563,14 +568,15 @@ namespace HelloDoc.Controllers
         public async Task<IActionResult> DeteteRole(int roleId)  ////   delete role - access page
         {
             int aspNetUserId = HttpContext.Session.GetInt32("aspNetUserId").Value;
-            if (await _accessService.delete(roleId,aspNetUserId))
+            string result = await _accessService.delete(roleId, aspNetUserId);
+            if (result == "")
             {
                 _notyfService.Success("Successfully Role Deleted");
             }
             else
             {
-                _notyfService.Error("Faild !!");
-            }
+                _notyfService.Error(result);
+            }   
             return RedirectToAction("Access", "Admin");
         }
 
@@ -614,13 +620,14 @@ namespace HelloDoc.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (await _providersService.createProvider(model))
+                string result = await _providersService.createProvider(model);
+                if (result == "")
                 {
                     _notyfService.Success("Successfully Provider Created");
                 }
                 else
                 {
-                    _notyfService.Error("Faild!");
+                    _notyfService.Error(result);
                 }
                 return RedirectToAction("Providers", "Admin");
             }
@@ -637,13 +644,14 @@ namespace HelloDoc.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (await _accessService.createAdmin(model))
+                string result = await _accessService.createAdmin(model);
+                if (result == "")
                 {
                     _notyfService.Success("Successfully Admin Created");
                 }
                 else
                 {
-                    _notyfService.Error("Faild!");
+                    _notyfService.Error(result);
                 }
                 return RedirectToAction("Dashboard", "Admin");
             }
@@ -1003,7 +1011,8 @@ namespace HelloDoc.Controllers
         [HttpGet]    // RequestShift page  
         public async Task<IActionResult> UpdateShiftDetails(string data, bool isApprove)
         {
-            if (await _providersService.changeShiftDetails(data, isApprove))
+            int aspNetUserId = HttpContext.Session.GetInt32("aspNetUserId").Value;
+            if (await _providersService.changeShiftDetails(data, isApprove, aspNetUserId))
             {
                 if (isApprove)
                 {
@@ -1044,7 +1053,8 @@ namespace HelloDoc.Controllers
         [HttpGet]     // Delete Shift - provider Scheduling page
         public async Task<JsonResult> DeleteShiftDetails(string data)
         {
-            await _providersService.changeShiftDetails(data, false);    ///  use same services from requested shift page for delete shift
+            int aspNetUserId = HttpContext.Session.GetInt32("aspNetUserId").Value;
+            await _providersService.changeShiftDetails(data, false, aspNetUserId);    ///  use same services from requested shift page for delete shift
             return Json(new { redirect = Url.Action("ProviderScheduling", "Admin") });
         }
 
@@ -1126,7 +1136,7 @@ namespace HelloDoc.Controllers
             return Json(new { redirect = Url.Action("BlockHistory", "Admin") });
         }
 
-        [HttpPost]    //  edit provier account informaction
+        [HttpPost]    //  edit provider account informaction
         public async Task<IActionResult> EditphysicianAccountInformaction(EditProvider model)
         {
             int physicianId = HttpContext.Session.GetInt32("physicianId").Value;
@@ -1142,7 +1152,7 @@ namespace HelloDoc.Controllers
             return RedirectToAction("EditProvider", "Admin");
         }
 
-        [HttpPost]    //  edit provier Physician Informaction
+        [HttpPost]    //  edit provider Physician Informaction
         public async Task<IActionResult> EditphysicianPhysicianInformaction(EditProvider model)
         {
             int physicianId = HttpContext.Session.GetInt32("physicianId").Value;
@@ -1158,7 +1168,7 @@ namespace HelloDoc.Controllers
             return RedirectToAction("EditProvider", "Admin");
         }
 
-        [HttpPost]    //  edit provier Mailing & Billing Information
+        [HttpPost]    //  edit provider Mailing & Billing Information
         public async Task<IActionResult> EditphysicianMailAndBillingInformaction(EditProvider model)
         {
             int physicianId = HttpContext.Session.GetInt32("physicianId").Value;
@@ -1174,7 +1184,7 @@ namespace HelloDoc.Controllers
             return RedirectToAction("EditProvider", "Admin");
         }
 
-        [HttpPost]    //  edit provier Provider Profile
+        [HttpPost]    //  edit provider Provider Profile
         public async Task<IActionResult> EditphysicianProviderProfile(EditProvider model)
         {
             int physicianId = HttpContext.Session.GetInt32("physicianId").Value;
@@ -1190,7 +1200,7 @@ namespace HelloDoc.Controllers
             return RedirectToAction("EditProvider", "Admin");
         }
 
-        [HttpPost]    //  edit provier Onbording informaction
+        [HttpPost]    //  edit provider Onbording informaction
         public async Task<IActionResult> EditphysicianOnbordingInformaction(EditProvider model)
         {
             int physicianId = HttpContext.Session.GetInt32("physicianId").Value;

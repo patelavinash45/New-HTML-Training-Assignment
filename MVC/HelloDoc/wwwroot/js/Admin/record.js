@@ -70,20 +70,20 @@ function getSmslLogs() {
 /// for Patient History page
 
 $(document).on("click", ".searchButtonPatientHistory", function () {
-    getPatientHistory(1);
+    getPatientHistory(1, true);
 })
 
 $(document).on("click", ".resetPatientHistory", function () {
     $("#patientHistoryForm").trigger("reset");
-    getPatientHistory(1);
+    getPatientHistory(1, true);
 })
 
-function getPatientHistory(pageNo) {
+function getPatientHistory(pageNo, isSearch = false) {
     var data = JSON.stringify({
-        FirstName: $("#firstname").val(),
-        LastName: $("#lastName").val(),
-        Email: $("#email").val(),
-        Phone: $("#phone").val(),
+        FirstName: isSearch ? $("#firstname").val() : null,
+        LastName: isSearch ? $("#lastName").val() : null,
+        Email: isSearch ? $("#email").val() : null,
+        Phone: isSearch ? $("#phone").val() : null,
     })
     $.ajax({
         url: "/Admin/GetPatinetHistoryTableDate",
@@ -167,19 +167,19 @@ function navigateToLastPagePatinetRecord(totalRequestCount) {       /// for last
 
 
 $(document).on("click", ".searchButtonBlockHistory", function () {
-    getBlckHistoryData(1);
+    getBlckHistoryData(1, true);
 })
 
 $(document).on("click", ".resetBlockHistory", function () {
     $("#blockHistoryForm").trigger("reset");
-    getBlckHistoryData(1);
+    getBlckHistoryData(1, true);
 })
 
-function getBlckHistoryData(pageNo) {
+function getBlckHistoryData(pageNo,isSearch = false) {
     var data = JSON.stringify({
-        Name: $("#firstname").val(),
-        Email: $("#email").val(),
-        Phone: $("#phone").val(),
+        Name: isSearch ? $("#firstname").val() : null,
+        Email: isSearch ? $("#email").val() : null,
+        Phone: isSearch ? $("#phone").val() : null,
     });
     $.ajax({
         url: "/Admin/GetBlockHistoryTableDate",

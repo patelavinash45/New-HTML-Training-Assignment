@@ -10,13 +10,13 @@ namespace Services.Interfaces.AdminServices
 
         RolesCheckBox getMenusByRole(int roleId);
 
-        Task<bool> createRole(CreateRole model);
+        Task<bool> createRole(CreateRole model, int aspNetUserId);
 
-        Task<bool> delete(int roleId, int aspNetUserId);
+        Task<String> delete(int roleId, int aspNetUserId);
 
         AdminCreaateAndProfile GetAdminCreaateAndProfile();
 
-        Task<bool> createAdmin(AdminCreaateAndProfile model);
+        Task<String> createAdmin(AdminCreaateAndProfile model);
 
         CreateRole getEditRole(int roleId);
 

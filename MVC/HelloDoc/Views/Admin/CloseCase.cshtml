@@ -26,8 +26,7 @@
             <div>
                 Patient name
                 <div class="h4">
-                    @Model.FirstName @Model.LastName
-                    (MD4564984654921)
+                    @Model.FirstName @Model.LastName (@Model.ConformationNumber)
                 </div>
             </div>
             <button class="px-4 fw-bold bg-white">
@@ -128,12 +127,12 @@
                     <div class="form-floating col-xl-6 col-md-6 col-lg-6">
                         <input asp-for="FirstName" class="form-control" id="firstName" placeholder="FirstName" />
                         <label for="firstName">First Name</label>
-                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                        <span asp-validation-for="FirstName" class="text-danger validation"></span>
                     </div>
                     <div class="form-floating col-xl-6 col-md-6 col-lg-6">
                         <input asp-for="LastName" class="form-control" id="lastName" placeholder="LastName" />
                         <label for="lastName">Last Name</label>
-                        <span asp-validation-for="LastName" class="text-danger"></span>
+                        <span asp-validation-for="LastName" class="text-danger validation"></span>
                     </div>
                 </div>
                 <div class="row">
@@ -141,11 +140,11 @@
                         <input asp-for="BirthDate" class="form-control" id="birthDate" placeholder="BirthDate"
                             type="date" />
                         <label for="birthdate">Date of Birth</label>
-                        <span asp-validation-for="BirthDate" class="text-danger"></span>
+                        <span asp-validation-for="BirthDate" class="text-danger validation"></span>
                     </div>
                     <div class="form-floating col-xl-6 col-md-6 col-lg-6">
                         <input asp-for="Phone" class="form-control" id="phone" placeholder="Mobile Number" />
-                        <span asp-validation-for="Phone" class="text-danger"></span>
+                        <span asp-validation-for="Phone" class="text-danger validation"></span>
                     </div>
                 </div>
                 <div class="row">
@@ -157,7 +156,7 @@
             </fieldset>
             <div class="d-flex justify-content-end mt-3 mb-2">
                 <a asp-controller="Admin" asp-action="RequestAddToCloseCase">
-                    <button class="px-3 me-2 text-white fw-bold bottomButtons" type="button">
+                    <button class="px-3 me-2 text-white fw-bold bottomButtons bg-danger" type="button">
                         Close Case
                     </button>
                 </a>
@@ -169,7 +168,7 @@
                     <button class="px-3 me-2 text-white fw-bold bottomButtons" type="submit">
                         Save Changes
                     </button>
-                    <button class="px-3 bg-white cancleButton fw-bold" type="button" onclick="enableEdit(false)">
+                    <button class="px-3 bg-white cancleButton fw-bold" type="reset" onclick="enableEdit(false)">
                         Cancel
                     </button>
                 </div>

@@ -38,9 +38,8 @@ namespace Services.Implementation.AdminServices
                 AdminNotes = requestNote != null ? requestNote.AdminNotes : null,
                 PhysicianNotes = requestNote != null ? requestNote.PhysicianNotes : null,
                 TransferNotes = _requestSatatusLogRepository.GetRequestStatusLogByRequestId(RequestId)
-                                     .Select(requestStatusLog =>
-                                                    new Tuple<string, string>(requestStatusLog.CreatedDate.ToString("MMM dd,yyy"),
-                                                                             requestStatusLog.Notes != null ? requestStatusLog.Notes : "")).ToList(),
+                                .Select(requestStatusLog =>new Tuple<string, string>(requestStatusLog.CreatedDate.ToString("MMM dd,yyy"),
+                                                                                     requestStatusLog.Notes != null ? requestStatusLog.Notes : "")).ToList(),
             };
         }
 
@@ -49,14 +48,14 @@ namespace Services.Implementation.AdminServices
             RequestNote requestNote = _requestNotesRepository.GetRequestNoteByRequestId(requestId);
             if(requestNote == null)
             {
-                RequestNote _requestNote = new()
-                {
-                    RequestId = requestId,
-                    AdminNotes = isAdmin ? newNotes : null,
-                    PhysicianNotes = isAdmin ? null : newNotes,
-                    CreatedDate = DateTime.Now,
-                };
-                return await _requestNotesRepository.addRequestNote(_requestNote);
+                return await _requestNotesRepository
+                    .addRequestNote(new RequestNote()
+                    {
+                        RequestId = requestId,
+                        AdminNotes = isAdmin ? newNotes : null,
+                        PhysicianNotes = isAdmin ? null : newNotes,
+                        CreatedDate = DateTime.Now,
+                    });
             }
             requestNote.AdminNotes = isAdmin ? newNotes : null;
             requestNote.PhysicianNotes = isAdmin ? null : newNotes;
@@ -76,8 +75,8 @@ namespace Services.Implementation.AdminServices
                 request.ModifiedDate = DateTime.Now;
                 if(await _requestRepository.updateRequest(request))
                 {
-                    return await _requestSatatusLogRepository.addRequestSatatusLog(
-                        new RequestStatusLog()
+                    return await _requestSatatusLogRepository
+                        .addRequestSatatusLog(new RequestStatusLog()
                         {
                             RequestId = model.RequestId,
                             Status = 3,
@@ -95,8 +94,8 @@ namespace Services.Implementation.AdminServices
             requestClient.Status = 8;
             if(await _requestClientRepository.updateRequestClient(requestClient))
             {
-                return await _requestSatatusLogRepository.addRequestSatatusLog(
-                    new RequestStatusLog()
+                return await _requestSatatusLogRepository
+                    .addRequestSatatusLog( new RequestStatusLog()
                     {
                         RequestId = model.RequestId,
                         Status = 8,
@@ -128,8 +127,8 @@ namespace Services.Implementation.AdminServices
             requestClient.PhysicianId = model.SelectedPhysician;
             if(await _requestClientRepository.updateRequestClient(requestClient))
             {
-                return await _requestSatatusLogRepository.addRequestSatatusLog(
-                    new RequestStatusLog()
+                return await _requestSatatusLogRepository
+                    .addRequestSatatusLog(new RequestStatusLog()
                     {
                         RequestId = model.RequestId,
                         Status = 1,
@@ -158,8 +157,8 @@ namespace Services.Implementation.AdminServices
                 };
                 if (await _requestSatatusLogRepository.addBlockRequest(blockRequest))
                 {
-                    return await _requestSatatusLogRepository.addRequestSatatusLog(
-                        new RequestStatusLog()
+                    return await _requestSatatusLogRepository
+                        .addRequestSatatusLog(new RequestStatusLog()
                         {
                             RequestId = model.RequestId,
                             Status = 0,
@@ -186,7 +185,7 @@ namespace Services.Implementation.AdminServices
                 new Claim("requestId", model.RequestId.ToString()),
             };
             String token = _jwtService.genrateJwtTokenForSendMail(claims, DateTime.Now.AddDays(2));
-            String link = request.Scheme+"://"+request.Host+"/Admin/Agreement?token=" + token;
+            String link = $"{request.Scheme}://{request.Host}/Admin/Agreement?token={token}";
             MailMessage mailMessage = new MailMessage
             {
                 From = new MailAddress("tatva.dotnet.avinashpatel@outlook.com"),

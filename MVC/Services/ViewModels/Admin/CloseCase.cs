@@ -4,6 +4,8 @@ namespace Services.ViewModels.Admin
 {
     public class CloseCase
     {
+        public string? ConformationNumber { get; set; }
+
         [StringLength(50)]
         [RegularExpression(@"^[a-zA-Z]+(?: [a-zA-Z]+)*$", ErrorMessage = "The FirstName is not valid")]
         public string FirstName { get; set; }

@@ -45,9 +45,17 @@
                 <tr class="@requesterBgColor[data.Requester] align-middle">
                     <td>
                         <div class="d-flex justify-content-between  align-items-center">
-                            <span id="name-@data.RequestId">
-                                @data.FirstName @data.LastName
-                            </span>
+                            <div class="d-flex flex-column">
+                                <span id="name-@data.RequestId">
+                                    @data.FirstName @data.LastName
+                                </span>
+                               @if(data.PhysicianName != "-")
+                               {
+                                    <span>
+                                        Assigned : @data.PhysicianName
+                                    </span>
+                                }
+                            </div>
                             <button class="bg-transparent text-white p-2 border-white btn">
                                 <i class="bi bi-envelope-fill"></i> 
                             </button>
@@ -100,11 +108,14 @@
                                         View Case
                                     </button>
                                 </li>
-                                <li>
-                                    <button class="dropdown-item" onclick="displayPopUp(@data.RequestId)" data-bs-target="#assignRequest" data-bs-toggle="modal">
-                                        Assign Case
-                                    </button>
-                                </li>
+                                @if (data.PhysicianName == "-")
+                                {
+                                    <li>
+                                        <button class="dropdown-item" onclick="displayPopUp(@data.RequestId)" data-bs-target="#assignRequest" data-bs-toggle="modal">
+                                            Assign Case
+                                        </button>
+                                    </li>
+                                }
                                 <li>
                                     <button class="dropdown-item" onclick="displayPopUp(@data.RequestId)" data-bs-target="#cancelRequest" data-bs-toggle="modal">
                                         Cancel Case
@@ -146,7 +157,15 @@
                             <div class="mb-2">
                                 @data.FirstName @data.LastName
                             </div>
-                            @data.Street, @data.City, @data.State, @data.ZipCode
+                            @if (data.PhysicianName != "-")
+                            {
+                                <span>
+                                    Assigned : @data.PhysicianName
+                                </span>
+                            }
+                            <span>
+                                @data.Street, @data.City, @data.State, @data.ZipCode
+                            </span>
                         </div>
                         <div class="col-5 d-flex align-items-end mx-2 flex-column">
                             <div class="mb-1 d-flex justify-content-center mapButton">
@@ -192,11 +211,14 @@
                         </div>
                     </div>
                     <div class="row mt-3 px-3 mb-2">
-                        <div class="px-2 col-md-4 col-sm-6 col-6">
-                            <button class="w-100 bg-info text-white fw-bold py-1" onclick="displayPopUp(@data.RequestId)" data-bs-target="#assignRequest" data-bs-toggle="modal">
-                                Asign Case
-                            </button>
-                        </div>
+                        @if (data.PhysicianName == "-")
+                        {
+                            <div class="px-2 col-md-4 col-sm-6 col-6">
+                                <button class="w-100 bg-info text-white fw-bold py-1" onclick="displayPopUp(@data.RequestId)" data-bs-target="#assignRequest" data-bs-toggle="modal">
+                                    Asign Case
+                                </button>
+                            </div>
+                        }
                         <div class="px-2 col-md-4 col-sm-6 col-6">
                             <button class="w-100 bg-danger text-white fw-bold py-1" onclick="displayPopUp(@data.RequestId)" data-bs-target="#cancelRequest" data-bs-toggle="modal">
                                 Cancel Case

@@ -510,7 +510,7 @@ namespace Services.Implementation.PatientServices
         {
             using (var sha256 = SHA256.Create())
             {
-                byte[] hashPassword = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+                byte[] hashPassword = sha256.ComputeHash(Encoding.UTF8.GetBytes(password.Trim()));
                 return BitConverter.ToString(hashPassword).Replace("-", "").ToLower();
             }
         }

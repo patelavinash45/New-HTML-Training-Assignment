@@ -49,7 +49,7 @@ namespace Services.Implementation.PhysicianServices
         public async Task<bool> setEncounter(int requestId, bool isVideoCall)
         {
             RequestClient requestClient = _requestClientRepository.getRequestClientAndRequestByRequestId(requestId);
-            requestClient.Status = isVideoCall ? 6   : 4;
+            requestClient.Status = isVideoCall ? 6 : 4;
             requestClient.Request.CallType = isVideoCall ? (short)1 : (short)2;
             return await _requestClientRepository.updateRequestClient(requestClient);
         }
@@ -79,83 +79,6 @@ namespace Services.Implementation.PhysicianServices
                 }
             }
             return false;
-        }
-
-        public byte[] generateMedicalReport(int requestId)
-        {
-            Encounter encounter = _encounterRepository.getEncounter(requestId);
-            EncounterForm encounterForm = new EncounterForm()
-            {
-                FirstName = encounter.FirstName,
-                LastName = encounter.LastName,
-                Location = encounter.Location,
-                Email = encounter.Email,
-                BirthDate = DateTime.Parse(encounter.IntYear + "-" + encounter.StrMonth + "-" + encounter.IntDate),
-                Date = encounter.Date,
-                Mobile = encounter.PhoneNumber,
-                HistoryOfIllness = encounter.IllnessOrInjury,
-                MedicalHistory = encounter.MedicalHistory,
-                Medications = encounter.Medications,
-                Allergies = encounter.Allergies,
-                Temp = encounter.Temperature,
-                HeartRate = encounter.HeartRate,
-                RespiratoryRate = encounter.RespiratoryRate,
-                BloodPressure1 = encounter.BloodPressure1,
-                BloodPressure2 = encounter.BloodPressure2,
-                O2 = encounter.O2,
-                Pain = encounter.Pain,
-                Heent = encounter.Heent,
-                CV = encounter.Cv,
-                Chest = encounter.Chest,
-                ABD = encounter.Abd,
-                Extra = encounter.Extr,
-                Skin = encounter.Skin,
-                Neuro = encounter.Neuro,
-                Other = encounter.Other,
-                Diagnosis = encounter.Diagnosis,
-                TreatmentPlan = encounter.TreatmentPlan,
-                Dispensed = encounter.MedicationsDispensed,
-                Procedures = encounter.Procedures,
-                FollowUp = encounter.Followup,
-            };
-            using (var memoryStream = new System.IO.MemoryStream())
-            {
-                PdfWriter writer = new PdfWriter(memoryStream);
-                PdfDocument pdf = new PdfDocument(writer);
-                iText.Layout.Document document = new iText.Layout.Document(pdf);
-                Div div = new Div();
-                document.Add(new Paragraph("Medical Report"));
-                document.Add(new Paragraph($"Patient Name: \t\t {encounterForm.FirstName + " " + encounterForm.LastName}"));
-                div.Add(new Paragraph($"Email:\t\t {encounterForm.Email}"));
-                div.Add(new Paragraph($"Mobile Number:\t\t {encounterForm.Mobile}"));
-                document.Add(new Paragraph($"Date Of Birth: \t\t {encounterForm.BirthDate}"));
-                document.Add(new Paragraph($"Report Date:\t\t {encounterForm.Date.ToString()}"));
-                document.Add(new Paragraph($"PDF Generate Date:\t\t {DateTime.Now.ToShortDateString()}"));
-                document.Add(new Paragraph($"Address:\t\t {encounterForm.Location}"));
-                Table nestedTable1 = new Table(UnitValue.CreatePercentArray(new float[] { 100, 395 }));
-                nestedTable1.SetMinWidth(495);
-                int count = 1;
-                foreach (PropertyInfo propertyInfo in typeof(EncounterForm).GetProperties())
-                {
-                    try
-                    {
-                        if(count > 9)
-                        {
-                            var value = typeof(EncounterForm).GetProperty(propertyInfo.Name).GetValue(encounterForm);
-                            if (value != null)
-                            {
-                                nestedTable1.AddCell(new Cell().Add(new Paragraph($"{propertyInfo.Name}").SetBold()).SetWidth(100));
-                                nestedTable1.AddCell(new Cell().Add(new Paragraph(value.ToString())));
-                            }
-                        }
-                        count++;
-                    }
-                    catch { }
-                }
-                document.Add(nestedTable1.SetBorder(Border.NO_BORDER).SetPadding(0));
-                document.Close();
-                return memoryStream.ToArray();
-            }
         }
 
         public PhysicianScheduling providerScheduling(int aspNetUserId)
@@ -189,7 +112,7 @@ namespace Services.Implementation.PhysicianServices
                     }
                     monthWiseScheduling[currentDay].Add(new ShiftDetailsMonthWise()
                     {
-                        ProviderName = shiftDetail.Shift.Physician.FirstName + " " + shiftDetail.Shift.Physician.LastName,
+                        ProviderName = $"{shiftDetail.Shift.Physician.FirstName} {shiftDetail.Shift.Physician.LastName}",
                         ShiftDetailsId = shiftDetail.ShiftDetailId,
                         StartTime = shiftDetail.StartTime,
                         EndTime = shiftDetail.EndTime,
@@ -301,6 +224,83 @@ namespace Services.Implementation.PhysicianServices
                 StartRange = skip + 1,
                 EndRange = skip + 10 < totalRequests ? skip + 10 : totalRequests,
             };
+        }
+
+        public byte[] generateMedicalReport(int requestId)
+        {
+            Encounter encounter = _encounterRepository.getEncounter(requestId);
+            EncounterForm encounterForm = new EncounterForm()
+            {
+                FirstName = encounter.FirstName,
+                LastName = encounter.LastName,
+                Location = encounter.Location,
+                Email = encounter.Email,
+                BirthDate = DateTime.Parse(encounter.IntYear + "-" + encounter.StrMonth + "-" + encounter.IntDate),
+                Date = encounter.Date,
+                Mobile = encounter.PhoneNumber,
+                HistoryOfIllness = encounter.IllnessOrInjury,
+                MedicalHistory = encounter.MedicalHistory,
+                Medications = encounter.Medications,
+                Allergies = encounter.Allergies,
+                Temp = encounter.Temperature,
+                HeartRate = encounter.HeartRate,
+                RespiratoryRate = encounter.RespiratoryRate,
+                BloodPressure1 = encounter.BloodPressure1,
+                BloodPressure2 = encounter.BloodPressure2,
+                O2 = encounter.O2,
+                Pain = encounter.Pain,
+                Heent = encounter.Heent,
+                CV = encounter.Cv,
+                Chest = encounter.Chest,
+                ABD = encounter.Abd,
+                Extra = encounter.Extr,
+                Skin = encounter.Skin,
+                Neuro = encounter.Neuro,
+                Other = encounter.Other,
+                Diagnosis = encounter.Diagnosis,
+                TreatmentPlan = encounter.TreatmentPlan,
+                Dispensed = encounter.MedicationsDispensed,
+                Procedures = encounter.Procedures,
+                FollowUp = encounter.Followup,
+            };
+            using (var memoryStream = new System.IO.MemoryStream())
+            {
+                PdfWriter writer = new PdfWriter(memoryStream);
+                PdfDocument pdf = new PdfDocument(writer);
+                iText.Layout.Document document = new iText.Layout.Document(pdf);
+                Div div = new Div();
+                document.Add(new Paragraph("Medical Report"));
+                document.Add(new Paragraph($"Patient Name: \t\t {encounterForm.FirstName + " " + encounterForm.LastName}"));
+                div.Add(new Paragraph($"Email:\t\t {encounterForm.Email}"));
+                div.Add(new Paragraph($"Mobile Number:\t\t {encounterForm.Mobile}"));
+                document.Add(new Paragraph($"Date Of Birth: \t\t {encounterForm.BirthDate}"));
+                document.Add(new Paragraph($"Report Date:\t\t {encounterForm.Date.ToString()}"));
+                document.Add(new Paragraph($"PDF Generate Date:\t\t {DateTime.Now.ToShortDateString()}"));
+                document.Add(new Paragraph($"Address:\t\t {encounterForm.Location}"));
+                Table nestedTable1 = new Table(UnitValue.CreatePercentArray(new float[] { 100, 395 }));
+                nestedTable1.SetMinWidth(495);
+                int count = 1;
+                foreach (PropertyInfo propertyInfo in typeof(EncounterForm).GetProperties())
+                {
+                    try
+                    {
+                        if (count > 9)
+                        {
+                            var value = typeof(EncounterForm).GetProperty(propertyInfo.Name).GetValue(encounterForm);
+                            if (value != null)
+                            {
+                                nestedTable1.AddCell(new Cell().Add(new Paragraph($"{propertyInfo.Name}").SetBold()).SetWidth(100));
+                                nestedTable1.AddCell(new Cell().Add(new Paragraph(value.ToString())));
+                            }
+                        }
+                        count++;
+                    }
+                    catch { }
+                }
+                document.Add(nestedTable1.SetBorder(Border.NO_BORDER).SetPadding(0));
+                document.Close();
+                return memoryStream.ToArray();
+            }
         }
     }
 }

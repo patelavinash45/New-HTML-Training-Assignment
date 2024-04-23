@@ -34,7 +34,7 @@ namespace Services.Implementation
                 RequestId = requestId,
                 FileName = fileName,
                 CreatedDate = DateTime.Now,
-                Uploder = firstName + " " + lastName,
+                Uploder = $"{firstName} {lastName}",
                 IsDeleted = new BitArray(1, false),
             };
             return await _requestWiseFileRepository.addFile(requestWiseFile);

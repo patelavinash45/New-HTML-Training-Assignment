@@ -54,8 +54,7 @@ namespace Repositories.Implementation
 
         public int countRequestClientByStatusForAdmin(List<int> status)
         {
-            Func<RequestClient, bool> predicate = a => status.Contains(a.Status) && (!status.Contains(1) || a.Physician == null);
-            return _dbContext.RequestClients.Count(predicate);
+            return _dbContext.RequestClients.Count(a => status.Contains(a.Status));
         }
 
         public int countRequestClientByStatusForPhysician(List<int> status, int aspNetUserId)
@@ -65,7 +64,7 @@ namespace Repositories.Implementation
             && (!status.Contains(1) || a.Physician != null) 
             && a.Physician != null
             && a.Physician.AspNetUserId == aspNetUserId;
-            return _dbContext.RequestClients.Count(predicate);
+            return _dbContext.RequestClients.Include(a => a.Physician).Count(predicate);
         }
 
         public List<RequestClient> getAllRequestClientForUser(int userId)

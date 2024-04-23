@@ -108,15 +108,6 @@ $(document).on("click", "#signatureSave", function () {
     })
 })
 
-
-//$(document).on("click", "#form1", function () {
-//    $('#form2').validate();
-//    $("#form2").validate();
-//    console.log("asdjfnajskfbsajfb");
-//    console.log($("#form2").valid());
-//})
-
-
 var signaturePad;
 
 $(document).ready(function () {
@@ -124,4 +115,30 @@ $(document).ready(function () {
         canvas = document.getElementById('signature-pad');
         signaturePad = new SignaturePad(canvas);
     }   
+})
+
+$(document).on("submit", "#InformationForm", function (e) {
+    if (!$(".regioncheckBoxs").is(":checked")) {
+        e.preventDefault();
+        $("#checkboxValidation").text("This Region Field is required.");
+    }
+})
+
+
+/// create Provider
+
+$(document).on("submit", "#providerForm", function (e) {
+    if (!$(".regioncheckBoxs").is(":checked")) {
+        e.preventDefault();
+        $("#checkboxValidation").text("This Region Field is required.");
+    }
+})
+
+$(document).on("change", ".regioncheckBoxs", function () {
+    if (!$(".regioncheckBoxs").is(":checked")) {
+        $("#checkboxValidation").text("This Region Field is required.");
+    }
+    else {
+        $("#checkboxValidation").text("");
+    }
 })
