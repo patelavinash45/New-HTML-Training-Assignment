@@ -74,9 +74,9 @@ namespace Services.Implementation.AdminServices
                     AspAction = "UpdateBusiness",
                     IsUpdate = isUpdate,
                     RegionList = _requestClientRepository.getAllRegions().ToDictionary(region => region.RegionId, region => region.Name),
-                    ProfessionList = _healthProfessionalRepository.getHealthProfessionalTypes().ToDictionary(
-                                   healthProfessionalType => healthProfessionalType.HealthProfessionalId,
-                                   healthProfessionalType => healthProfessionalType.ProfessionName),
+                    ProfessionList = _healthProfessionalRepository.getHealthProfessionalTypes()
+                                            .ToDictionary(healthProfessionalType => healthProfessionalType.HealthProfessionalId,
+                                                          healthProfessionalType => healthProfessionalType.ProfessionName),
                 };
             }
             else
@@ -86,9 +86,9 @@ namespace Services.Implementation.AdminServices
                     AspAction = "CreateBusiness",
                     IsUpdate = isUpdate,
                     RegionList = _requestClientRepository.getAllRegions().ToDictionary(region => region.RegionId, region => region.Name),
-                    ProfessionList = _healthProfessionalRepository.getHealthProfessionalTypes().ToDictionary(
-                                   healthProfessionalType => healthProfessionalType.HealthProfessionalId,
-                                   healthProfessionalType => healthProfessionalType.ProfessionName),
+                    ProfessionList = _healthProfessionalRepository.getHealthProfessionalTypes()
+                                            .ToDictionary(healthProfessionalType => healthProfessionalType.HealthProfessionalId,
+                                                          healthProfessionalType => healthProfessionalType.ProfessionName),
                 };
             }
         }

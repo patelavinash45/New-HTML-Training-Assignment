@@ -2,6 +2,7 @@
 using Repositories.DataModels;
 using Repositories.Interface;
 using Repositories.Interfaces;
+using Services.Interfaces;
 using Services.Interfaces.AdminServices;
 using Services.ViewModels.Admin;
 using System.Collections;
@@ -21,9 +22,10 @@ namespace Services.Implementation.AdminServices
         private readonly IAspRepository _aspRepository;
         private readonly IShiftRepository _shiftRepository;
         private readonly ILogsService _logsService;
+        private readonly IFileService _fileService;
 
         public ProvidersService(IUserRepository userRepository, IRequestClientRepository requestClientRepository, IRoleRepository roleRepository,
-                                 IAspRepository aspRepository, IShiftRepository shiftRepository,ILogsService logsService)
+                                 IAspRepository aspRepository, IShiftRepository shiftRepository,ILogsService logsService, IFileService fileService)
         {
             _userRepository = userRepository;
             _requestClientRepository = requestClientRepository;
@@ -31,6 +33,7 @@ namespace Services.Implementation.AdminServices
             _aspRepository = aspRepository;
             _shiftRepository = shiftRepository;
             _logsService = logsService;
+            _fileService = fileService;
         }
 
         public Task<bool> EditShiftDetails(string data, int aspNetUserId)
@@ -169,7 +172,7 @@ namespace Services.Implementation.AdminServices
                     From = new MailAddress("tatva.dotnet.avinashpatel@outlook.com"),
                     Subject = "Message From Admin",
                     IsBodyHtml = true,
-                    Body = model.Message,
+                    Body = model.Message,   
                 };
                 Physician physician = _userRepository.getPhysicianByPhysicianId(model.providerId);
                 //mailMessage.To.Add(physician.Email);
@@ -184,17 +187,18 @@ namespace Services.Implementation.AdminServices
                 };
                 try
                 {
-                    await smtpClient.SendMailAsync(mailMessage);
-                    //EmailLog emailLog = new EmailLog()
-                    //{
-                    //    Name = $"{physician.FirstName} {physician.LastName}",
-                    //    SubjectName = "Message From Admin",
-                    //    EmailId = physician.Email,
-                    //    CreateDate = DateTime.Now,
-                    //    SentDate = DateTime.Now,
-                    //    IsEmailSent = new BitArray(1, true),
-                    //};
-                    //await _logsService.addEmailLog(emailLog);
+                    smtpClient.SendMailAsync(mailMessage);
+                    EmailLog emailLog = new EmailLog()
+                    {
+                        Name = $"{physician.FirstName} {physician.LastName}",
+                        SubjectName = "Message From Admin to Provider",
+                        EmailId = physician.Email,
+                        CreateDate = DateTime.Now,
+                        SentDate = DateTime.Now,
+                        IsEmailSent = new BitArray(1, true),
+                        RoleId = physician.RoleId,
+                    };
+                    await _logsService.addEmailLog(emailLog);
                 }
                 catch (Exception ex)
                 {
@@ -308,6 +312,7 @@ namespace Services.Implementation.AdminServices
                         if (await _userRepository.addPhysicianRegions(physicianRegions))
                         {
                             physician.IsNotification = physicianNotification.Id;
+                            _fileService.sendNewAccountMail(model.Email, model.Password);
                             return await _userRepository.updatePhysician(physician) ? "" : "Faild !!";
                         }
                     }
@@ -799,7 +804,7 @@ namespace Services.Implementation.AdminServices
 
         private void filePickUp(String folderName,int aspNetUserId,IFormFile file)
         {
-            String path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files/Providers/"+ folderName +"/" + aspNetUserId.ToString());
+            String path = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot/Files/Providers/{folderName}/{aspNetUserId.ToString()}");
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
@@ -816,7 +821,7 @@ namespace Services.Implementation.AdminServices
         private string getFile(String folderName, int aspNetUserId)
         {
             String path = Path.Combine("/Files//Providers/" + folderName + "/" + aspNetUserId.ToString());
-            String _path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files/Providers/" + folderName + "/" + aspNetUserId.ToString());
+            String _path = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot/Files/Providers/{folderName}/{aspNetUserId.ToString()}");
             FileInfo[] Files = new DirectoryInfo(_path).GetFiles().OrderBy(p => p.LastWriteTime).ToArray(); 
             return Path.Combine(path, Files[Files.Length - 1].Name);
         }

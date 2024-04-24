@@ -1,20 +1,12 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 
 namespace Repositories.DataModels;
 
 [Table("EmailLog")]
 public partial class EmailLog
 {
-    [Key]
-    [Column("EmailLogID")]
-    [Precision(9, 0)]
-    public decimal EmailLogId { get; set; }
-
     [Column(TypeName = "character varying")]
     public string? EmailTemplate { get; set; }
 
@@ -54,6 +46,9 @@ public partial class EmailLog
 
     [Column(TypeName = "character varying")]
     public string? Name { get; set; }
+
+    [Key]
+    public int EmailLogId { get; set; }
 
     [ForeignKey("RoleId")]
     [InverseProperty("EmailLogs")]

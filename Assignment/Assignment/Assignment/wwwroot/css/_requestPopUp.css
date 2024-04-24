@@ -1,0 +1,85 @@
+﻿select,
+textarea {
+    border-radius: 5px;
+}
+
+.patientName {
+    color: #795f4a;
+}
+
+.modal-content {
+    border-radius: 10px;
+}
+
+option{
+    width:90%;
+}
+
+#conformButton {
+    height: 45px;
+    background-color: #795f4a;
+    color: white
+}
+
+.modal-header {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    background-color: #795f4a;
+}
+
+.modal-title {
+    color: white;
+}
+
+#closeButton {
+    height: 45px;
+    background-color: white;
+    border-color: #795f4a;
+}
+
+.currentPage {
+    background-color: #795f4a;
+    color: white;
+}
+
+.physicianOptions{
+    display: none;
+}
+
+.validation{
+    display: none;
+}
+
+input[type=tel]{
+    height: 58px;
+}
+
+.form-floating > .form-control:focus ~ label,
+.form-floating > .form-control:not(:placeholder-shown) ~ label,
+.form-floating > .form-select ~ label {
+    color: #795f4a;
+    opacity: 1;
+    font-weight: 600;
+}
+
+@media screen and (min-width:576px) {
+    .modal-dialog {
+        max-width: 550px;
+    }
+}
+
+label,
+.form-select,
+.form-control {
+    margin-top: 2vh;
+}
+
+.form-floating > label {
+    left: 12px;
+    background-color: transparent;
+}
+
+.form-check-label {
+    margin-top: 0vh;
+}
+

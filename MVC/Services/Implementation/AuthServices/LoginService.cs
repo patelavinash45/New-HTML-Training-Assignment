@@ -4,6 +4,7 @@ using Repositories.Interface;
 using Repositories.Interfaces;
 using Services.Interfaces.AuthServices;
 using Services.ViewModels;
+using System.Collections;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Net.Mail;
@@ -19,13 +20,16 @@ namespace Services.Implementation.AuthServices
         private readonly IUserRepository _userRepository;
         private readonly IJwtService _jwtService;
         private readonly IRoleRepository _roleRepository;
+        private readonly ILogsService _logsService;
 
-        public LoginService(IAspRepository aspRepository, IUserRepository userRepository, IJwtService jwtService, IRoleRepository roleRepository)
+        public LoginService(IAspRepository aspRepository, IUserRepository userRepository, IJwtService jwtService, IRoleRepository roleRepository, 
+                                                                 ILogsService logsService)
         {
             _aspRepository = aspRepository;
             _userRepository = userRepository;
             _jwtService = jwtService;
             _roleRepository = roleRepository;
+            _logsService = logsService;
         }
 
         public UserDataModel auth(Login model,List<int> userType)
@@ -117,15 +121,15 @@ namespace Services.Implementation.AuthServices
             try
             {
                 var request = httpContext.Request;
-                int aspNetUserId = _aspRepository.checkUser(email);
-                if(aspNetUserId != 0) 
+                AspNetUser aspNetUser = _aspRepository.getUserFromEmail(email);
+                if(aspNetUser.Id != 0) 
                 {
                     List<Claim> claims = new List<Claim>()
                     {
-                        new Claim("aspNetUserId", aspNetUserId.ToString()),
+                        new Claim("aspNetUserId", aspNetUser.Id.ToString()),
                     };
                     String token = _jwtService.genrateJwtTokenForSendMail(claims, DateTime.Now.AddDays(1));
-                    await _aspRepository.setToken(token: token, aspNetUserId: aspNetUserId);
+                    await _aspRepository.setToken(token: token, aspNetUserId: aspNetUser.Id);
                     string link = $"{request.Scheme}://{request.Host}/Patient/Newpassword?token={token}";
                     MailMessage mailMessage = new MailMessage
                     {
@@ -146,7 +150,17 @@ namespace Services.Implementation.AuthServices
                         Credentials = new NetworkCredential(userName: "tatva.dotnet.avinashpatel@outlook.com", password: "Avinash@6351"),
                     };
                     smtpClient.SendMailAsync(mailMessage);
-                    return true;
+                    EmailLog emailLog = new EmailLog()
+                    {
+                        Name = aspNetUser.UserName,
+                        SubjectName = "Reset Password Link Send",
+                        EmailId = email,
+                        CreateDate = DateTime.Now,
+                        SentDate = DateTime.Now,
+                        IsEmailSent = new BitArray(1, true),
+                        RoleId = null,
+                    };
+                    return await _logsService.addEmailLog(emailLog);
                 }
             }
             catch (Exception ex)

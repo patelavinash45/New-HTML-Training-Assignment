@@ -56,6 +56,11 @@ namespace Repositories.Implementation
             return _dbContext.AspNetUsers.FirstOrDefault(a => a.Id == aspNetUserId);
         }
 
+        public AspNetUser getUserFromEmail(String email)
+        {
+            return _dbContext.AspNetUsers.FirstOrDefault(a => a.Email == email);
+        }
+
         public async Task<bool> changePassword(AspNetUser aspNetUser)
         {
             _dbContext.Update(aspNetUser); 

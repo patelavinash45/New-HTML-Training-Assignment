@@ -1,0 +1,21 @@
+﻿@model Services.ViewModels.Dashboard
+
+<div class="container-fluid mt-3">
+    <div class="w-100 color text-white text-center p-3">
+        <span class="h3">
+            Student Manegement System
+        </span>
+        <span class="addStudent">
+            <button class="btn bg-white shadow-none" data-bs-target="#studentForm" data-bs-toggle="modal">
+                Add Student
+            </button>
+        </span>
+    </div>
+    <div class="w-100 mt-3 mb-2">
+        <input class="w-100 p-2 shadow-none" placeholder="Search" id="searchStudent" />
+    </div>
+    <div class="tabledata">
+        <partial name="_StudentsRecords" model="@Model"></partial>
+    </div>
+</div>
+<partial name="_StudentForm" model="@Model.StudentData"></partial>

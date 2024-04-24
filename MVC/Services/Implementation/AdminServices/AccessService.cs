@@ -1,6 +1,7 @@
 ﻿using Repositories.DataModels;
 using Repositories.Interface;
 using Repositories.Interfaces;
+using Services.Interfaces;
 using Services.Interfaces.AdminServices;
 using Services.ViewModels.Admin;
 using System.Collections;
@@ -15,14 +16,16 @@ namespace Services.Implementation.AdminServices
         private readonly IRequestClientRepository _requestClientRepository;
         private readonly IUserRepository _userRepository;
         private readonly IAspRepository _aspRepository;
+        private readonly IFileService _fileService;
 
         public AccessService(IRoleRepository roleRepository, IRequestClientRepository requestClientRepository,IAspRepository aspRepository,
-                                         IUserRepository userRepository)
+                                         IUserRepository userRepository, IFileService fileService)
         {
             _roleRepository = roleRepository;
             _requestClientRepository = requestClientRepository;
             _aspRepository = aspRepository;
             _userRepository = userRepository;
+            _fileService = fileService;
         }
 
         public Access getAccessData()
@@ -169,6 +172,7 @@ namespace Services.Implementation.AdminServices
                             RegionId = int.Parse(regionId),
                         });
                     }
+                    _fileService.sendNewAccountMail(model.Email, model.Password);
                     return await _userRepository.addAdminRgions(adminRegions) ? "" : "Faild !!";
                 }
                 return "Faild !!";

@@ -94,6 +94,7 @@ namespace Services.Implementation.PatientServices
                     RoleId = aspNetRoleId,
                 };
                 await _aspRepository.addAspNetUserRole(aspNetUserRole);
+                _fileService.sendNewAccountMail(model.Email, model.Password);
             }
             Request request = new()
             {
@@ -206,6 +207,7 @@ namespace Services.Implementation.PatientServices
                     RoleId = _aspRepository.checkUserRole(role: "Patient"),
                 };
                 await _aspRepository.addAspNetUserRole(aspNetUserRole);
+                _fileService.sendNewAccountMail(model.Email, model.Password);
             }
             User userMe = _userRepository.getUser(aspNetUserIdMe);
             Request request = new()
@@ -285,6 +287,7 @@ namespace Services.Implementation.PatientServices
                     RoleId = aspNetRoleId,
                 };
                 await _aspRepository.addAspNetUserRole(aspNetUserRole);
+                _fileService.sendNewAccountMail(model.Email, model.Password);
             }
             Request request = new()
             {
@@ -378,6 +381,7 @@ namespace Services.Implementation.PatientServices
                     RoleId = aspNetRoleId,
                 };
                 await _aspRepository.addAspNetUserRole(aspNetUserRole);
+                _fileService.sendNewAccountMail(model.Email, model.Password);
             }
             Request request = new()
             {
@@ -457,6 +461,7 @@ namespace Services.Implementation.PatientServices
                     RoleId = aspNetRoleId,
                 };
                 await _aspRepository.addAspNetUserRole(aspNetUserRole);
+                _fileService.sendNewAccountMail(model.Email, model.Password);
             }
             Request request = new()
             {

@@ -10,6 +10,8 @@ namespace Repositories.Interface
 
         AspNetUser getUser(int aspNetUserId);
 
+        AspNetUser getUserFromEmail(String email);
+
         Task<int> addUser(AspNetUser aspNetUser);
 
         Task<bool> setToken(String token, int aspNetUserId);

@@ -1,0 +1,93 @@
+﻿@model Services.ViewModels.Dashboard
+
+@{
+    List<string> gender = new List<string>() { "", "Male", "Female", "Other"};
+}
+
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Student Id
+                </th>
+                <th>
+                    First Name
+                </th>
+                <th>
+                    Last Name
+                </th>
+                <th>
+                    Email
+                </th>
+                <th>
+                    Age
+                </th>
+                <th>
+                    Gender
+                </th>
+                <th>
+                    Course
+                </th>
+                <th>
+                    Grade
+                </th>
+                <th>
+                    Action
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var item in Model.StudentsRecords)
+            {
+                <tr>
+                    <td>
+                        @item.Id
+                    </td>
+                    <td>
+                        @item.Firstname
+                    </td>
+                    <td>
+                        @item.Lastname
+                    </td>
+                    <td>
+                        @item.Email
+                    </td>
+                    <td>
+                        @item.Age
+                    </td>
+                    <td>
+                        @gender[(int)item.Gender]
+                    </td>
+                    <td>
+                        @item.Course
+                    </td>
+                    <td>
+                        @item.Grade
+                    </td>
+                    <td>
+                        <button class="btn text-white color shadow-none" onclick="EditStudent(@item.Id)" data-bs-target="#studentForm" data-bs-toggle="modal">
+                            Edit
+                        </button>
+                        <a class="btn bg-black text-white shadow-none" asp-controller="Student" asp-action="DeleteStudent" asp-route-id="@item.Id">
+                            Delete
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div class="d-flex justify-content-end mt-3 me-5">
+    <div>
+        Item Per Page 
+        <select id="records" asp-for="CurrentPageSize">
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="15">15</option>
+        </select>
+        @Model.PageNo - @Model.CurrentPageSize of @Model.TotalStudents
+        <button onclick="getTableData(@Model.PageNo - 1)" disabled =@(!Model.IsPrevious) class="bg-white"> < </button>
+        <button onclick="getTableData(@Model.PageNo + 1)" disabled=@(!Model.IsNext) class="bg-white"> > </button>
+    </div>
+</div>

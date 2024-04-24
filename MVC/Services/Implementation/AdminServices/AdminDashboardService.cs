@@ -80,7 +80,6 @@ namespace Services.Implementation.AdminServices
             Func<RequestClient, bool> predicate = a =>
             (requesterTypeId == 0 || a.Request.RequestTypeId == requesterTypeId)
             && (regionId == 0 || a.RegionId == regionId)
-            //&& (!statusList[status].Contains(1) || a.Physician == null)
             && (patientName == null || a.FirstName.ToLower().Contains(patientName) 
                                     || a.LastName.ToLower().Contains(patientName)
                                     || $"{a.FirstName} {a.LastName}".ToLower().Contains(patientName.ToLower()))
@@ -457,7 +456,7 @@ namespace Services.Implementation.AdminServices
                                  + "-" + requestClient.IntDate) : null,
                 Mobile = requestClient.PhoneNumber,
                 Email = requestClient.Email,
-                Address = requestClient.Street + " " + requestClient.City + " " + requestClient.State + " " + requestClient.ZipCode,
+                Address = $"{requestClient.Street}, {requestClient.City}, {requestClient.State}, {requestClient.ZipCode}",
                 Region = requestClient.State,
                 CancelPopup = new CancelPopUp(){
                                 Reasons = _requestClientRepository.getAllReason().ToDictionary(caseTag => caseTag.CaseTagId, caseTag => caseTag.Reason),

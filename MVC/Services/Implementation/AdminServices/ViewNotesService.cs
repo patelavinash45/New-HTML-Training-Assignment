@@ -29,6 +29,7 @@ namespace Services.Implementation.AdminServices
             _requestClientRepository = requestClientRepository;
             _jwtService = jwtService;
         }
+
         public ViewNotes GetNotes(int RequestId)
         {
             RequestNote requestNote = _requestNotesRepository.GetRequestNoteByRequestId(RequestId);

@@ -77,7 +77,6 @@ namespace HelloDoc.Authentication
                                 bool isAdmin = jwtRole == "Admin";
                                 if (!loginService.validateAccess(jwtId, _menuId, isAdmin))
                                 {
-                                    //context.HttpContext.Response.Cookies.Delete("jwtToken");
                                     context.Result = new RedirectToRouteResult(new RouteValueDictionary(new
                                     {
                                         Controller = jwtRole,

@@ -87,7 +87,7 @@ namespace Services.Implementation.AdminServices
                     SendDate = emailLog.SentDate,
                     Send = emailLog.IsEmailSent[0] ? "Yes" : "No",
                     Email = emailLog.EmailId,
-                    RoleName = emailLog.Role.Name,
+                    RoleName = emailLog.Role != null ? emailLog.Role.Name : "-",
                 }).ToList();
         }
 
@@ -275,6 +275,7 @@ namespace Services.Implementation.AdminServices
             {
                 RequestClient requestClient = _requestClientRepository.getRequestClientByRequestId(requestId);
                 requestClient.Status = 1;
+                requestClient.PhysicianId = null;
                 return await _requestClientRepository.updateRequestClient(requestClient);
             }
             return false;
