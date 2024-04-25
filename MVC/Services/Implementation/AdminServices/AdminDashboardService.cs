@@ -50,31 +50,31 @@ namespace Services.Implementation.AdminServices
             _requestWiseFileRepository = requestWiseFileRepository;
         }
 
-        public AdminDashboard getallRequests()
+        public AdminDashboard GetallRequests()
         {
             CancelPopUp cancelPopUp = new()
             {
-                Reasons = _requestClientRepository.getAllReason().ToDictionary(caseTag => caseTag.CaseTagId, caseTag => caseTag.Reason),
+                Reasons = _requestClientRepository.GetAllReason().ToDictionary(caseTag => caseTag.CaseTagId, caseTag => caseTag.Reason),
             };
             AssignAndTransferPopUp assignAndTransferPopUp = new()
             {
-                Regions = _requestClientRepository.getAllRegions().ToDictionary(region => region.RegionId, region => region.Name),
+                Regions = _requestClientRepository.GetAllRegions().ToDictionary(region => region.RegionId, region => region.Name),
             };
             return new AdminDashboard()
             {
                 NewRequests = GetNewRequest(status: "new", pageNo: 1, patientName: "" , regionId: 0, requesterTypeId: 0),
-                NewRequestCount = _requestClientRepository.countRequestClientByStatusForAdmin(statusList["new"]),
-                PendingRequestCount = _requestClientRepository.countRequestClientByStatusForAdmin(statusList["pending"]),
-                ActiveRequestCount = _requestClientRepository.countRequestClientByStatusForAdmin(statusList["active"]),
-                ConcludeRequestCount = _requestClientRepository.countRequestClientByStatusForAdmin(statusList["conclude"]),
-                TocloseRequestCount = _requestClientRepository.countRequestClientByStatusForAdmin(statusList["close"]),
-                UnpaidRequestCount = _requestClientRepository.countRequestClientByStatusForAdmin(statusList["unpaid"]),
+                NewRequestCount = _requestClientRepository.CountRequestClientByStatusForAdmin(statusList["new"]),
+                PendingRequestCount = _requestClientRepository.CountRequestClientByStatusForAdmin(statusList["pending"]),
+                ActiveRequestCount = _requestClientRepository.CountRequestClientByStatusForAdmin(statusList["active"]),
+                ConcludeRequestCount = _requestClientRepository.CountRequestClientByStatusForAdmin(statusList["conclude"]),
+                TocloseRequestCount = _requestClientRepository.CountRequestClientByStatusForAdmin(statusList["close"]),
+                UnpaidRequestCount = _requestClientRepository.CountRequestClientByStatusForAdmin(statusList["unpaid"]),
                 CancelPopup = cancelPopUp,
                 AssignAndTransferPopup = assignAndTransferPopUp,
             };
         }
 
-        public TableModel GetNewRequest(String status, int pageNo, String patientName,int regionId, int requesterTypeId)
+        public TableModel GetNewRequest(String status, int pageNo, String patientName, int regionId, int requesterTypeId)
         {
             int skip = (pageNo - 1) * 10;
             Func<RequestClient, bool> predicate = a =>
@@ -84,34 +84,34 @@ namespace Services.Implementation.AdminServices
                                     || a.LastName.ToLower().Contains(patientName)
                                     || $"{a.FirstName} {a.LastName}".ToLower().Contains(patientName.ToLower()))
             && (statusList[status].Contains(a.Status));
-            int totalRequests = _requestClientRepository.countRequestClientByStatusAndFilter(predicate);
-            List<RequestClient> requestClients = _requestClientRepository.getRequestClientByStatus(predicate, skip: skip);
-            return getTableModal(requestClients, totalRequests, pageNo);
+            int totalRequests = _requestClientRepository.CountRequestClientByStatusAndFilter(predicate);
+            List<RequestClient> requestClients = _requestClientRepository.GetRequestClientByStatus(predicate, skip: skip);
+            return GetTableModal(requestClients, totalRequests, pageNo);
         }
 
-        public Dictionary<int, String> getPhysiciansByRegion(int regionId)
+        public Dictionary<int, String> GetPhysiciansByRegion(int regionId)
         {
-            return _userRepository.getAllPhysicianRegionsByRegionId(regionId)
+            return _userRepository.GetAllPhysicianRegionsByRegionId(regionId)
                                   .ToDictionary(phyRegion => phyRegion.PhysicianId, 
                                                 phyRegion => phyRegion.Physician.FirstName + " " + phyRegion.Physician.LastName);
         }
 
-        public Tuple<String, String, int> getRequestClientEmailAndMobile(int requestId)
+        public Tuple<String, String, int> GetRequestClientEmailAndMobile(int requestId)
         {
-            RequestClient requestClient = _requestClientRepository.getRequestClientAndRequestByRequestId(requestId);
-            return new Tuple<string, string, int>(requestClient.Email, requestClient.PhoneNumber, requestClient.Request.RequestTypeId);
+            RequestClient requestClient = _requestClientRepository.GetRequestClientAndRequestByRequestId(requestId);
+            return new Tuple<string?, string?, int>(requestClient.Email, requestClient.PhoneNumber, requestClient.Request.RequestTypeId);
         }
 
-        public Agreement getUserDetails(String token)
+        public Agreement GetUserDetails(String token)
         {
             Agreement agreement = new Agreement();
             try
             {
                 JwtSecurityToken jwtSecurityToken = new JwtSecurityToken(token);
-                if (_jwtService.validateToken(token, out jwtSecurityToken))
+                if (_jwtService.ValidateToken(token, out jwtSecurityToken))
                 {
-                    int requestId = int.Parse(jwtSecurityToken.Claims.FirstOrDefault(a => a.Type == "requestId").Value);
-                    RequestClient requestClient = _requestClientRepository.getRequestClientByRequestId(requestId);
+                    int requestId = int.Parse(jwtSecurityToken.Claims.First(a => a.Type == "requestId").Value);
+                    RequestClient requestClient = _requestClientRepository.GetRequestClientByRequestId(requestId);
                     if(requestClient.Status < 4)
                     {
                         agreement = new Agreement()
@@ -124,11 +124,11 @@ namespace Services.Implementation.AdminServices
                         return agreement;
                     }
                     else
-                    {
+                        {
                         agreement = new Agreement()
                         {
                             IsValid = false,
-                            Message = "Agreement Already Agreed",
+                            Message = "Agreement Already Processed",
                         };
                         return agreement;
                     }
@@ -143,7 +143,7 @@ namespace Services.Implementation.AdminServices
             return agreement;
         }
 
-        public bool SendRequestLink(SendLink model,HttpContext httpContext)
+        public bool SendRequestLink(SendLink model, HttpContext httpContext)
         {
             var request = httpContext.Request;
             MailMessage mailMessage = new MailMessage
@@ -174,10 +174,10 @@ namespace Services.Implementation.AdminServices
             }
         }
 
-        public async Task<bool> createRequest(CreateRequest model, int aspNetUserIdUser, bool isAdmin)
+        public async Task<bool> CreateRequest(CreateRequest model, int aspNetUserIdUser, bool isAdmin)
         {
-            int aspNetUserId = _aspRepository.checkUser(email: model.Email);
-            int userId = _userRepository.getUserID(aspNetUserId);
+            int aspNetUserId = _aspRepository.CheckUser(email: model.Email);
+            int userId = _userRepository.GetUserID(aspNetUserId);
             if (aspNetUserId == 0)
             {
                 AspNetUser aspNetUser = new()
@@ -185,10 +185,10 @@ namespace Services.Implementation.AdminServices
                     UserName = model.FirstName,
                     Email = model.Email,
                     PhoneNumber = model.Mobile,
-                    PasswordHash = genrateHash(model.Password),
+                    PasswordHash = GenrateHash(model.Password),
                     CreatedDate = DateTime.Now,
                 };
-                aspNetUserId = await _aspRepository.addUser(aspNetUser);
+                aspNetUserId = await _aspRepository.AddUser(aspNetUser);
                 User user = new()
                 {
                     FirstName = model.FirstName,
@@ -206,19 +206,19 @@ namespace Services.Implementation.AdminServices
                     IntDate = model.BirthDate.Value.Day,
                     StrMonth = model.BirthDate.Value.Month.ToString(),
                 };
-                userId = await _userRepository.addUser(user);
+                userId = await _userRepository.AddUser(user);
                 AspNetUserRole aspNetUserRole = new()
                 {
                     UserId = aspNetUserId,
-                    RoleId = _aspRepository.checkUserRole(role: "Patient"),
+                    RoleId = _aspRepository.CheckUserRole(role: "Patient"),
                 };
-                await _aspRepository.addAspNetUserRole(aspNetUserRole);
+                await _aspRepository.AddAspNetUserRole(aspNetUserRole);
             }
             Request request = new Request();
             int physicianId = 0;
             if(isAdmin)
             {
-                Admin admin = _userRepository.getAdmionByAspNetUserId(aspNetUserIdUser);
+                Admin admin = _userRepository.GetAdmionByAspNetUserId(aspNetUserIdUser);
                 request = new Request()
                 {
                     RequestTypeId = 5,
@@ -232,7 +232,7 @@ namespace Services.Implementation.AdminServices
             }
             else
             {
-                Physician physician = _userRepository.getPhysicianByAspNetUserId(aspNetUserIdUser);
+                Physician physician = _userRepository.GetPhysicianByAspNetUserId(aspNetUserIdUser);
                 request = new Request()
                 {
                     RequestTypeId = 5,
@@ -245,7 +245,7 @@ namespace Services.Implementation.AdminServices
                 };
                 physicianId = physician.PhysicianId;
             }
-            int requestId = await _requestRepository.addRequest(request);
+            int requestId = await _requestRepository.AddRequest(request);
             RequestClient requestClient = new()
             {
                 RequestId = requestId,
@@ -262,9 +262,10 @@ namespace Services.Implementation.AdminServices
                 IntYear = DateTime.Now.Year,
                 IntDate = DateTime.Now.Day,
                 StrMonth = DateTime.Now.Month.ToString(),
+                RegionId = model.Region,
                 PhysicianId = isAdmin ? null : physicianId,
             };
-            return await _requestClientRepository.addRequestClient(requestClient);
+            return await _requestClientRepository.AddRequestClient(requestClient);
         }
 
         public bool RequestSupport(RequestSupport model)
@@ -301,15 +302,15 @@ namespace Services.Implementation.AdminServices
             }
         }
 
-        public ConcludeCare getConcludeCare(int requestId)
+        public ConcludeCare GetConcludeCare(int requestId)
         {
-            RequestClient requestClient = _requestClientRepository.getRequestClientAndRequestByRequestId(requestId);
+            RequestClient requestClient = _requestClientRepository.GetRequestClientAndRequestByRequestId(requestId);
             return new ConcludeCare()
             {
                 ConformationNumber = requestClient.Request.ConfirmationNumber,
                 FirstName = requestClient.FirstName,
                 LastName = requestClient.LastName,
-                FileList = _requestWiseFileRepository.getFilesByrequestId(requestId)
+                FileList = _requestWiseFileRepository.GetFilesByrequestId(requestId)
                             .Select(requestWiseFile =>
                             new FileModel()
                             {
@@ -322,9 +323,9 @@ namespace Services.Implementation.AdminServices
             };
         }
 
-        public EncounterForm getEncounterDetails(int requestId, bool isAdmin)
+        public EncounterForm GetEncounterDetails(int requestId, bool isAdmin)
         {
-            Encounter encounter = _encounterRepository.getEncounter(requestId);
+            Encounter encounter = _encounterRepository.GetEncounter(requestId);
             if (encounter != null)
             {
                 return new EncounterForm()
@@ -365,7 +366,7 @@ namespace Services.Implementation.AdminServices
             }
             else
             {
-                RequestClient requestClient = _requestClientRepository.getRequestClientByRequestId(requestId);  
+                RequestClient requestClient = _requestClientRepository.GetRequestClientByRequestId(requestId);  
                 return new EncounterForm() 
                 { 
                     IsAdmin = isAdmin,
@@ -381,25 +382,25 @@ namespace Services.Implementation.AdminServices
             }
         }
 
-        public async Task<bool> updateEncounter(EncounterForm model, int requestId, int aspNetUserId)
+        public async Task<bool> UpdateEncounter(EncounterForm model, int requestId, int aspNetUserId)
         {
-            Encounter encounter = _encounterRepository.getEncounter(requestId);
+            Encounter encounter = _encounterRepository.GetEncounter(requestId);
             if (encounter == null)
             {
                 encounter = new Encounter();
-                encounter = setEncounterProperties(encounter, model, aspNetUserId, requestId);
-                return await _encounterRepository.addEncounter(encounter);
+                encounter = SetEncounterProperties(encounter, model, aspNetUserId, requestId);
+                return await _encounterRepository.AddEncounter(encounter);
             }
             else
             {
-                encounter = setEncounterProperties(encounter, model, aspNetUserId, requestId);
+                encounter = SetEncounterProperties(encounter, model, aspNetUserId, requestId);
                 encounter.ModifiedDate = DateTime.Now;
                 encounter.ModifiedBy = aspNetUserId.ToString();
-                return await _encounterRepository.updateEncounter(encounter);
+                return await _encounterRepository.UpdateEncounter(encounter);
             }
         }
 
-        private Encounter setEncounterProperties(Encounter encounter, EncounterForm model, int aspNetUserId, int requestId)
+        private Encounter SetEncounterProperties(Encounter encounter, EncounterForm model, int aspNetUserId, int requestId)
         {
             encounter.IsFinalize = model.IsFinalize;
             encounter.FinalizeBy = model.IsFinalize ? aspNetUserId : null;
@@ -440,9 +441,9 @@ namespace Services.Implementation.AdminServices
             return encounter;
         }
 
-        public ViewCase getRequestDetails(int requestId, bool isAdmin)
+        public ViewCase GetRequestDetails(int requestId, bool isAdmin)
         {
-            RequestClient requestClient = _requestClientRepository.getRequestClientAndRequestByRequestId(requestId);
+            RequestClient requestClient = _requestClientRepository.GetRequestClientAndRequestByRequestId(requestId);
             return new ViewCase()
             {
                 IsAdmin = isAdmin,
@@ -459,14 +460,14 @@ namespace Services.Implementation.AdminServices
                 Address = $"{requestClient.Street}, {requestClient.City}, {requestClient.State}, {requestClient.ZipCode}",
                 Region = requestClient.State,
                 CancelPopup = new CancelPopUp(){
-                                Reasons = _requestClientRepository.getAllReason().ToDictionary(caseTag => caseTag.CaseTagId, caseTag => caseTag.Reason),
+                                Reasons = _requestClientRepository.GetAllReason().ToDictionary(caseTag => caseTag.CaseTagId, caseTag => caseTag.Reason),
                               },
             };
         }
 
-        public async Task<bool> updateRequest(ViewCase model)
+        public async Task<bool> UpdateRequest(ViewCase model)
         {
-            RequestClient requestClient = _requestClientRepository.getRequestClientByRequestId(model.RequestId);
+            RequestClient requestClient = _requestClientRepository.GetRequestClientByRequestId(model.RequestId);
             requestClient.Symptoms = model.PatientNotes;
             requestClient.FirstName = model.FirstName;
             requestClient.LastName = model.LastName;
@@ -474,20 +475,20 @@ namespace Services.Implementation.AdminServices
             requestClient.IntYear = model.BirthDate.Value.Year;
             requestClient.IntDate = model.BirthDate.Value.Day;
             requestClient.StrMonth = model.BirthDate.Value.Month.ToString();
-            return await _requestClientRepository.updateRequestClient(requestClient);
+            return await _requestClientRepository.UpdateRequestClient(requestClient);
         }
 
-        public DataTable exportData(String status, int pageNo, String patientName, int regionId, int requesterTypeId)
+        public DataTable ExportData(String status, int pageNo, String patientName, int regionId, int requesterTypeId)
         {
-            return convertRequestClientToDataTable(GetNewRequest(status, pageNo, patientName, regionId, requesterTypeId).TableDatas);
+            return ConvertRequestClientToDataTable(GetNewRequest(status, pageNo, patientName, regionId, requesterTypeId).TableDatas);
         }
 
-        public DataTable exportAllData()
+        public DataTable ExportAllData()
         {
-            return convertRequestClientToDataTable(_requestClientRepository.getAllRequestClients());
+            return ConvertRequestClientToDataTable(_requestClientRepository.GetAllRequestClients());
         }
 
-        private TableModel getTableModal(List<RequestClient> requestClients, int totalRequests, int pageNo)
+        private TableModel GetTableModal(List<RequestClient> requestClients, int totalRequests, int pageNo)
         {
             int skip = (pageNo - 1) * 10;
             List<TablesData> tablesDatas = requestClients
@@ -533,7 +534,7 @@ namespace Services.Implementation.AdminServices
             };
         }
 
-        private DataTable convertRequestClientToDataTable(List<RequestClient> requestClients)
+        private DataTable ConvertRequestClientToDataTable(List<RequestClient> requestClients)
         {
             List<String> columnsNames = new List<String>();
             DataTable dataTable = new DataTable();
@@ -563,7 +564,7 @@ namespace Services.Implementation.AdminServices
             return dataTable;
         }
 
-        private DataTable convertRequestClientToDataTable(List<TablesData> tablesDatas)
+        private DataTable ConvertRequestClientToDataTable(List<TablesData> tablesDatas)
         {
             List<String> columnsNames = new List<String>();
             DataTable dataTable = new DataTable();
@@ -592,7 +593,7 @@ namespace Services.Implementation.AdminServices
             return dataTable;
         }
 
-        private String genrateHash(String password)
+        private String GenrateHash(String password)
         {
             using (var sha256 = SHA256.Create())
             {

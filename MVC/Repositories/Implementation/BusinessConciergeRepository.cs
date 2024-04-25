@@ -13,28 +13,28 @@ namespace Repositories.Implementation
             _dbContext = dbContext;
         }
 
-        public async Task<int> addBusiness(Business business)
+        public async Task<int> AddBusiness(Business business)
         {
             _dbContext.Businesses.Add(business);
             await _dbContext.SaveChangesAsync();
             return business?.BusinessId ?? 0;
         }
 
-        public async Task<int> addConcierge(Concierge concierge)
+        public async Task<int> AddConcierge(Concierge concierge)
         {
             _dbContext.Concierges.Add(concierge);
             await _dbContext.SaveChangesAsync();
             return concierge?.ConciergeId ?? 0;
         }
 
-        public async Task<int> addRequestConcierge(RequestConcierge requestConcierge)
+        public async Task<int> AddRequestConcierge(RequestConcierge requestConcierge)
         {
             _dbContext.RequestConcierges.Add(requestConcierge);
             await _dbContext.SaveChangesAsync();
             return requestConcierge?.ConciergeId ?? 0;
         }
 
-        public async Task<int> addRequestBusiness(RequestBusiness requestBusiness)
+        public async Task<int> AddRequestBusiness(RequestBusiness requestBusiness)
         {
             _dbContext.RequestBusinesses.Add(requestBusiness);
             await _dbContext.SaveChangesAsync();

@@ -5,14 +5,14 @@ namespace Services.Interfaces
 {
     public interface IViewProfileService
     {
-        ViewProfile getProfileDetails(int aspNetUserId);
+        ViewProfile GetProfileDetails(int aspNetUserId);
 
-        Task<bool> updatePatientProfile(ViewProfile model, int aspNetUserId);
+        Task<bool> UpdatePatientProfile(ViewProfile model, int aspNetUserId);
 
         AdminCreaateAndProfile GetAdminViewProfile(int aspNetUserId);
 
-        Task<bool> editEditAdministratorInformastion(String data, int aspNetUserId);
+        Task<bool> EditEditAdministratorInformastion(String data, int aspNetUserId);
 
-        Task<bool> editMailingAndBillingInformation(String data1, int aspNetUserId);
+        Task<bool> EditMailingAndBillingInformation(String data1, int aspNetUserId);
     }
 }

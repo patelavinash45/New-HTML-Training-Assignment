@@ -4,10 +4,10 @@ namespace Repositories.Interfaces
 {
     public interface ILogsService
     {
-        Task<bool> addEmailLog(EmailLog emailLog);
+        Task<bool> AddEmailLog(EmailLog emailLog);
 
-        List<EmailLog> getAllEmailLogs(Func<EmailLog, bool> predicate);
+        List<EmailLog> GetAllEmailLogs(Func<EmailLog, bool> predicate);
 
-        List<Smslog> getAllSMSLogs(Func<Smslog, bool> predicate);
+        List<Smslog> GetAllSMSLogs(Func<Smslog, bool> predicate);
     }
 }

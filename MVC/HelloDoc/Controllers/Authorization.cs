@@ -38,7 +38,7 @@ namespace HelloDoc.Authentication
                         action = "LoginPage",
                     }));
                 }
-                else if (token != null && !jwtService.validateToken(token, out jwtToken))
+                else if (token != null && !jwtService.ValidateToken(token, out jwtToken))
                 {
                     context.Result = new RedirectToRouteResult(new RouteValueDictionary(new
                     {
@@ -48,7 +48,7 @@ namespace HelloDoc.Authentication
                 }
                 else
                 {
-                    String jwtRole = jwtToken.Claims.FirstOrDefault(a => a.Type == ClaimTypes.Role).Value;
+                    String jwtRole = jwtToken.Claims.First(a => a.Type == ClaimTypes.Role).Value;
                     if (!_roles.Contains(jwtRole))
                     {
                         context.Result = new RedirectToRouteResult(new RouteValueDictionary(new
@@ -59,11 +59,11 @@ namespace HelloDoc.Authentication
                     }
                     else 
                     {
-                        int jwtId = int.Parse(jwtToken.Claims.FirstOrDefault(a => a.Type == "aspNetUserId").Value);
+                        int jwtId = int.Parse(jwtToken.Claims.First(a => a.Type == "aspNetUserId").Value);
                         if (context.HttpContext.Session.GetInt32("aspNetUserId") == null)
                         {
-                            String jwtFirstName = jwtToken.Claims.FirstOrDefault(a => a.Type == "firstName").Value;
-                            String jwtLastName = jwtToken.Claims.FirstOrDefault(a => a.Type == "lastName").Value;
+                            String jwtFirstName = jwtToken.Claims.First(a => a.Type == "firstName").Value;
+                            String jwtLastName = jwtToken.Claims.First(a => a.Type == "lastName").Value;
                             context.HttpContext.Session.SetString("role", jwtRole);
                             context.HttpContext.Session.SetString("firstName", jwtFirstName);
                             context.HttpContext.Session.SetString("lastName", jwtLastName);
@@ -75,7 +75,7 @@ namespace HelloDoc.Authentication
                             if (loginService != null)
                             {
                                 bool isAdmin = jwtRole == "Admin";
-                                if (!loginService.validateAccess(jwtId, _menuId, isAdmin))
+                                if (!loginService.ValidateAccess(jwtId, _menuId, isAdmin))
                                 {
                                     context.Result = new RedirectToRouteResult(new RouteValueDictionary(new
                                     {

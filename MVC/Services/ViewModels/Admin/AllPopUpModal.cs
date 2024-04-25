@@ -21,6 +21,7 @@ namespace Services.ViewModels.Admin
     {
         public int RequestId { get; set; }
 
+        [Required(ErrorMessage = "The AdminTransferNotes field is required.")]
         public String? AdminTransferNotes { get; set; }
     }
 
@@ -47,27 +48,33 @@ namespace Services.ViewModels.Admin
     public class SendLink
     {
         [RegularExpression(@"^[a-zA-Z]+(?: [a-zA-Z]+)*$", ErrorMessage = "The FirstName is not valid")]
-        public string FirstName { get; set; }
+        [Required(ErrorMessage = "The FirstName field is required.")]
+        public string? FirstName { get; set; }
 
         [RegularExpression(@"^[a-zA-Z]+(?: [a-zA-Z]+)*$", ErrorMessage = "The LastName is not valid")]
-        public string LastName { get; set; }
+        [Required(ErrorMessage = "The LastName field is required.")]
+        public string? LastName { get; set; }
 
         [DataType(DataType.EmailAddress, ErrorMessage = "The Email is not valid")]
-        public string Email { get; set; }
+        [Required(ErrorMessage = "The Email field is required.")]
+        public string? Email { get; set; }
 
         [RegularExpression(@"^(?:\+?91)?\s*([1-9]\d{4})\s*(\d{5})$", ErrorMessage = "The Mobile is not valid")]
-        public string Mobile { get; set; }
+        [Required(ErrorMessage = "The Mobile field is required.")]
+        public string? Mobile { get; set; }
     }
 
     public class RequestSupport
     {
-        public string Message { get; set; }
+        [Required(ErrorMessage = "The Message field is required.")]
+        public string? Message { get; set; }
     }
 
     public class Agreement
     {
         public bool IsValid { get; set; } = false;
 
+        [Required(ErrorMessage = "The Message field is required.")]
         public string? Message { get; set; }
 
         public int RequestId { get; set; }
@@ -78,8 +85,11 @@ namespace Services.ViewModels.Admin
 
         public string? CancelationReson { get; set; }
 
-        public string Number { get; set; }
+        [Required(ErrorMessage = "The Number field is required.")]
+        public string? Number { get; set; }
 
-        public string Email { get; set; }
+        [DataType(DataType.EmailAddress, ErrorMessage = "The Email is not valid")]
+        [Required(ErrorMessage = "The Email field is required.")]
+        public string? Email { get; set; }
     }
 }

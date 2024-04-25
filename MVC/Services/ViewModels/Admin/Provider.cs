@@ -5,35 +5,35 @@ namespace Services.ViewModels.Admin
 {
     public class Provider
     {
-        public List<ProviderTable> providers { get; set; }
+        public List<ProviderTable>? Providers { get; set; }
 
-        public Dictionary<int, string> Regions { get; set; }
+        public Dictionary<int, string>? Regions { get; set; }
 
-        public ContactProvider ContactProvider { get; set; }
+        public ContactProvider? ContactProvider { get; set; }
     }
 
     public class ProviderTable
     {
-        public int providerId { get; set; }
+        public int ProviderId { get; set; }
 
-        public string FirstName { get; set; }
+        public string? FirstName { get; set; }
 
-        public string LastName { get; set; }
+        public string? LastName { get; set; }
 
         public bool Notification { get; set; }
 
-        public string Role { get; set; }
+        public string? Role { get; set; }
 
         public bool OnCallStatus { get; set; }
 
-        public String Status { get; set; }
+        public String? Status { get; set; }
     }
 
     public class ContactProvider
     {
         public int providerId { get; set; }
 
-        public string Message { get; set; }
+        public string? Message { get; set; }
 
         public bool email { get; set; } = false;
 
@@ -46,79 +46,93 @@ namespace Services.ViewModels.Admin
 
         public decimal? longitude { get; set; }
 
-        public string ProviderName { get; set; }
+        public string? ProviderName { get; set; }
     }
 
     public class CreateProvider
     {
-        public bool isUpdate { get; set; }
-
         [StringLength(100)]
         [RegularExpression(@"^[a-zA-Z]+(?: [a-zA-Z]+)*$", ErrorMessage = "The FirstName is not valid")]
-        public string FirstName { get; set; }
+        [Required(ErrorMessage = "The FirstName field is required.")]
+        public string? FirstName { get; set; }
 
         [StringLength(100)]
         [RegularExpression(@"^[a-zA-Z]+(?: [a-zA-Z]+)*$", ErrorMessage = "The LastName is not valid")]
-        public string LastName { get; set; }
+        [Required(ErrorMessage = "The LastName field is required.")]
+        public string? LastName { get; set; }
 
-        public string Password { get; set; }
+        [Required(ErrorMessage = "The Password field is required.")]
+        public string? Password { get; set; }
 
         [Required(ErrorMessage = "The Role field is required.")]
         public int SelectedRole { get; set; }
 
         public Dictionary<int, string>? Roles { get; set; }
 
-        public string UserName { get; set; }
+        [Required(ErrorMessage = "The UserName field is required.")]
+        public string? UserName { get; set; }
 
         [StringLength(50)]
         [DataType(DataType.EmailAddress, ErrorMessage = "The Email is not valid")]
-        public string Email { get; set; }
+        [Required(ErrorMessage = "The Email field is required.")]
+        public string? Email { get; set; }
 
         [StringLength(20)]
         [RegularExpression(@"^(?:\+?91)?\s*([1-9]\d{4})\s*(\d{5})$", ErrorMessage = "The Phone is not valid")]
-        public string Phone { get; set; }
+        [Required(ErrorMessage = "The Phone field is required.")]
+        public string? Phone { get; set; }
 
         [StringLength(20)]
-        [Display(Name = "Mobile")]
         [RegularExpression(@"^(?:\+?91)?\s*([1-9]\d{4})\s*(\d{5})$", ErrorMessage = "The Mobile is not valid")]
-        public string Phone2 { get; set; }
+        [Required(ErrorMessage = "The Phone field is required.")]
+        public string? Phone2 { get; set; }
 
         [StringLength(500)]
-        public string MedicalLicance { get; set; }
+        [Required(ErrorMessage = "The MedicalLicance field is required.")]
+        public string? MedicalLicance { get; set; }
 
         [StringLength(500)]
-        public string NpiNumber { get; set; }
+        [Required(ErrorMessage = "The NpiNumber field is required.")]
+        public string? NpiNumber { get; set; }
 
         [StringLength(500)]
-        public string Add1 { get; set; }
+        [Required(ErrorMessage = "The Address field is required.")]
+        public string? Add1 { get; set; }
 
         [StringLength(500)]
-        public string Add2 { get; set; }
+        [Required(ErrorMessage = "The Address field is required.")]
+        public string? Add2 { get; set; }
 
         [StringLength(100)]
-        public string City { get; set; }
+        [Required(ErrorMessage = "The City field is required.")]
+        public string? City { get; set; }
 
         [StringLength(10)]
-        public string Zip { get; set; }
+        [Required(ErrorMessage = "The Zip field is required.")]
+        public string? Zip { get; set; }
 
         [Required(ErrorMessage = "The State field is required.")]
-        public string SelectedRegion { get; set; }
+        public string? SelectedRegion { get; set; }
 
         [Required(ErrorMessage = "The Region field is required.")]
-        public List<string> SelectedRegions { get; set; }
+        public List<string>? SelectedRegions { get; set; }
 
         public Dictionary<int, string>? Regions { get; set; }
 
         [StringLength(100)]
-        public string BusinessName { get; set; }
+        [Required(ErrorMessage = "The BusinessName field is required.")]
+        public string? BusinessName { get; set; }
 
         [StringLength(200)]
-        public string BusinessWebsite { get; set; }
+        [Required(ErrorMessage = "The BusinessWebsite field is required.")]
+        public string? BusinessWebsite { get; set; }
 
-        public IFormFile Photo { get; set; }
+        [Required(ErrorMessage = "The Photo field is required.")]
+        public IFormFile? Photo { get; set; }
 
         [StringLength(500)]
-        public string AdminNotes { get; set; }
+        [Required(ErrorMessage = "The AdminNotes field is required.")]
+        public string? AdminNotes { get; set; }
 
         public bool IsAgreementDoc { get; set; }
 
@@ -144,80 +158,97 @@ namespace Services.ViewModels.Admin
 
     public class EditProvider
     {
-        public bool isUpdate { get; set; }
-
         [StringLength(100)]
         [RegularExpression(@"^[a-zA-Z]+(?: [a-zA-Z]+)*$", ErrorMessage = "The FirstName is not valid")]
-        public string FirstName { get; set; }
+        [Required(ErrorMessage = "The FirstName field is required.")]
+        public string? FirstName { get; set; }
 
         [StringLength(100)]
         [RegularExpression(@"^[a-zA-Z]+(?: [a-zA-Z]+)*$", ErrorMessage = "The LastName is not valid")]
-        public string LastName { get; set; }
+        [Required(ErrorMessage = "The LastName field is required.")]
+        public string? LastName { get; set; }
 
-        public string Password { get; set; }
+        [Required(ErrorMessage = "The Password field is required.")]
+        public string? Password { get; set; }
 
         [Required(ErrorMessage = "The Role field is required.")]
-        public int SelectedRole { get; set; }
+        public int? SelectedRole { get; set; }
 
-        public int Status { get; set; }
+        [Required(ErrorMessage = "The Status field is required.")]
+        public short? Status { get; set; }
 
         public Dictionary<int, string>? Roles { get; set; }
 
-        public string UserName { get; set; }
+        [Required(ErrorMessage = "The UserName field is required.")]
+        public string? UserName { get; set; }
 
         [StringLength(50)]
         [DataType(DataType.EmailAddress, ErrorMessage = "The Email is not valid")]
-        public string Email { get; set; }
+        [Required(ErrorMessage = "The Email field is required.")]
+        public string? Email { get; set; }
 
         [StringLength(20)]
         [RegularExpression(@"^(?:\+?91)?\s*([1-9]\d{4})\s*(\d{5})$", ErrorMessage = "The Phone is not valid")]
-        public string Phone { get; set; }
+        [Required(ErrorMessage = "The Phone field is required.")]
+        public string? Phone { get; set; }
 
         [StringLength(20)]
         [Display(Name = "Mobile")]
         [RegularExpression(@"^(?:\+?91)?\s*([1-9]\d{4})\s*(\d{5})$", ErrorMessage = "The Mobile is not valid")]
-        public string Phone2 { get; set; }
+        [Required(ErrorMessage = "The Mobile field is required.")]
+        public string? Phone2 { get; set; }
 
         [StringLength(50)]
         [DataType(DataType.EmailAddress, ErrorMessage = "The SynchronizationEmail is not valid")]
-        public string SynchronizationEmail { get; set; }
+        [Required(ErrorMessage = "The SynchronizationEmail field is required.")]
+        public string? SynchronizationEmail { get; set; }
 
         [StringLength(500)]
-        public string MedicalLicance { get; set; }
+        [Required(ErrorMessage = "The MedicalLicance field is required.")]
+        public string? MedicalLicance { get; set; }
 
         [StringLength(500)]
-        public string NpiNumber { get; set; }
+        [Required(ErrorMessage = "The NpiNumber field is required.")]
+        public string? NpiNumber { get; set; }
 
         [StringLength(500)]
-        public string Add1 { get; set; }
+        [Required(ErrorMessage = "The Address field is required.")]
+        public string? Add1 { get; set; }
 
         [StringLength(500)]
-        public string Add2 { get; set; }
+        [Required(ErrorMessage = "The Address field is required.")]
+        public string? Add2 { get; set; }
 
         [StringLength(100)]
-        public string City { get; set; }
+        [Required(ErrorMessage = "The City field is required.")]
+        public string? City { get; set; }
 
         [StringLength(10)]
-        public string Zip { get; set; }
+        [Required(ErrorMessage = "The ZipCode field is required.")]
+        public string? Zip { get; set; }
 
         [Required(ErrorMessage = "The State field is required.")]
         public int SelectedRegion { get; set; }
 
         [Required(ErrorMessage = "The Region field is required.")]
-        public List<int> SelectedRegions { get; set; }
+        public List<int>? SelectedRegions { get; set; }
 
         public Dictionary<int, string>? Regions { get; set; }
 
         [StringLength(100)]
-        public string BusinessName { get; set; }
+        [Required(ErrorMessage = "The BusinessName field is required.")]
+        public string? BusinessName { get; set; }
 
         [StringLength(200)]
-        public string BusinessWebsite { get; set; }
+        [Required(ErrorMessage = "The BusinessWebsite field is required.")]
+        public string? BusinessWebsite { get; set; }
 
-        public IFormFile Photo { get; set; }
+        [Required(ErrorMessage = "The Photo field is required.")]
+        public IFormFile? Photo { get; set; }
 
         [StringLength(500)]
-        public string AdminNotes { get; set; }
+        [Required(ErrorMessage = "The AdminNotes field is required.")]
+        public string? AdminNotes { get; set; }
 
         public bool IsAgreementDoc { get; set; }
 
@@ -280,9 +311,9 @@ namespace Services.ViewModels.Admin
 
     public class ProviderScheduling
     {
-        public List<SchedulingTable> TableData { get; set; }
+        public List<SchedulingTable>? TableData { get; set; }
 
-        public CreateShift CreateShift { get; set; }
+        public CreateShift? CreateShift { get; set; }
 
     }
 
@@ -290,15 +321,15 @@ namespace Services.ViewModels.Admin
     {
         public int PhysicianId { get; set; }
 
-        public string Photo { get; set; }
+        public string? Photo { get; set; }
 
-        public string FirstName { get; set; }
+        public string? FirstName { get; set; }
 
-        public string LastName { get; set; }
+        public string? LastName { get; set; }
 
-        public List<ShiftDetailsDayWise> DayWise { get; set; }
+        public List<ShiftDetailsDayWise>? DayWise { get; set; }
 
-        public Dictionary<int, double> WeekWise { get; set; }
+        public Dictionary<int, double>? WeekWise { get; set; }
 
     }
 
@@ -430,14 +461,14 @@ namespace Services.ViewModels.Admin
     {
         public Dictionary<int, string>? Regions { get; set; }
 
-        public ProviderList ProviderList { get; set; }
+        public ProviderList? ProviderList { get; set; }
     }
 
     public class ProviderList
     {
-        public List<ProviderOnCallTable> providerOnCall { get; set; }
+        public List<ProviderOnCallTable>? ProviderOnCall { get; set; }
 
-        public List<ProviderOnCallTable> providerOffDuty { get; set; }
+        public List<ProviderOnCallTable>? ProviderOffDuty { get; set; }
 
     }
 
@@ -445,8 +476,8 @@ namespace Services.ViewModels.Admin
     {
         public string Photo { get; set; }
 
-        public string FirstName { get; set; }
+        public string? FirstName { get; set; }
 
-        public string LastName { get; set; }
+        public string? LastName { get; set; }
     }
 }

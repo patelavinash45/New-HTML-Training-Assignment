@@ -7,20 +7,20 @@ namespace Services.Interfaces.AdminServices
     {
         ViewNotes GetNotes(int RequestId);
 
-        Task<bool> addAdminNotes(String newNotes, int requestId, int aspNetUserId, bool isAdmin);
+        Task<bool> AddAdminNotes(String newNotes, int requestId, int aspNetUserId, bool isAdmin);
 
-        Task<bool> cancleRequest(CancelPopUp model);
+        Task<bool> CancleRequest(CancelPopUp model);
 
-        Task<bool> assignRequest(AssignAndTransferPopUp model);
+        Task<bool> AssignRequest(AssignAndTransferPopUp model);
 
-        Task<bool> blockRequest(BlockPopUp model);
+        Task<bool> BlockRequest(BlockPopUp model);
 
-        Task<bool> clearRequest(int requestId);
+        Task<bool> ClearRequest(int requestId);
 
-        bool sendAgreement(Agreement model,HttpContext httpContext);
+        bool SendAgreement(Agreement model,HttpContext httpContext);
 
-        Task<bool> agreementDeclined(Agreement model);
+        Task<bool> AgreementDeclined(Agreement model);
 
-        Task<bool> agreementAgree(Agreement model);
+        Task<bool> AgreementAgree(Agreement model);
     }
 }

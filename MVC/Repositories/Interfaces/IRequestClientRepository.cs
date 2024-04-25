@@ -4,40 +4,40 @@ namespace Repositories.Interfaces
 {
     public interface IRequestClientRepository
     {
-        List<Region> getAllRegions();
+        List<Region> GetAllRegions();
 
-        List<CaseTag> getAllReason();
+        List<CaseTag> GetAllReason();
 
-        List<RequestClient> getAllRequestClients();
+        List<RequestClient> GetAllRequestClients();
 
-        List<RequestClient> getRequestClientsBasedOnFilter(Func<RequestClient,bool> predicate);
+        List<RequestClient> GetRequestClientsBasedOnFilter(Func<RequestClient,bool> predicate);
 
-        List<BlockRequest> getRequestClientsAndBlockRequestBasedOnFilter(Func<BlockRequest, bool> predicate);
+        List<BlockRequest> GetRequestClientsAndBlockRequestBasedOnFilter(Func<BlockRequest, bool> predicate);
 
-        int countRequestClientsAndBlockRequestBasedOnFilter(Func<BlockRequest, bool> predicate);
+        int CountRequestClientsAndBlockRequestBasedOnFilter(Func<BlockRequest, bool> predicate);
 
-        List<RequestClient> getRequestClientByStatus(Func<RequestClient, bool> predicate, int skip);
+        List<RequestClient> GetRequestClientByStatus(Func<RequestClient, bool> predicate, int skip);
 
-        int countRequestClientByStatusForAdmin(List<int> status);
+        int CountRequestClientByStatusForAdmin(List<int> status);
 
-        int countRequestClientByStatusForPhysician(List<int> status, int aspNetUserId);
+        int CountRequestClientByStatusForPhysician(List<int> status, int aspNetUserId);
 
-        int countRequestClientByStatusAndFilter(Func<RequestClient, bool> predicate);
+        int CountRequestClientByStatusAndFilter(Func<RequestClient, bool> predicate);
 
-        List<RequestClient> getAllRequestClientForUser(int userId);
+        List<RequestClient> GetAllRequestClientForUser(int userId);
 
-        Task<bool> addRequestClient(RequestClient requestClient);
+        Task<bool> AddRequestClient(RequestClient requestClient);
 
-        RequestClient getRequestClientByRequestId(int requestId);
+        RequestClient GetRequestClientByRequestId(int requestId);
 
-        RequestClient getRequestClientAndRequestByRequestId(int requestId);
+        RequestClient GetRequestClientAndRequestByRequestId(int requestId);
 
-        Task<bool> updateRequestClient(RequestClient requestClient);
+        Task<bool> UpdateRequestClient(RequestClient requestClient);
 
-        List<RequestClient> getAllRequestClientsByUserId(int userId, int skip);
+        List<RequestClient> GetAllRequestClientsByUserId(int userId, int skip);
         
-        int countRequestClientsByUserId(int userId);
+        int CountRequestClientsByUserId(int userId);
 
-        Task<bool> deleteBlockRequest(int requestId);
+        Task<bool> DeleteBlockRequest(int requestId);
     }
 }

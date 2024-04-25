@@ -4,10 +4,10 @@ namespace Repositories.Interfaces
 {
     public interface IEncounterRepository
     {
-        Encounter getEncounter(int requestId);
+        Encounter GetEncounter(int requestId);
 
-        Task<bool> addEncounter(Encounter encounter);
+        Task<bool> AddEncounter(Encounter encounter);
 
-        Task<bool> updateEncounter(Encounter encounter);
+        Task<bool> UpdateEncounter(Encounter encounter);
     }
 }

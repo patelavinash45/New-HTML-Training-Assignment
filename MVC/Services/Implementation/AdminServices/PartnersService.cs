@@ -17,9 +17,9 @@ namespace Services.Implementation.AdminServices
             _requestClientRepository = requestClientRepository;
         }
 
-        public Partners getPartnersData()
+        public Partners GetPartnersData()
         {
-            List<PartnersTableData> partnersTableDatas = _healthProfessionalRepository.getHealthProfessionalByProfessionWithType(0,null)
+            List<PartnersTableData> partnersTableDatas = _healthProfessionalRepository.GetHealthProfessionalByProfessionWithType(0,null)
                 .Select(healthProfessional => new PartnersTableData()
                 {
                     VenderId = healthProfessional.VendorId,
@@ -33,15 +33,15 @@ namespace Services.Implementation.AdminServices
             return new Partners()
             {
                 PartnersTableDatas = partnersTableDatas,
-                ProfessionList = _healthProfessionalRepository.getHealthProfessionalTypes().ToDictionary(
+                ProfessionList = _healthProfessionalRepository.GetHealthProfessionalTypes().ToDictionary(
                                    healthProfessionalType => healthProfessionalType.HealthProfessionalId,
                                    healthProfessionalType => healthProfessionalType.ProfessionName),
             };
         }
 
-        public List<PartnersTableData> getPartnersTableDatas(int regionId,String searchElement)
+        public List<PartnersTableData> GetPartnersTableDatas(int regionId, String searchElement)
         {
-            return _healthProfessionalRepository.getHealthProfessionalByProfessionWithType(regionId,searchElement)
+            return _healthProfessionalRepository.GetHealthProfessionalByProfessionWithType(regionId,searchElement)
                 .Select(healthProfessional => new PartnersTableData()
                 {
                     VenderId = healthProfessional.VendorId,
@@ -54,11 +54,11 @@ namespace Services.Implementation.AdminServices
                 }).ToList();
         }
 
-        public BusinessProfile addBusiness(bool isUpdate,int venderId)
+        public BusinessProfile AddBusiness(bool isUpdate, int venderId)
         {
             if (isUpdate)
             {
-                HealthProfessional healthProfessional = _healthProfessionalRepository.getHealthProfessional(venderId);
+                HealthProfessional healthProfessional = _healthProfessionalRepository.GetHealthProfessional(venderId);
                 return new BusinessProfile()
                 {
                     VendorName = healthProfessional.VendorName,
@@ -73,8 +73,8 @@ namespace Services.Implementation.AdminServices
                     BusinessContact = healthProfessional.BusinessContact,
                     AspAction = "UpdateBusiness",
                     IsUpdate = isUpdate,
-                    RegionList = _requestClientRepository.getAllRegions().ToDictionary(region => region.RegionId, region => region.Name),
-                    ProfessionList = _healthProfessionalRepository.getHealthProfessionalTypes()
+                    RegionList = _requestClientRepository.GetAllRegions().ToDictionary(region => region.RegionId, region => region.Name),
+                    ProfessionList = _healthProfessionalRepository.GetHealthProfessionalTypes()
                                             .ToDictionary(healthProfessionalType => healthProfessionalType.HealthProfessionalId,
                                                           healthProfessionalType => healthProfessionalType.ProfessionName),
                 };
@@ -85,15 +85,15 @@ namespace Services.Implementation.AdminServices
                 {
                     AspAction = "CreateBusiness",
                     IsUpdate = isUpdate,
-                    RegionList = _requestClientRepository.getAllRegions().ToDictionary(region => region.RegionId, region => region.Name),
-                    ProfessionList = _healthProfessionalRepository.getHealthProfessionalTypes()
+                    RegionList = _requestClientRepository.GetAllRegions().ToDictionary(region => region.RegionId, region => region.Name),
+                    ProfessionList = _healthProfessionalRepository.GetHealthProfessionalTypes()
                                             .ToDictionary(healthProfessionalType => healthProfessionalType.HealthProfessionalId,
                                                           healthProfessionalType => healthProfessionalType.ProfessionName),
                 };
             }
         }
 
-        public async Task<bool> createBusiness(BusinessProfile businessProfile)
+        public async Task<bool> CreateBusiness(BusinessProfile businessProfile)
         {
             HealthProfessional healthProfessional = new HealthProfessional()
             {
@@ -109,12 +109,12 @@ namespace Services.Implementation.AdminServices
                 BusinessContact = businessProfile.BusinessContact,
                 IsDeleted = new BitArray(1, false),
         };
-            return await _healthProfessionalRepository.addHealthProfessional(healthProfessional);
+            return await _healthProfessionalRepository.AddHealthProfessional(healthProfessional);
         }
 
-        public async Task<bool> EditBusiness(BusinessProfile businessProfile,int venderId)
+        public async Task<bool> EditBusiness(BusinessProfile businessProfile, int venderId)
         {
-            HealthProfessional healthProfessional = _healthProfessionalRepository.getHealthProfessional(venderId);
+            HealthProfessional healthProfessional = _healthProfessionalRepository.GetHealthProfessional(venderId);
             healthProfessional.Profession = businessProfile.Profession;
             healthProfessional.VendorName = businessProfile.VendorName;
             healthProfessional.FaxNumber = businessProfile.FaxNumber;
@@ -125,15 +125,15 @@ namespace Services.Implementation.AdminServices
             healthProfessional.RegionId = int.Parse(businessProfile.State);
             healthProfessional.BusinessContact = businessProfile.BusinessContact;
             healthProfessional.ModifiedDate = DateTime.Now;
-            return await _healthProfessionalRepository.updateHealthProfessional(healthProfessional);
+            return await _healthProfessionalRepository.UpdateHealthProfessional(healthProfessional);
         }
 
-        public async Task<bool> deleteBusiness(int venderId)
+        public async Task<bool> DeleteBusiness(int venderId)
         {
-            HealthProfessional healthProfessional = _healthProfessionalRepository.getHealthProfessional(venderId);
+            HealthProfessional healthProfessional = _healthProfessionalRepository.GetHealthProfessional(venderId);
             healthProfessional.IsDeleted = new BitArray(1, true);
             healthProfessional.ModifiedDate = DateTime.Now;
-            return await _healthProfessionalRepository.updateHealthProfessional(healthProfessional);
+            return await _healthProfessionalRepository.UpdateHealthProfessional(healthProfessional);
         }
     }
 }

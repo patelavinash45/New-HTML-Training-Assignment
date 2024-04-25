@@ -18,9 +18,9 @@ namespace Services.Implementation
             _requestClientRepository = requestClientRepository;
         }
 
-        public ViewProfile getProfileDetails(int aspNetUserId)
+        public ViewProfile GetProfileDetails(int aspNetUserId)
         {
-            User user = _userRepository.getUser(aspNetUserId);
+            User user = _userRepository.GetUser(aspNetUserId);
             DateTime birthDay = DateTime.Parse(user.IntYear + "-" + user.StrMonth + "-" + user.IntDate);
             return new ViewProfile()
             {
@@ -37,9 +37,9 @@ namespace Services.Implementation
             };
         }
 
-        public async Task<bool> updatePatientProfile(ViewProfile model, int aspnetUserId)
+        public async Task<bool> UpdatePatientProfile(ViewProfile model, int aspnetUserId)
         {
-            User user = _userRepository.getUser(aspnetUserId);
+            User user = _userRepository.GetUser(aspnetUserId);
             user.FirstName = model.FirstName;
             user.LastName = model.LastName;
             user.Email = model.Email;
@@ -54,13 +54,13 @@ namespace Services.Implementation
             user.IntYear = model.BirthDate.Value.Year;
             user.ModifiedDate = DateTime.Now;
             user.ModifiedBy = aspnetUserId;
-            return await _userRepository.updateProfile(user);
+            return await _userRepository.UpdateProfile(user);
         }
 
         public AdminCreaateAndProfile GetAdminViewProfile(int aspNetUserId)
         {
-            Admin admin = _userRepository.getAdmionByAspNetUserId(aspNetUserId);
-            List<Region> allRegion = _requestClientRepository.getAllRegions();
+            Admin admin = _userRepository.GetAdmionByAspNetUserId(aspNetUserId);
+            List<Region> allRegion = _requestClientRepository.GetAllRegions();
             Dictionary<int, string> regions = new Dictionary<int, string>();
             Dictionary<int, bool> adminRegions = new Dictionary<int, bool>();
             foreach (Region region in allRegion)
@@ -68,7 +68,7 @@ namespace Services.Implementation
                 adminRegions.Add(region.RegionId,false);
                 regions.Add(region.RegionId, region.Name);
             }
-            List<AdminRegion> allAdminRegions = _userRepository.getAdminRegionByAdminId(admin.AdminId);
+            List<AdminRegion> allAdminRegions = _userRepository.GetAdminRegionByAdminId(admin.AdminId);
             foreach (AdminRegion adminRegion in allAdminRegions)
             {
                 adminRegions[adminRegion.RegionId] = true;
@@ -91,19 +91,19 @@ namespace Services.Implementation
             };
         }
 
-        public async Task<bool> editEditAdministratorInformastion(String data1, int aspNetUserId)
+        public async Task<bool> EditEditAdministratorInformastion(String data1, int aspNetUserId)
         {
             AdminCreaateAndProfile _data = JsonSerializer.Deserialize<AdminCreaateAndProfile>(data1);
-            Admin admin = _userRepository.getAdmionByAspNetUserId(aspNetUserId);
+            Admin admin = _userRepository.GetAdmionByAspNetUserId(aspNetUserId);
             admin.FirstName = _data.FirstName; 
             admin.LastName = _data.LastName;
             admin.Email = _data.Email; 
             admin.Mobile = _data.Mobile;
             admin.ModifiedBy = aspNetUserId;
             admin.ModifiedDate = DateTime.Now;
-            if(await _userRepository.updateAdmin(admin))
+            if(await _userRepository.UpdateAdmin(admin))
             {
-                List<AdminRegion> adminRegions = _userRepository.getAdminRegionByAdminId(admin.AdminId);
+                List<AdminRegion> adminRegions = _userRepository.GetAdminRegionByAdminId(admin.AdminId);
                 List<AdminRegion> adminRegionsCreateNew = new List<AdminRegion>();
                 List<AdminRegion> adminRegionsDelete = new List<AdminRegion>();
                 foreach(AdminRegion adminRegion in adminRegions)
@@ -127,21 +127,21 @@ namespace Services.Implementation
                 }
                 if(adminRegionsCreateNew.Count > 0)
                 {
-                    await _userRepository.addAdminRgions(adminRegionsCreateNew);
+                    await _userRepository.AddAdminRgions(adminRegionsCreateNew);
                 }
                 if(adminRegionsDelete.Count > 0)
                 {
-                    return await _userRepository.deleteAdminRgions(adminRegionsDelete);
+                    return await _userRepository.DeleteAdminRgions(adminRegionsDelete);
                 }
                 return true;
             }
             return false;
         }
 
-        public async Task<bool> editMailingAndBillingInformation(String data, int aspNetUserId)
+        public async Task<bool> EditMailingAndBillingInformation(String data, int aspNetUserId)
         {
             AdminCreaateAndProfile _data = JsonSerializer.Deserialize<AdminCreaateAndProfile>(data);
-            Admin admin = _userRepository.getAdmionByAspNetUserId(aspNetUserId);
+            Admin admin = _userRepository.GetAdmionByAspNetUserId(aspNetUserId);
             admin.Address1 = _data.Address1;
             admin.Address2 = _data.Address2;
             admin.City = _data.City;
@@ -150,7 +150,7 @@ namespace Services.Implementation
             admin.AltPhone = _data.Phone;
             admin.ModifiedBy = aspNetUserId;
             admin.ModifiedDate = DateTime.Now;
-            return await _userRepository.updateAdmin(admin);
+            return await _userRepository.UpdateAdmin(admin);
         }
     }
 }

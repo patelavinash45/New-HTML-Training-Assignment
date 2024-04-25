@@ -60,7 +60,6 @@
                 <div class="form-floating col-xl-6 col-md-6 col-lg-6">
                     <input asp-for="Mobile" class="form-control" id="phone" type="tel" placeholder="Mobile" />
                     <span asp-validation-for="Mobile" class="text-danger"></span>
-                    @*<label for="phone">Phone Number</label> *@
                 </div>
             </div>
             <div class="row" id="input-password">
@@ -105,6 +104,13 @@
                 </div>
             </div>
             <div class="row">
+                <div class="form-floating col-xl-6 col-md-6 col-lg-6">
+                    <select class="form-select" id="selectRegion" asp-for="Region">
+                        <option selected value="">Select Region</option>
+                    </select>
+                    <label for="selectedProfession">Select Region</label>
+                    <span asp-validation-for="Region" class="text-danger"></span>
+                </div>
                 <div class="form-floating col-col-xl-6 col-md-6 col-lg-6">
                     <input asp-for="House" class="form-control" id="house" placeholder="House" />
                     <label for="house">house(Optional)</label>

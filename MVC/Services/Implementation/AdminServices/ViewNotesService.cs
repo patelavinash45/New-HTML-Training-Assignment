@@ -44,13 +44,13 @@ namespace Services.Implementation.AdminServices
             };
         }
 
-        public async Task<bool> addAdminNotes(String newNotes, int requestId, int aspNetUserId, bool isAdmin)
+        public async Task<bool> AddAdminNotes(String newNotes, int requestId, int aspNetUserId, bool isAdmin)
         {
             RequestNote requestNote = _requestNotesRepository.GetRequestNoteByRequestId(requestId);
             if(requestNote == null)
             {
                 return await _requestNotesRepository
-                    .addRequestNote(new RequestNote()
+                    .AddRequestNote(new RequestNote()
                     {
                         RequestId = requestId,
                         AdminNotes = isAdmin ? newNotes : null,
@@ -62,22 +62,22 @@ namespace Services.Implementation.AdminServices
             requestNote.PhysicianNotes = isAdmin ? null : newNotes;
             requestNote.ModifiedDate = DateTime.Now;
             requestNote.ModifiedBy = aspNetUserId;
-            return await _requestNotesRepository.updateRequestNote(requestNote);
+            return await _requestNotesRepository.UpdateRequestNote(requestNote);
         }
 
-        public async Task<bool> cancleRequest(CancelPopUp model)
+        public async Task<bool> CancleRequest(CancelPopUp model)
         {
-            RequestClient requestClient = _requestClientRepository.getRequestClientByRequestId(model.RequestId);
+            RequestClient requestClient = _requestClientRepository.GetRequestClientByRequestId(model.RequestId);
             requestClient.Status = 3;
-            if(await _requestClientRepository.updateRequestClient(requestClient))
+            if(await _requestClientRepository.UpdateRequestClient(requestClient))
             {
-                Request request = _requestRepository.getRequestByRequestId(model.RequestId);
+                Request request = _requestRepository.GetRequestByRequestId(model.RequestId);
                 request.CaseTagId = model.Reason;
                 request.ModifiedDate = DateTime.Now;
-                if(await _requestRepository.updateRequest(request))
+                if(await _requestRepository.UpdateRequest(request))
                 {
                     return await _requestSatatusLogRepository
-                        .addRequestSatatusLog(new RequestStatusLog()
+                        .AddRequestSatatusLog(new RequestStatusLog()
                         {
                             RequestId = model.RequestId,
                             Status = 3,
@@ -89,14 +89,14 @@ namespace Services.Implementation.AdminServices
             return false;
         }
 
-        public async Task<bool> agreementDeclined(Agreement model)
+        public async Task<bool> AgreementDeclined(Agreement model)
         {
-            RequestClient requestClient = _requestClientRepository.getRequestClientByRequestId(model.RequestId);
+            RequestClient requestClient = _requestClientRepository.GetRequestClientByRequestId(model.RequestId);
             requestClient.Status = 8;
-            if(await _requestClientRepository.updateRequestClient(requestClient))
+            if(await _requestClientRepository.UpdateRequestClient(requestClient))
             {
                 return await _requestSatatusLogRepository
-                    .addRequestSatatusLog( new RequestStatusLog()
+                    .AddRequestSatatusLog( new RequestStatusLog()
                     {
                         RequestId = model.RequestId,
                         Status = 8,
@@ -107,29 +107,29 @@ namespace Services.Implementation.AdminServices
             return false;
         }
 
-        public async Task<bool> agreementAgree(Agreement model)
+        public async Task<bool> AgreementAgree(Agreement model)
         {
-            RequestClient requestClient = _requestClientRepository.getRequestClientByRequestId(model.RequestId);
+            RequestClient requestClient = _requestClientRepository.GetRequestClientByRequestId(model.RequestId);
             requestClient.Status = 5;
-            if(await _requestClientRepository.updateRequestClient(requestClient))
+            if(await _requestClientRepository.UpdateRequestClient(requestClient))
             {
-                Request request = _requestRepository.getRequestByRequestId(model.RequestId);
+                Request request = _requestRepository.GetRequestByRequestId(model.RequestId);
                 request.AcceptedDate = DateTime.Now;
                 request.ModifiedDate = DateTime.Now;
-                return await _requestRepository.updateRequest(request);
+                return await _requestRepository.UpdateRequest(request);
             }
             return false;
         }
 
-        public async Task<bool> assignRequest(AssignAndTransferPopUp model)
+        public async Task<bool> AssignRequest(AssignAndTransferPopUp model)
         {
-            RequestClient requestClient = _requestClientRepository.getRequestClientByRequestId(model.RequestId);
+            RequestClient requestClient = _requestClientRepository.GetRequestClientByRequestId(model.RequestId);
             requestClient.Status = 1;
             requestClient.PhysicianId = model.SelectedPhysician;
-            if(await _requestClientRepository.updateRequestClient(requestClient))
+            if(await _requestClientRepository.UpdateRequestClient(requestClient))
             {
                 return await _requestSatatusLogRepository
-                    .addRequestSatatusLog(new RequestStatusLog()
+                    .AddRequestSatatusLog(new RequestStatusLog()
                     {
                         RequestId = model.RequestId,
                         Status = 1,
@@ -141,11 +141,11 @@ namespace Services.Implementation.AdminServices
             return false;
         }
 
-        public async Task<bool> blockRequest(BlockPopUp model)
+        public async Task<bool> BlockRequest(BlockPopUp model)
         {
-            RequestClient requestClient = _requestClientRepository.getRequestClientByRequestId(model.RequestId);
+            RequestClient requestClient = _requestClientRepository.GetRequestClientByRequestId(model.RequestId);
             requestClient.Status = 0;
-            if(await _requestClientRepository.updateRequestClient(requestClient))
+            if(await _requestClientRepository.UpdateRequestClient(requestClient))
             {
                 BlockRequest blockRequest = new()
                 {
@@ -156,10 +156,10 @@ namespace Services.Implementation.AdminServices
                     CreatedDate = DateTime.Now,
                     IsActive = new BitArray(1, false),
                 };
-                if (await _requestSatatusLogRepository.addBlockRequest(blockRequest))
+                if (await _requestSatatusLogRepository.AddBlockRequest(blockRequest))
                 {
                     return await _requestSatatusLogRepository
-                        .addRequestSatatusLog(new RequestStatusLog()
+                        .AddRequestSatatusLog(new RequestStatusLog()
                         {
                             RequestId = model.RequestId,
                             Status = 0,
@@ -171,21 +171,21 @@ namespace Services.Implementation.AdminServices
             return false;
         }
 
-        public async Task<bool> clearRequest(int requestId)
+        public async Task<bool> ClearRequest(int requestId)
         {
-            RequestClient requestClient = _requestClientRepository.getRequestClientByRequestId(requestId);
+            RequestClient requestClient = _requestClientRepository.GetRequestClientByRequestId(requestId);
             requestClient.Status = 12;
-            return await _requestClientRepository.updateRequestClient(requestClient);
+            return await _requestClientRepository.UpdateRequestClient(requestClient);
         }
 
-        public bool sendAgreement(Agreement model,HttpContext httpContext)
+        public bool SendAgreement(Agreement model,HttpContext httpContext)
         {
             var request = httpContext.Request;
             List<Claim> claims = new List<Claim>()
             {
                 new Claim("requestId", model.RequestId.ToString()),
             };
-            String token = _jwtService.genrateJwtTokenForSendMail(claims, DateTime.Now.AddDays(2));
+            String token = _jwtService.GenrateJwtTokenForSendMail(claims, DateTime.Now.AddDays(2));
             String link = $"{request.Scheme}://{request.Host}/Admin/Agreement?token={token}";
             MailMessage mailMessage = new MailMessage
             {

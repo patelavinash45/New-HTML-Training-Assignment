@@ -31,14 +31,14 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model.patientRecordTableDatas)
+            @foreach (var item in Model.PatientRecordTableDatas)
             {
                 <tr class="align-middle bg-white">
                     <td>
                         @item.Name
                     </td>
                     <td>
-                        @item.CreatedDate.ToString("MMM dd,yy")
+                        @item.CreatedDate.ToString("MMM dd,yyy")
                     </td>
                     <td>
                         @item.Conformation
@@ -47,7 +47,7 @@
                         @item.ProviderName
                     </td>
                     <td>
-                        @item.ConcludeedDate.ToString("MMM dd,yy")
+                        @item.ConcludeedDate
                     </td>
                     <td>
                         @item.Ststus
@@ -100,7 +100,7 @@
         </tbody>
     </table>
 </div>
-@foreach (var item in Model.patientRecordTableDatas)
+@foreach (var item in Model.PatientRecordTableDatas)
 {
     <div class="accordion accordion-flush w-100" id="accordionFlushExample">
         <div class="accordion-item">

@@ -6,10 +6,8 @@ namespace Repositories.Interfaces
     {
         List<RequestStatusLog> GetRequestStatusLogByRequestId(int requestId);
 
-        Task<bool> addRequestSatatusLog(RequestStatusLog requestStatusLog);
+        Task<bool> AddRequestSatatusLog(RequestStatusLog requestStatusLog);
 
-        Task<bool> updateRequestSatatusLog(RequestStatusLog requestStatusLog);
-
-        Task<bool> addBlockRequest(BlockRequest blockRequest);
+        Task<bool> AddBlockRequest(BlockRequest blockRequest);
     }
 }

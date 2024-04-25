@@ -4,10 +4,10 @@ namespace Repositories.Interfaces
 {
     public interface IRequestRepository
     {
-        Task<int> addRequest(Request request);
+        Task<int> AddRequest(Request request);
 
-        Request getRequestByRequestId(int requestId);
+        Request GetRequestByRequestId(int requestId);
 
-        Task<bool> updateRequest(Request request);
+        Task<bool> UpdateRequest(Request request);
     }
 }

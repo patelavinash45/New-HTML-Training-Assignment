@@ -17,10 +17,11 @@
                         Patient Name : <span class="patientName"> </span>
                     </div>
                     <input readonly class="d-none patientRequestId" asp-for="RequestId" type="text" />
-                    <div class="form-floating">
-                        <textarea asp-for="AdminTransferNotes" class="form-control h-100 border-2 mb-4 mt-3" placeholder="AdditionalNotes" id="Notes" rows="5">
+                    <div class="form-floating mb-4">
+                        <textarea asp-for="AdminTransferNotes" class="form-control h-100 border-2 mt-3" placeholder="AdditionalNotes" id="Notes" rows="5">
                         </textarea>
                         <label for="Notes">Additional Notes</label>
+                        <span asp-validation-for="AdminTransferNotes" class="text-danger"></span>
                     </div>
                     <div class="d-flex justify-content-end">
                         <button type="submit" class="btn mx-2" id="conformButton">

@@ -7,16 +7,18 @@ namespace Services.ViewModels
     { 
         [StringLength(100)]
         [RegularExpression(@"^[a-zA-Z]+(?: [a-zA-Z]+)*$", ErrorMessage = "The FirstName is not valid")]
-        public string FirstName { get; set; } 
+        [Required(ErrorMessage = "The FirstName field is required.")]
+        public string? FirstName { get; set; } 
 
         [StringLength(100)]
         [RegularExpression(@"^[a-zA-Z]+(?: [a-zA-Z]+)*$", ErrorMessage = "The LastName is not valid")]
-        public string LastName { get; set; }
+        [Required(ErrorMessage = "The LastName field is required.")]
+        public string? LastName { get; set; }
 
         [StringLength(50)]
-        [Required]
         [DataType(DataType.EmailAddress, ErrorMessage = "The Email is not valid")]
-        public string Email { get; set; } 
+        [Required(ErrorMessage = "The Email field is required.")]
+        public string? Email { get; set; } 
 
         [StringLength(100)]
         public string? Password { get; set; }
@@ -26,28 +28,30 @@ namespace Services.ViewModels
         public string? ConformPassword { get; set; }
 
         [StringLength(20)]
-        [Required]
         [RegularExpression(@"^(?:\+?91)?\s*([1-9]\d{4})\s*(\d{5})$", ErrorMessage = "The Mobile is not valid")]
-        public string Mobile { get; set; }
+        [Required(ErrorMessage = "The Mobile field is required.")]
+        public string? Mobile { get; set; }
 
         [StringLength(100)]
-        [Required]
-        public string Street { get; set; }
+        [Required(ErrorMessage = "The Street field is required.")]
+        public string? Street { get; set; }
 
         [StringLength(100)]
-        [Required]
-        public string City { get; set; }
+        [Required(ErrorMessage = "The City field is required.")]
+        public string? City { get; set; }
 
         [StringLength(100)]
-        [Required]
-        public string State { get; set; }
+        [Required(ErrorMessage = "The State field is required.")]
+        public string? State { get; set; }
 
         [StringLength(10)]
-        [Required]
-        public string ZipCode { get; set; }
+        [Required(ErrorMessage = "The ZipCode field is required.")]
+        public string? ZipCode { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "The BirthDate field is required.")]
         public DateTime BirthDate { get; set; }
+
+        public int Region { get; set; }
 
         public IFormFile? File { get; set; }
 
@@ -61,45 +65,45 @@ namespace Services.ViewModels
     public class AddFamilyRequest
     {
         [StringLength(100)]
-        [Required]
         [Display(Name = "FirstName")]
         [RegularExpression(@"^[a-zA-Z]+(?: [a-zA-Z]+)*$", ErrorMessage = "The FirstName is not valid")]
-        public string FamilyFriendFirstName { get; set; }
+        [Required(ErrorMessage = "The FirstName field is required.")]
+        public string? FamilyFriendFirstName { get; set; }
 
         [StringLength(100)]
-        [Required]
         [Display(Name = "LastName")]
         [RegularExpression(@"^[a-zA-Z]+(?: [a-zA-Z]+)*$", ErrorMessage = "The LastName is not valid")]
+        [Required(ErrorMessage = "The LastName field is required.")]
         public string? FamilyFriendLastName { get; set; }
 
         [StringLength(50)]
-        [Required]
         [Display(Name = "Email")]
-        public string FamilyFriendEmail { get; set; }
+        [Required(ErrorMessage = "The Email field is required.")]
+        public string? FamilyFriendEmail { get; set; }
 
         [StringLength(20)]
-        [Required]
         [Display(Name = "Mobile")]
         [RegularExpression(@"^(?:\+?91)?\s*([1-9]\d{4})\s*(\d{5})$", ErrorMessage = "The Mobile is not valid")]
+        [Required(ErrorMessage = "The Mobile field is required.")]
         public string? FamilyFriendMobile { get; set; }
 
         [StringLength(100)]
-        [Required]
+        [Required(ErrorMessage = "The Relation field is required.")]
         public string? Relation { get; set; }
 
         [StringLength(100)]
-        [Required]
         [RegularExpression(@"^[a-zA-Z]+(?: [a-zA-Z]+)*$", ErrorMessage = "The FirstName is not valid")]
-        public string FirstName { get; set; }
+        [Required(ErrorMessage = "The FirstName field is required.")]
+        public string? FirstName { get; set; }
 
         [StringLength(100)]
-        [Required]
         [RegularExpression(@"^[a-zA-Z]+(?: [a-zA-Z]+)*$", ErrorMessage = "The LastName is not valid")]
+        [Required(ErrorMessage = "The LastName field is required.")]
         public string? LastName { get; set; }
 
         [StringLength(50)]
-        [Required]
-        public string Email { get; set; }
+        [Required(ErrorMessage = "The Email field is required.")]
+        public string? Email { get; set; }
 
         [StringLength(100)]
         public string? Password { get; set; }
@@ -109,25 +113,27 @@ namespace Services.ViewModels
         public string? ConformPassword { get; set; }
 
         [StringLength(20)]
-        [Required]
         [RegularExpression(@"^(?:\+?91)?\s*([1-9]\d{4})\s*(\d{5})$", ErrorMessage = "The Mobile is not valid")]
+        [Required(ErrorMessage = "The Mobile field is required.")]
         public string? Mobile { get; set; }
 
         [StringLength(100)]
-        [Required]
+        [Required(ErrorMessage = "The Street field is required.")]
         public string? Street { get; set; }
 
         [StringLength(100)]
-        [Required]
+        [Required(ErrorMessage = "The City field is required.")]
         public string? City { get; set; }
 
         [StringLength(100)]
-        [Required]
+        [Required(ErrorMessage = "The State field is required.")]
         public string? State { get; set; }
 
         [StringLength(10)]
-        [Required]
+        [Required(ErrorMessage = "The ZipCode field is required.")] 
         public string? ZipCode { get; set; }
+
+        public int Region { get; set; }
 
         [StringLength(500)]
         public string? Symptoms { get; set; }
@@ -135,7 +141,7 @@ namespace Services.ViewModels
         [StringLength(100)]
         public string? House { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "The BirthDate field is required.")]
         public DateTime? BirthDate { get; set; }
 
         public IFormFile? File { get; set; }
@@ -144,67 +150,63 @@ namespace Services.ViewModels
     public class AddConciergeRequest
     {
         [StringLength(100)]
-        [Required]
         [Display(Name = "FirstName")]
         [RegularExpression(@"^[a-zA-Z]+(?: [a-zA-Z]+)*$", ErrorMessage = "The FirstName is not valid")]
-        public string ConciergeFirstName { get; set; } = null!;
+        [Required(ErrorMessage = "The FirstName field is required.")]
+        public string? ConciergeFirstName { get; set; }
 
         [StringLength(100)]
-        [Required]
         [Display(Name = "LastName")]
         [RegularExpression(@"^[a-zA-Z]+(?: [a-zA-Z]+)*$", ErrorMessage = "The LastName is not valid")]
-        public string ConciergeLastName { get; set; }
+        [Required(ErrorMessage = "The LastName field is required.")]
+        public string? ConciergeLastName { get; set; }
 
         [StringLength(50)]
-        [Required]
         [Display(Name = "Email")]
         [DataType(DataType.EmailAddress, ErrorMessage = "The Email is not valid")]
-        public string ConciergeEmail { get; set; } = null!;
+        [Required(ErrorMessage = "The Email field is required.")]
+        public string? ConciergeEmail { get; set; }
 
         [StringLength(20)]
-        [Required]
         [Display(Name = "Mobile")]
         [RegularExpression(@"^(?:\+?91)?\s*([1-9]\d{4})\s*(\d{5})$", ErrorMessage = "The Mobile is not valid")]
-        public string ConciergeMobile { get; set; }
+        [Required(ErrorMessage = "The Mobile field is required.")]
+        public string? ConciergeMobile { get; set; }
 
         [StringLength(100)]
-        [Required]
         [Display(Name = "PropertyName")]
-        public string ConciergePropertyName { get; set; }
+        [Required(ErrorMessage = "The PropertyName field is required.")]
+        public string? ConciergePropertyName { get; set; }
 
         [StringLength(100)]
-        [Required]
-        [Display(Name = "Street")]
-        public string ConciergeStreet { get; set; }
+        [Required(ErrorMessage = "The Street field is required.")]
+        public string? ConciergeStreet { get; set; }
 
         [StringLength(100)]
-        [Required]
-        [Display(Name = "City")]
-        public string ConciergeCity { get; set; }
+        [Required(ErrorMessage = "The City field is required.")]
+        public string? ConciergeCity { get; set; }
 
         [StringLength(100)]
-        [Required]
-        [Display(Name = "State")]
+        [Required(ErrorMessage = "The State field is required.")]
         public string? ConciergeState { get; set; }
 
         [StringLength(10)]
-        [Required]
-        [Display(Name = "ZipCode")]
+        [Required(ErrorMessage = "The ZipCode field is required.")]
         public string? ConciergeZipCode { get; set; }
 
         [StringLength(100)]
-        [Required]
         [RegularExpression(@"^[a-zA-Z]+(?: [a-zA-Z]+)*$", ErrorMessage = "The FirstName is not valid")]
-        public string FirstName { get; set; }
+        [Required(ErrorMessage = "The FirstName field is required.")]
+        public string? FirstName { get; set; }
 
         [StringLength(100)]
-        [Required]
         [RegularExpression(@"^[a-zA-Z]+(?: [a-zA-Z]+)*$", ErrorMessage = "The LastName is not valid")]
+        [Required(ErrorMessage = "The LastName field is required.")]
         public string? LastName { get; set; }
 
         [StringLength(50)]
-        [Required]
-        public string Email { get; set; }
+        [Required(ErrorMessage = "The Email field is required.")]
+        public string? Email { get; set; }
 
         [StringLength(100)]
         public string? Password { get; set; }
@@ -214,25 +216,27 @@ namespace Services.ViewModels
         public string? ConformPassword { get; set; }
 
         [StringLength(20)]
-        [Required]
         [RegularExpression(@"^(?:\+?91)?\s*([1-9]\d{4})\s*(\d{5})$", ErrorMessage = "The Mobile is not valid")]
+        [Required(ErrorMessage = "The Mobile field is required.")]
         public string? Mobile { get; set; }
 
         [StringLength(100)]
-        [Required]
+        [Required(ErrorMessage = "The Street field is required.")]
         public string? Street { get; set; }
 
         [StringLength(100)]
-        [Required]
+        [Required(ErrorMessage = "The City field is required.")]
         public string? City { get; set; }
 
         [StringLength(100)]
-        [Required]
+        [Required(ErrorMessage = "The State field is required.")]
         public string? State { get; set; }
 
         [StringLength(10)]
-        [Required]
+        [Required(ErrorMessage = "The ZipCode field is required.")]
         public string? ZipCode { get; set; }
+
+        public int Region { get; set; }
 
         [StringLength(500)]
         public string? Symptoms { get; set; }
@@ -240,7 +244,7 @@ namespace Services.ViewModels
         [StringLength(100)]
         public string? House { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "The BirthDate field is required.")]
         public DateTime? BirthDate { get; set; }
 
         public IFormFile? File { get; set; }
@@ -250,50 +254,46 @@ namespace Services.ViewModels
     public class AddBusinessRequest
     {
         [StringLength(100)]
-        [Required]
-        [Display(Name = "FirstName")]
         [RegularExpression(@"^[a-zA-Z]+(?: [a-zA-Z]+)*$", ErrorMessage = "The FirstName is not valid")]
-        public string BusinessFirstName { get; set; }
+        [Required(ErrorMessage = "The FirstName field is required.")]
+        public string? BusinessFirstName { get; set; }
 
         [StringLength(100)]
-        [Required]
-        [Display(Name = "LastName")]
         [RegularExpression(@"^[a-zA-Z]+(?: [a-zA-Z]+)*$", ErrorMessage = "The LastName is not valid")]
+        [Required(ErrorMessage = "The LastName field is required.")]
         public string? BusinessLastName { get; set; }
 
         [StringLength(50)]
-        [Required]
-        [Display(Name = "Email")]
         [DataType(DataType.EmailAddress, ErrorMessage = "The Email is not valid")]
-        public string BusinessEmail { get; set; } = null!;
+        [Required(ErrorMessage = "The Email field is required.")]
+        public string? BusinessEmail { get; set; }
 
         [StringLength(20)]
-        [Required]
-        [Display(Name = "Mobile")]
         [RegularExpression(@"^(?:\+?91)?\s*([1-9]\d{4})\s*(\d{5})$", ErrorMessage = "The Mobile is not valid")]
+        [Required(ErrorMessage = "The Mobile field is required.")]
         public string? BusinessMobile { get; set; }
 
         [StringLength(100)]
-        [Required]
+        [Required(ErrorMessage = "The Business field is required.")]
         public string? Business { get; set; }
 
         [StringLength(100)]
         public string? CaseNumber { get; set; }
 
         [StringLength(100)]
-        [Required]
         [RegularExpression(@"^[a-zA-Z]+(?: [a-zA-Z]+)*$", ErrorMessage = "The FirstName is not valid")]
-        public string FirstName { get; set; } = null!;
+        [Required(ErrorMessage = "The FirstName field is required.")]
+        public string? FirstName { get; set; }
 
         [StringLength(100)]
-        [Required]
         [RegularExpression(@"^[a-zA-Z]+(?: [a-zA-Z]+)*$", ErrorMessage = "The LastName is not valid")]
+        [Required(ErrorMessage = "The LastName field is required.")]
         public string? LastName { get; set; }
 
         [StringLength(50)]
-        [Required]
         [DataType(DataType.EmailAddress, ErrorMessage = "The Email is not valid")]
-        public string Email { get; set; } = null!;
+        [Required(ErrorMessage = "The Email field is required.")]
+        public string? Email { get; set; } 
 
         [StringLength(100)]
         public string? Password { get; set; }
@@ -303,25 +303,27 @@ namespace Services.ViewModels
         public string? ConformPassword { get; set; }
 
         [StringLength(20)]
-        [Required]
         [RegularExpression(@"^(?:\+?91)?\s*([1-9]\d{4})\s*(\d{5})$", ErrorMessage = "The Mobile is not valid")]
+        [Required(ErrorMessage = "The Mobile field is required.")]
         public string? Mobile { get; set; }
 
         [StringLength(100)]
-        [Required]
+        [Required(ErrorMessage = "The Street field is required.")]
         public string? Street { get; set; }
 
         [StringLength(100)]
-        [Required]
+        [Required(ErrorMessage = "The City field is required.")]
         public string? City { get; set; }
 
         [StringLength(100)]
-        [Required]
+        [Required(ErrorMessage = "The State field is required.")]
         public string? State { get; set; }
 
+        public int Region { get; set; }
+
         [StringLength(10)]
-        [Required]
-        public string ZipCode { get; set; }
+        [Required(ErrorMessage = "The ZipCode field is required.")]
+        public string? ZipCode { get; set; }
 
         [StringLength(500)]
         public string? Symptoms { get; set; }
@@ -329,7 +331,7 @@ namespace Services.ViewModels
         [StringLength(100)]
         public string? House { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "The BirthDate field is required.")]
         public DateTime? BirthDate { get; set; }
 
         public IFormFile? File { get; set; }
@@ -339,14 +341,17 @@ namespace Services.ViewModels
     {
         [StringLength(100)]
         [RegularExpression(@"^[a-zA-Z]+(?: [a-zA-Z]+)*$", ErrorMessage = "The FirstName is not valid")]
-        public string FirstName { get; set; }
+        [Required(ErrorMessage = "The FirstName field is required.")]
+        public string? FirstName { get; set; }
 
         [StringLength(100)]
         [RegularExpression(@"^[a-zA-Z]+(?: [a-zA-Z]+)*$", ErrorMessage = "The LastName is not valid")]
-        public string LastName { get; set; }
+        [Required(ErrorMessage = "The LastName field is required.")]
+        public string? LastName { get; set; }
 
         [StringLength(50)]
-        public string Email { get; set; }
+        [Required(ErrorMessage = "The Email field is required.")]
+        public string? Email { get; set; }
 
         [StringLength(100)]
         public string? Password { get; set; }
@@ -357,23 +362,31 @@ namespace Services.ViewModels
 
         [StringLength(20)]
         [RegularExpression(@"^(?:\+?91)?\s*([1-9]\d{4})\s*(\d{5})$", ErrorMessage = "The Mobile is not valid")]
-        public string Mobile { get; set; }
+        [Required(ErrorMessage = "The Mobile field is required.")]
+        public string? Mobile { get; set; }
 
         [StringLength(100)]
-        public string Street { get; set; }
+        [Required(ErrorMessage = "The Street field is required.")]
+        public string? Street { get; set; }
 
         [StringLength(100)]
-        public string City { get; set; }
+        [Required(ErrorMessage = "The City field is required.")]
+        public string? City { get; set; }
+
+        public int Region { get; set; }
 
         [StringLength(100)]
-        public string State { get; set; }
+        [Required(ErrorMessage = "The State field is required.")]
+        public string? State { get; set; }
 
         [StringLength(10)]
-        public string ZipCode { get; set; }
+        [Required(ErrorMessage = "The ZipCode field is required.")]
+        public string? ZipCode { get; set; }
 
-        public string Relation { get; set; }
+        [Required(ErrorMessage = "The Relation field is required.")]
+        public string? Relation { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "The BirthDate field is required.")]
         public DateTime BirthDate { get; set; }
 
         public IFormFile? File { get; set; }

@@ -5,17 +5,17 @@ namespace Services.Interfaces.AuthServices
 {
     public interface ILoginService
     {
-        UserDataModel auth(Login model,List<int> userType);
+        UserDataModel Auth(Login model,List<int> userType);
 
-        String isTokenValid(HttpContext httpContext, List<int> userType);
+        String IsTokenValid(HttpContext httpContext, List<int> userType);
 
-        Task<bool> resetPasswordLinkSend(string email,HttpContext httpContext);
+        Task<bool> ResetPasswordLinkSend(string email, HttpContext httpContext);
 
-        SetNewPassword validatePasswordLink(string token);
+        SetNewPassword ValidatePasswordLink(string token);
 
-        Task<bool> changePassword(int aspNetUserId, String password);
+        Task<bool> ChangePassword(int aspNetUserId, String password);
 
-        bool validateAccess(int aspNetUserId, int menuId, bool isAdmin);
+        bool ValidateAccess(int aspNetUserId, int menuId, bool isAdmin);
 
     }
 }

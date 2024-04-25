@@ -32,16 +32,16 @@ namespace Services.Implementation.AuthServices
             _logsService = logsService;
         }
 
-        public UserDataModel auth(Login model,List<int> userType)
+        public UserDataModel Auth(Login model, List<int> userType)
         {
-            AspNetUserRole aspNetUserRole = _aspRepository.validateAspNetUserRole(email: model.Email, password: genrateHash(model.PasswordHash));
+            AspNetUserRole aspNetUserRole = _aspRepository.ValidateAspNetUserRole(email: model.Email, password: GenrateHash(model.PasswordHash));
             if (aspNetUserRole != null)
             {
                 if(userType.Contains(aspNetUserRole.RoleId))
                 {
                     switch (aspNetUserRole.RoleId)
                     {
-                        case 1: User user = _userRepository.getUser(aspNetUserRole.UserId);
+                        case 1: User user = _userRepository.GetUser(aspNetUserRole.UserId);
                                 return new UserDataModel()
                                 {
                                     UserTypeId = 1,
@@ -52,7 +52,7 @@ namespace Services.Implementation.AuthServices
                                     UserType = aspNetUserRole.Role.Name,
                                     Message = "Successfully Login",
                                 };
-                        case 2: Admin admin = _userRepository.getAdmionByAspNetUserId(aspNetUserRole.UserId);
+                        case 2: Admin admin = _userRepository.GetAdmionByAspNetUserId(aspNetUserRole.UserId);
                                 return new UserDataModel()
                                 {
                                     UserTypeId = 2,
@@ -63,7 +63,7 @@ namespace Services.Implementation.AuthServices
                                     UserType = aspNetUserRole.Role.Name,
                                     Message = "Successfully Login",
                                 };
-                        default: Physician physician = _userRepository.getPhysicianByAspNetUserId(aspNetUserRole.UserId);
+                        default: Physician physician = _userRepository.GetPhysicianByAspNetUserId(aspNetUserRole.UserId);
                                  return new UserDataModel()
                                  {
                                      UserTypeId = 3,
@@ -90,13 +90,13 @@ namespace Services.Implementation.AuthServices
             };
         }
 
-        public string isTokenValid(HttpContext httpContext,List<int> userType)
+        public string IsTokenValid(HttpContext httpContext, List<int> userType)
         {
             String token = httpContext.Request.Cookies["jwtToken"];
             if (token != null)
             {
                 JwtSecurityToken jwtToken = new JwtSecurityToken();
-                if (_jwtService.validateToken(token, out jwtToken))
+                if (_jwtService.ValidateToken(token, out jwtToken))
                 {
                     var jwtUserType = jwtToken.Claims.FirstOrDefault(a => a.Type == "userTypeId");
                     if (userType.Contains(int.Parse(jwtUserType.Value)))
@@ -116,20 +116,20 @@ namespace Services.Implementation.AuthServices
             return null;
         }
 
-        public async Task<bool> resetPasswordLinkSend(string email,HttpContext httpContext)
+        public async Task<bool> ResetPasswordLinkSend(string email, HttpContext httpContext)
         {
             try
             {
                 var request = httpContext.Request;
-                AspNetUser aspNetUser = _aspRepository.getUserFromEmail(email);
+                AspNetUser aspNetUser = _aspRepository.GetUserFromEmail(email);
                 if(aspNetUser.Id != 0) 
                 {
                     List<Claim> claims = new List<Claim>()
                     {
                         new Claim("aspNetUserId", aspNetUser.Id.ToString()),
                     };
-                    String token = _jwtService.genrateJwtTokenForSendMail(claims, DateTime.Now.AddDays(1));
-                    await _aspRepository.setToken(token: token, aspNetUserId: aspNetUser.Id);
+                    String token = _jwtService.GenrateJwtTokenForSendMail(claims, DateTime.Now.AddDays(1));
+                    await _aspRepository.SetToken(token: token, aspNetUserId: aspNetUser.Id);
                     string link = $"{request.Scheme}://{request.Host}/Patient/Newpassword?token={token}";
                     MailMessage mailMessage = new MailMessage
                     {
@@ -160,7 +160,7 @@ namespace Services.Implementation.AuthServices
                         IsEmailSent = new BitArray(1, true),
                         RoleId = null,
                     };
-                    return await _logsService.addEmailLog(emailLog);
+                    return await _logsService.AddEmailLog(emailLog);
                 }
             }
             catch (Exception ex)
@@ -170,7 +170,7 @@ namespace Services.Implementation.AuthServices
             return false;
         }
 
-        public SetNewPassword validatePasswordLink(string token)
+        public SetNewPassword ValidatePasswordLink(string token)
         {
             SetNewPassword setNewPassword = new()
             {
@@ -179,10 +179,10 @@ namespace Services.Implementation.AuthServices
             try
             {
                 JwtSecurityToken jwtSecurityToken = new JwtSecurityToken(token);
-                if (_jwtService.validateToken(token, out jwtSecurityToken))
+                if (_jwtService.ValidateToken(token, out jwtSecurityToken))
                 {
                     int aspNetUserId = int.Parse(jwtSecurityToken.Claims.FirstOrDefault(a => a.Type == "aspNetUserId").Value);
-                    if(_aspRepository.checkToken(token: token, aspNetUserId: aspNetUserId))
+                    if(_aspRepository.CheckToken(token: token, aspNetUserId: aspNetUserId))
                     {
                         setNewPassword.IsValidLink = true;
                         setNewPassword.AspNetUserId = aspNetUserId;
@@ -205,19 +205,19 @@ namespace Services.Implementation.AuthServices
             return setNewPassword;
         }
 
-        public Task<bool> changePassword(int aspNetUserId, String password)
+        public Task<bool> ChangePassword(int aspNetUserId, String password)
         {
-            AspNetUser aspNetUser = _aspRepository.getUser(aspNetUserId);
-            aspNetUser.PasswordHash = genrateHash(password);
+            AspNetUser aspNetUser = _aspRepository.GetUser(aspNetUserId);
+            aspNetUser.PasswordHash = GenrateHash(password);
             aspNetUser.ResetPasswordToken = null;
-            return _aspRepository.changePassword(aspNetUser);
+            return _aspRepository.ChangePassword(aspNetUser);
         }
 
-        public bool validateAccess(int aspNetUserId, int menuId, bool isAdmin)
+        public bool ValidateAccess(int aspNetUserId, int menuId, bool isAdmin)
         {
             if(isAdmin)
             {
-                Admin admin = _roleRepository.getRoleWithRoleMenusAndAdmin(aspNetUserId, menuId);
+                Admin admin = _roleRepository.GetRoleWithRoleMenusAndAdmin(aspNetUserId, menuId);
                 if (admin.Role.RoleMenus.Count == 1)
                 {
                     return true;
@@ -225,7 +225,7 @@ namespace Services.Implementation.AuthServices
             }
             else
             {
-                Physician physician = _roleRepository.getRoleWithRoleMenusAndPhysician(aspNetUserId, menuId);
+                Physician physician = _roleRepository.GetRoleWithRoleMenusAndPhysician(aspNetUserId, menuId);
                 if (physician.Role.RoleMenus.Count == 1)
                 {
                     return true;
@@ -234,7 +234,7 @@ namespace Services.Implementation.AuthServices
             return false;
         }
 
-        private string genrateHash(string password)
+        private string GenrateHash(string password)
         {
             using (var sha256 = SHA256.Create())
             {

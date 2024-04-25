@@ -23,15 +23,15 @@ namespace Services.Implementation
             _fileService = fileService;
         }
 
-        public ViewDocument getDocumentList(int requestId, int aspNetUserId)
+        public ViewDocument GetDocumentList(int requestId, int aspNetUserId)
         {
-            RequestClient requestClient = _requestClientRepository.getRequestClientAndRequestByRequestId(requestId);
+            RequestClient requestClient = _requestClientRepository.GetRequestClientAndRequestByRequestId(requestId);
             return new ViewDocument()
             {
                 ConformationNumber = requestClient.Request.ConfirmationNumber,
                 FirstName = requestClient.FirstName,
                 LastName = requestClient.LastName,
-                FileList = _requestWiseFileRepository.getFilesByrequestId(requestId)
+                FileList = _requestWiseFileRepository.GetFilesByrequestId(requestId)
                             .Select(requestWiseFile =>
                             new FileModel()
                             {
@@ -44,31 +44,31 @@ namespace Services.Implementation
             };
         }
 
-        public async Task<bool> uploadFile(ViewDocument model ,String firstName,String lastName,int requestId)
+        public async Task<bool> UploadFile(ViewDocument model, String firstName, String lastName, int requestId)
         {
-            return await _fileService.addFile(requestId: requestId, firstName: firstName, lastName: lastName,file: model.File);
+            return await _fileService.AddFile(requestId: requestId, firstName: firstName, lastName: lastName,file: model.File);
         }
 
-        public async Task<bool> deleteFile(int requestWiseFileId)
+        public async Task<bool> DeleteFile(int requestWiseFileId)
         {
-            RequestWiseFile requestWiseFile = _requestWiseFileRepository.getFilesByrequestWiseFileId(requestWiseFileId);
+            RequestWiseFile requestWiseFile = _requestWiseFileRepository.GetFilesByrequestWiseFileId(requestWiseFileId);
             requestWiseFile.IsDeleted = new BitArray(1, true);
-            return await _requestWiseFileRepository.updateRequestWiseFiles(new List<RequestWiseFile> { requestWiseFile});
+            return await _requestWiseFileRepository.UpdateRequestWiseFiles(new List<RequestWiseFile> { requestWiseFile});
         }
 
-        public async Task<bool> deleteAllFile(String requestWiseFileIds, int requestId)
+        public async Task<bool> DeleteAllFile(String requestWiseFileIds, int requestId)
         {
             List<int> ids = JsonSerializer.Deserialize<List<String>>(requestWiseFileIds).Select(id => int.Parse(id)).ToList();
-            List<RequestWiseFile> requestWiseFiles = _requestWiseFileRepository.getFilesByrequestId(requestId)
+            List<RequestWiseFile> requestWiseFiles = _requestWiseFileRepository.GetFilesByrequestId(requestId)
                 .Select(requestWiseFile =>
                 {
                     requestWiseFile.IsDeleted = new BitArray(1, true);
                     return requestWiseFile;
                 }).ToList();
-            return await _requestWiseFileRepository.updateRequestWiseFiles(requestWiseFiles);
+            return await _requestWiseFileRepository.UpdateRequestWiseFiles(requestWiseFiles);
         }
 
-        public bool sendFileMail(String requestWiseFileIds ,int requestId)
+        public bool SendFileMail(String requestWiseFileIds, int requestId)
         {
             List<int> ids = JsonSerializer.Deserialize<List<String>>(requestWiseFileIds).Select(id => int.Parse(id)).ToList();
             MailMessage mailMessage = new MailMessage
@@ -78,7 +78,7 @@ namespace Services.Implementation
                 IsBodyHtml = true,
                 Body = $"All The Documents For RequestId : {requestId.ToString()}",
             };
-            _requestWiseFileRepository.getRequestWiseFilesByIds(ids)
+            _requestWiseFileRepository.GetRequestWiseFilesByIds(ids)
                 .ForEach(requestWiseFile =>
                 {
                     string path = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot/Files/{requestWiseFile.RequestId.ToString()}");

@@ -4,14 +4,14 @@ namespace Repositories.Interfaces
 {
     public interface IRequestWiseFileRepository
     {
-        Task<bool> addFile(RequestWiseFile requestWiseFile);
+        Task<bool> AddFile(RequestWiseFile requestWiseFile);
 
-        List<RequestWiseFile> getFilesByrequestId(int requestId);
+        List<RequestWiseFile> GetFilesByrequestId(int requestId);
         
-        List<RequestWiseFile> getRequestWiseFilesByIds(List<int> ids);
+        List<RequestWiseFile> GetRequestWiseFilesByIds(List<int> ids);
 
-        RequestWiseFile getFilesByrequestWiseFileId(int requestWiseFileId);
+        RequestWiseFile GetFilesByrequestWiseFileId(int requestWiseFileId);
 
-        Task<bool> updateRequestWiseFiles(List<RequestWiseFile> requestWiseFile);
+        Task<bool> UpdateRequestWiseFiles(List<RequestWiseFile> requestWiseFile);
     }
 }

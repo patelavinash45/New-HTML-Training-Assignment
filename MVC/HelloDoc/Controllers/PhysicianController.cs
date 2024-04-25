@@ -32,7 +32,7 @@ namespace HelloDoc.Controllers
         public IActionResult Dashboard()
         {
             int aspNetUserId = HttpContext.Session.GetInt32("aspNetUserId").Value;
-            return View(_physicianDashboardService.getallRequests(aspNetUserId));
+            return View(_physicianDashboardService.GetallRequests(aspNetUserId));
         }
 
         [HttpGet]   // Dashboard 
@@ -47,12 +47,12 @@ namespace HelloDoc.Controllers
         public IActionResult Scheduling()
         {
             int aspNetUserId = HttpContext.Session.GetInt32("aspNetUserId").Value;
-            return View(_physicianDashboardService.providerScheduling(aspNetUserId));
+            return View(_physicianDashboardService.ProviderScheduling(aspNetUserId));
         }
 
         public async Task<IActionResult> AcceptRequest(int requestId)
         {
-            if (await _physicianDashboardService.acceptRequest(requestId))
+            if (await _physicianDashboardService.AcceptRequest(requestId))
             {
                 _notyfService.Success("Successfully Accepted");
             }
@@ -66,7 +66,7 @@ namespace HelloDoc.Controllers
         [HttpPost]
         public async Task<IActionResult> TransferRequest(PhysicianTransferRequest model)
         {
-            if (await _physicianDashboardService.transferRequest(model))
+            if (await _physicianDashboardService.TransferRequest(model))
             {
                 _notyfService.Success("Successfully Transfered");
             }
@@ -80,13 +80,13 @@ namespace HelloDoc.Controllers
         [HttpGet]
         public async Task<JsonResult> SetEncounter(bool isVideoCall,int requestId)
         {
-            await _physicianDashboardService.setEncounter(requestId, isVideoCall);
+            await _physicianDashboardService.SetEncounter(requestId, isVideoCall);
             return Json(new { redirect = Url.Action("Dashboard", "Physician") });
         }
 
         public async Task<IActionResult> HomeVisit(int requestId)
         {
-            if (await _physicianDashboardService.setEncounter(requestId,true))
+            if (await _physicianDashboardService.SetEncounter(requestId,true))
             {
                 HttpContext.Session.SetInt32("requestId", requestId);
                 return RedirectToAction("EncounterForm", "Admin");
@@ -100,7 +100,7 @@ namespace HelloDoc.Controllers
         public IActionResult ViewProfile()
         {
             int aspNetUserId = HttpContext.Session.GetInt32("aspNetUserId").Value;
-            int PhysicianId = _physicianDashboardService.getPhysicianIdFromAspNetUserId(aspNetUserId);
+            int PhysicianId = _physicianDashboardService.GetPhysicianIdFromAspNetUserId(aspNetUserId);
             return RedirectToAction("SetPhyscianId", "Admin", new { physicianId = PhysicianId });
         }
 
@@ -109,7 +109,7 @@ namespace HelloDoc.Controllers
             int requestId = HttpContext.Session.GetInt32("requestId").Value;
             int aspNetUserId = HttpContext.Session.GetInt32("aspNetUserId").Value;
             model.IsFinalize = true;
-            if (await _adminDashboardService.updateEncounter(model, requestId, aspNetUserId))
+            if (await _adminDashboardService.UpdateEncounter(model, requestId, aspNetUserId))
             {
                 _notyfService.Success("Successfully Updated");
             }
@@ -124,12 +124,12 @@ namespace HelloDoc.Controllers
         public IActionResult GetMonthWiseData(String time)
         {
             int aspNetUserId = HttpContext.Session.GetInt32("aspNetUserId").Value;
-            return PartialView("_monthWiseScheduling", _physicianDashboardService.monthWiseScheduling(time, aspNetUserId));
+            return PartialView("_monthWiseScheduling", _physicianDashboardService.MonthWiseScheduling(time, aspNetUserId));
         }
 
         public IActionResult GeneratePDF(int requestId)
         {
-            byte[] bytes = _physicianDashboardService.generateMedicalReport(requestId);
+            byte[] bytes = _physicianDashboardService.GenerateMedicalReport(requestId);
             return File(bytes, "application/pdf", "MedicalReport.pdf");
         }
 
@@ -137,7 +137,7 @@ namespace HelloDoc.Controllers
         public async Task<IActionResult> FinalConcludeCare(ConcludeCare model)
         {
             int requestId = HttpContext.Session.GetInt32("requestId").Value;
-            if(await _physicianDashboardService.concludeCare(requestId, model))
+            if(await _physicianDashboardService.ConcludeCare(requestId, model))
             {
                 _notyfService.Success("Successfully Concluded");
                 return RedirectToAction("Dashboard", "Physician");

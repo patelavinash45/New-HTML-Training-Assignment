@@ -6,6 +6,16 @@ $(document).ready(function () {
     var today = new Date();
     var currentTime = today.toISOString().split('T')[0];
     $("input[type=date]").attr('max', currentTime); 
+    $.ajax({
+        url: "/Patient/GetRegions",
+        type: "Get",
+        success: function (response, xhr) {
+            $.each(response, function (index, item) {
+                var option = "<option value=" + index + ">" + item + "</option>";
+                $("#selectRegion").append(option);
+            });
+        }
+    });
 });
 
 function checkEmail(element) {

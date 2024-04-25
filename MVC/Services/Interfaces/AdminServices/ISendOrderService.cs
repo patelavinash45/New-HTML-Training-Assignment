@@ -5,12 +5,12 @@ namespace Services.Interfaces.AdminServices
 {
     public interface ISendOrderService
     {
-        SendOrder getSendOrderDetails(int requestId);
+        SendOrder GetSendOrderDetails(int requestId);
 
-        HealthProfessional getBussinessData(int venderId);
+        HealthProfessional GetBussinessData(int venderId);
 
-        Task<bool> addOrderDetails(SendOrder model, int requestId); 
+        Task<bool> AddOrderDetails(SendOrder model, int requestId); 
 
-        Dictionary<int, string> getBussinessByProfession(int professionId);
+        Dictionary<int, string> GetBussinessByProfession(int professionId);
     }
 }

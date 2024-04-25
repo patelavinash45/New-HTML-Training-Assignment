@@ -45,7 +45,7 @@ namespace HelloDoc.Controllers
 
         public IActionResult LoginPage()
         {
-            string role = _loginService.isTokenValid(HttpContext,new List<int> { 1 });
+            string role = _loginService.IsTokenValid(HttpContext,new List<int> { 1 });
             if (role != null)
             {
                 return RedirectToAction("Dashboard", role);
@@ -84,7 +84,7 @@ namespace HelloDoc.Controllers
 
         public IActionResult NewPassword(String token, int id, string time)
         {
-            SetNewPassword setNewPassword = _loginService.validatePasswordLink(token);
+            SetNewPassword setNewPassword = _loginService.ValidatePasswordLink(token);
             if (!setNewPassword.IsValidLink)
             {
                 _notyfService.Error(setNewPassword.ErrorMessage);
@@ -102,14 +102,14 @@ namespace HelloDoc.Controllers
         public IActionResult RequestForMe()
         {
             int aspNetUserId = HttpContext.Session.GetInt32("aspNetUserId").Value;
-            return View(_addRequestService.getModelForRequestByMe(aspNetUserId));
+            return View(_addRequestService.GetModelForRequestByMe(aspNetUserId));
         }
 
         [Authorization("Patient")]
         public IActionResult ViewProfile()
         {
             int aspNetUserId = HttpContext.Session.GetInt32("aspNetUserId").Value;
-            return View(_viewProfileService.getProfileDetails(aspNetUserId));
+            return View(_viewProfileService.GetProfileDetails(aspNetUserId));
         }
 
         [Authorization("Patient")]
@@ -117,7 +117,7 @@ namespace HelloDoc.Controllers
         {
             int aspNetUserId = HttpContext.Session.GetInt32("aspNetUserId").Value;
             int requestId = HttpContext.Session.GetInt32("requestId").Value;
-            return View(_viewDocumentsServices.getDocumentList(requestId: requestId,aspNetUserId: aspNetUserId));
+            return View(_viewDocumentsServices.GetDocumentList(requestId: requestId,aspNetUserId: aspNetUserId));
         }
 
         [Authorization("Patient")]
@@ -134,6 +134,12 @@ namespace HelloDoc.Controllers
             Response.Cookies.Delete("jwtToken");
             _notyfService.Success("Successfully Logout");
             return RedirectToAction("LoginPage", "Patient");
+        }
+
+        [HttpGet]
+        public JsonResult GetRegions()
+        {
+            return Json(_addRequestService.GetRegions());
         }
 
         [HttpGet]
@@ -154,7 +160,7 @@ namespace HelloDoc.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult LoginPage(Login model)
         {
-            UserDataModel user = _loginService.auth(model, new List<int> { 1 });
+            UserDataModel user = _loginService.Auth(model, new List<int> { 1 });
             if (!user.IsValid)
             {
                 _notyfService.Error(user.Message);
@@ -166,7 +172,7 @@ namespace HelloDoc.Controllers
                 HttpContext.Session.SetString("role", user.UserType);
                 HttpContext.Session.SetString("firstName", user.FirstName);
                 HttpContext.Session.SetString("lastName", user.LastName);
-                string token = _jwtService.genrateJwtToken(user);
+                string token = _jwtService.GenrateJwtToken(user);
                 CookieOptions cookieOptions = new CookieOptions()
                 {
                     Secure = true,
@@ -185,7 +191,7 @@ namespace HelloDoc.Controllers
         {
             if (ModelState.IsValid)
             {
-                if(await _loginService.changePassword(aspNetUserId: model.AspNetUserId,password: model.Password))
+                if(await _loginService.ChangePassword(aspNetUserId: model.AspNetUserId,password: model.Password))
                 {
                     _notyfService.Success("Successfully Password Updated");
                     return RedirectToAction("PatientSite", "Patient");
@@ -199,7 +205,7 @@ namespace HelloDoc.Controllers
         public async Task<IActionResult> ViewProfile(ViewProfile model)
         {
             int aspNetUserId = HttpContext.Session.GetInt32("aspNetUserId").Value;
-            if (await _viewProfileService.updatePatientProfile(model, aspNetUserId))
+            if (await _viewProfileService.UpdatePatientProfile(model, aspNetUserId))
             {
                 HttpContext.Session.SetString("firstName", model.FirstName);
                 HttpContext.Session.SetString("lastName", model.LastName);
@@ -216,7 +222,7 @@ namespace HelloDoc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ResetPassword(ResetPassword model)
         {
-            if(await _loginService.resetPasswordLinkSend(model.Email, HttpContext))
+            if(await _loginService.ResetPasswordLinkSend(model.Email, HttpContext))
             {
                 _notyfService.Success("Successfully Email Send");
                 return RedirectToAction("PatientSite", "Patient");
@@ -229,10 +235,10 @@ namespace HelloDoc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ViewDocument(ViewDocument model)
         {
-            String firstname = HttpContext.Session.GetString("firstName");
-            String lastName = HttpContext.Session.GetString("lastName");
+            String? firstname = HttpContext.Session.GetString("firstName");
+            String? lastName = HttpContext.Session.GetString("lastName");
             int requestId = HttpContext.Session.GetInt32("requestId").Value;
-            if (await _viewDocumentsServices.uploadFile(model, firstname, lastName, requestId))
+            if (await _viewDocumentsServices.UploadFile(model, firstname!, lastName!, requestId))
             {
                 _notyfService.Success("Successfully File Added.");
             }
@@ -247,7 +253,7 @@ namespace HelloDoc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RequestForMe(AddRequestByPatient model)
         {
-            if (await _addRequestService.addRequestForMe(model))
+            if (await _addRequestService.AddRequestForMe(model))
             {
                 _notyfService.Success("Successfully Request Added");
                 return RedirectToAction("Dashboard", "Patient");
@@ -264,7 +270,7 @@ namespace HelloDoc.Controllers
         public async Task<IActionResult> RequestForSomeOne(AddRequestByPatient model)
         {
             int aspNetUserId = HttpContext.Session.GetInt32("aspNetUserId").Value;
-            if (await _addRequestService.addRequestForSomeOneelse(model: model, aspNetUserIdMe: aspNetUserId))
+            if (await _addRequestService.AddRequestForSomeOneelse(model: model, aspNetUserIdMe: aspNetUserId))
             {
                 _notyfService.Success("Successfully Request Added");
                 return RedirectToAction("Dashboard", "Patient");
@@ -280,7 +286,7 @@ namespace HelloDoc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> PatientRequest(AddPatientRequest model)
         {
-            if (await _addRequestService.addPatientRequest(model))
+            if (await _addRequestService.AddPatientRequest(model))
             {
                 _notyfService.Success("Successfully Request Added");
                 return RedirectToAction("LoginPage", "Patient");
@@ -296,7 +302,7 @@ namespace HelloDoc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ConciergeRequest(AddConciergeRequest model)
         {
-            if (await _addRequestService.addConciergeRequest(model))
+            if (await _addRequestService.AddConciergeRequest(model))
             {
                 _notyfService.Success("Successfully Request Added");
                 return RedirectToAction("LoginPage", "Patient");
@@ -312,7 +318,7 @@ namespace HelloDoc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> FamilyFriendRequest(AddFamilyRequest model)
         {
-            if (await _addRequestService.addFamilyFriendRequest(model))
+            if (await _addRequestService.AddFamilyFriendRequest(model))
             {
                 _notyfService.Success("Successfully Request Added");
                 return RedirectToAction("LoginPage", "Patient");
@@ -328,7 +334,7 @@ namespace HelloDoc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> BusinessRequest(AddBusinessRequest model)
         {
-            if (await _addRequestService.addBusinessRequest(model))
+            if (await _addRequestService.AddBusinessRequest(model))
             {
                 _notyfService.Success("Successfully Request Added");
                 return RedirectToAction("LoginPage", "Patient");

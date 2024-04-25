@@ -4,32 +4,32 @@ namespace Repositories.Interfaces
 {
     public interface IShiftRepository
     {
-        List<Physician> getPhysicianWithShiftDetailByRegionIdAndDAte(int regionId, DateTime startDate, DateTime endDate);
+        List<Physician> GetPhysicianWithShiftDetailByRegionIdAndDAte(int regionId, DateTime startDate, DateTime endDate);
 
-        List<ShiftDetail> getShiftDetailByPhysicianIdAndDAte(int aspNetUserId, DateTime startDate, DateTime endDate);
+        List<ShiftDetail> GetShiftDetailByPhysicianIdAndDAte(int aspNetUserId, DateTime startDate, DateTime endDate);
 
-        List<ShiftDetail> getShiftDetailByRegionIdAndDAte(int regionId, DateTime startDate,DateTime endDate);
+        List<ShiftDetail> GetShiftDetailByRegionIdAndDAte(int regionId, DateTime startDate, DateTime endDate);
 
-        List<ShiftDetail> getAllShiftDetailsFromShiftId(int shiftId);
+        List<ShiftDetail> GetAllShiftDetailsFromShiftId(int shiftId);
 
-        Task<bool> addShift(Shift shift);
+        Task<bool> AddShift(Shift shift);
 
-        Task<bool> addShiftDetails(List<ShiftDetail> shiftDetails);
+        Task<bool> AddShiftDetails(List<ShiftDetail> shiftDetails);
 
-        Task<bool> addShiftDetailsRegion(List<ShiftDetailRegion> shiftDetailRegions);
+        Task<bool> AddShiftDetailsRegion(List<ShiftDetailRegion> shiftDetailRegions);
 
-        Task<bool> updateShiftDetails(List<ShiftDetail> shiftDetails);
+        Task<bool> UpdateShiftDetails(List<ShiftDetail> shiftDetails);
 
-        Task<bool> updateShiftDetailRegions(List<ShiftDetailRegion> shiftDetailRegions);
+        Task<bool> UpdateShiftDetailRegions(List<ShiftDetailRegion> shiftDetailRegions);
 
-        ShiftDetail getShiftDetails(int shiftDetailsId);
+        ShiftDetail GetShiftDetails(int shiftDetailsId);
 
-        ShiftDetail getShiftDetailsWithPhysician(int shiftDetailsId);
+        ShiftDetail GetShiftDetailsWithPhysician(int shiftDetailsId);
 
-        ShiftDetailRegion getShiftDetailRegion(int shiftDetailsId);
+        ShiftDetailRegion GetShiftDetailRegion(int shiftDetailsId);
 
-        List<ShiftDetail> getAllShiftDetails(int regionId, bool isThisMonth, DateTime date, int skip);
+        List<ShiftDetail> GetAllShiftDetails(int regionId, bool isThisMonth, DateTime date, int skip);
 
-        int countAllShiftDetails(int regionId, bool isThisMonth, DateTime date);
+        int CountAllShiftDetails(int regionId, bool isThisMonth, DateTime date);
     }
 }

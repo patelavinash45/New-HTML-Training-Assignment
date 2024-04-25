@@ -37,34 +37,44 @@ namespace Services.ViewModels.Admin
         public Dictionary<int, String>? RegionList { get; set; }
 
         [StringLength(100)]
-        public string VendorName { get; set; }
+        [Required(ErrorMessage = "The VendorName field is required.")]
+        public string? VendorName { get; set; }
 
         public int Profession { get; set; }
 
         [StringLength(50)]
-        public string FaxNumber { get; set; }
+        [Required(ErrorMessage = "The FaxNumber field is required.")]
+        public string? FaxNumber { get; set; }
 
         [StringLength(100)]
-        public string City { get; set; }
+        [Required(ErrorMessage = "The City field is required.")]
+        public string? City { get; set; }
 
         [StringLength(50)]
-        public string State { get; set; }
-
-        public string Street { get; set; }
+        [Required(ErrorMessage = "The State field is required.")]
+        public string? State { get; set; }
 
         [StringLength(50)]
-        public string Zip { get; set; }
+        [Required(ErrorMessage = "The Street field is required.")]
+        public string? Street { get; set; }
+
+        [StringLength(50)]
+        [Required(ErrorMessage = "The Zip field is required.")]
+        public string? Zip { get; set; }
 
         [StringLength(100)]
         [RegularExpression(@"^(?:\+?91)?\s*([1-9]\d{4})\s*(\d{5})$", ErrorMessage = "The PhoneNumber is not valid")]
-        public string PhoneNumber { get; set; }
+        [Required(ErrorMessage = "The PhoneNumber field is required.")]
+        public string? PhoneNumber { get; set; }
 
         [StringLength(50)]
         [DataType(DataType.EmailAddress, ErrorMessage = "The Email is not valid")]
-        public string Email { get; set; }
+        [Required(ErrorMessage = "The Email field is required.")]
+        public string? Email { get; set; }
 
         [StringLength(100)]
         [RegularExpression(@"^(?:\+?91)?\s*([1-9]\d{4})\s*(\d{5})$", ErrorMessage = "The BusinessContact is not valid")]
-        public string BusinessContact { get; set; }
+        [Required(ErrorMessage = "The BusinessContact field is required.")]
+        public string? BusinessContact { get; set; }
     }
 }

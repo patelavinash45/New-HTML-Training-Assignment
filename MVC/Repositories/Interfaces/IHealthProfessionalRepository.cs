@@ -4,18 +4,18 @@ namespace Repositories.Interfaces
 {
     public interface IHealthProfessionalRepository
     {
-        Task<bool> addHealthProfessional(HealthProfessional healthProfessional);
+        Task<bool> AddHealthProfessional(HealthProfessional healthProfessional);
 
-        Task<bool> updateHealthProfessional(HealthProfessional healthProfessional);
+        Task<bool> UpdateHealthProfessional(HealthProfessional healthProfessional);
 
-        List<HealthProfessionalType> getHealthProfessionalTypes();
+        List<HealthProfessionalType> GetHealthProfessionalTypes();
 
-        List<HealthProfessional> getHealthProfessionalByProfessionWithType(int professionId, String searchElement);
+        List<HealthProfessional> GetHealthProfessionalByProfessionWithType(int professionId, String searchElement);
 
-        List<HealthProfessional> getHealthProfessionalByProfession(int professionId);
+        List<HealthProfessional> GetHealthProfessionalByProfession(int professionId);
 
-        HealthProfessional getHealthProfessional(int VenderId);
+        HealthProfessional GetHealthProfessional(int VenderId);
 
-        Task<bool> addOrderDetails(OrderDetail orderDetail);
+        Task<bool> AddOrderDetails(OrderDetail orderDetail);
     }
 }

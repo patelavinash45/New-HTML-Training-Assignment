@@ -39,18 +39,18 @@ namespace Services.Implementation.AdminServices
         public Task<bool> EditShiftDetails(string data, int aspNetUserId)
         {
             ViewShift viewShift = JsonSerializer.Deserialize<ViewShift>(data);
-            ShiftDetail shiftDetail = _shiftRepository.getShiftDetails(int.Parse(viewShift.ShiftDetailsId));
+            ShiftDetail shiftDetail = _shiftRepository.GetShiftDetails(int.Parse(viewShift.ShiftDetailsId));
             shiftDetail.ShiftDate = DateTime.Parse(viewShift.ShiftDate.ToString());
             shiftDetail.StartTime = viewShift.StartTime;
             shiftDetail.EndTime = viewShift.EndTime;
             shiftDetail.ModifiedBy = aspNetUserId;
             shiftDetail.ModifiedDate = DateTime.Now;
-            return _shiftRepository.updateShiftDetails(new List<ShiftDetail> { shiftDetail});
+            return _shiftRepository.UpdateShiftDetails(new List<ShiftDetail> { shiftDetail});
         }
 
-        public ViewShift getShiftDetails(int shiftDetailsId)
+        public ViewShift GetShiftDetails(int shiftDetailsId)
         {
-            ShiftDetail shiftDetail = _shiftRepository.getShiftDetailsWithPhysician(shiftDetailsId);
+            ShiftDetail shiftDetail = _shiftRepository.GetShiftDetailsWithPhysician(shiftDetailsId);
             return new ViewShift()
             {
                 ShiftDetailsId = shiftDetailsId.ToString(),
@@ -62,9 +62,9 @@ namespace Services.Implementation.AdminServices
             };
         }
 
-        public List<ProviderLocation> getProviderLocation()
+        public List<ProviderLocation> GetProviderLocation()
         {
-            return _userRepository.getAllProviderLocation()
+            return _userRepository.GetAllProviderLocation()
                 .Select(physicianLocation => new ProviderLocation
                 {
                     ProviderName = physicianLocation.PhysicianName,
@@ -73,44 +73,44 @@ namespace Services.Implementation.AdminServices
                 }).ToList();
         }
 
-        public Provider getProviders(int regionId)
+        public Provider GetProviders(int regionId)
         {
             Dictionary<int, string> regions = new Dictionary<int, string>();
             if(regionId == 0)  // for first time page load - on filter this part not execute
             {
-                regions = _requestClientRepository.getAllRegions().ToDictionary(region => region.RegionId, region => region.Name);
+                regions = _requestClientRepository.GetAllRegions().ToDictionary(region => region.RegionId, region => region.Name);
             }
-            List<ProviderTable> providerTables = _userRepository.getAllPhysiciansByRegionId(regionId)
+            List<ProviderTable> providerTables = _userRepository.GetAllPhysiciansByRegionId(regionId)
                 .Select(physician => new ProviderTable()
                 {
                     FirstName = physician.FirstName,
                     LastName = physician.LastName,
                     Notification = physician.PhysicianNotifications.FirstOrDefault().IsNotificationStopped[0],
-                    providerId = physician.PhysicianId,
+                    ProviderId = physician.PhysicianId,
                     Status = physician.Status == 1 ? "Active" : "Pending",
                 }).ToList();
             return new Provider()
             {
-                providers = providerTables,
+                Providers = providerTables,
                 Regions = regions,
             };
         }
 
-        public ProviderOnCall getProviderOnCall(int regionId)
+        public ProviderOnCall GetProviderOnCall(int regionId)
         {
             return new ProviderOnCall()
             {
-                Regions = _requestClientRepository.getAllRegions().ToDictionary(region => region.RegionId, region => region.Name),
-                ProviderList = getProviderList(regionId),
+                Regions = _requestClientRepository.GetAllRegions().ToDictionary(region => region.RegionId, region => region.Name),
+                ProviderList = GetProviderList(regionId),
             };
         }
 
-        public ProviderList getProviderList(int regionId)
+        public ProviderList GetProviderList(int regionId)
         {
             string path = "/Files//Providers/Photo/";
             List<ProviderOnCallTable> providerOnCalls = new List<ProviderOnCallTable>();
             List<ProviderOnCallTable> providerOffDuty = new List<ProviderOnCallTable>();
-            _userRepository.getAllPhysicianWithCurrentShift(regionId)
+            _userRepository.GetAllPhysicianWithCurrentShift(regionId)
                 .ForEach(physician =>
                 {
                     foreach (var shift in physician.Shifts)
@@ -136,19 +136,19 @@ namespace Services.Implementation.AdminServices
                 });
             return new ProviderList()
             {
-                providerOffDuty = providerOffDuty,
-                providerOnCall = providerOnCalls,
+                ProviderOffDuty = providerOffDuty,
+                ProviderOnCall = providerOnCalls,
             };
         }
 
-        public async Task<bool> editProviderNotification(int providerId,bool isNotification)
+        public async Task<bool> EditProviderNotification(int providerId, bool isNotification)
         {
-            PhysicianNotification physicianNotification = _userRepository.getPhysicianNotification(providerId);
+            PhysicianNotification physicianNotification = _userRepository.GetPhysicianNotification(providerId);
             physicianNotification.IsNotificationStopped[0] = isNotification;
-            return await _userRepository.updatePhysicianNotification(physicianNotification);
+            return await _userRepository.UpdatePhysicianNotification(physicianNotification);
         }
 
-        public async Task<bool> SaveSign(string sign,int physicianId)
+        public async Task<bool> SaveSign(string sign, int physicianId)
         {
             String path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files/Providers/Sign/" + physicianId.ToString());
             if(!Directory.Exists(path))
@@ -158,12 +158,12 @@ namespace Services.Implementation.AdminServices
             path = Path.Combine(path, "Sign.png");
             byte[] bytes = Convert.FromBase64String(sign.Split(",")[1]);
             File.WriteAllBytes(path, bytes);
-            Physician physician = _userRepository.getPhysicianWithAspNetUser(physicianId);
+            Physician physician = _userRepository.GetPhysicianWithAspNetUser(physicianId);
             physician.IsSignature = new BitArray(1, true);
-            return await _userRepository.updatePhysician(physician);
+            return await _userRepository.UpdatePhysician(physician);
         }
 
-        public async Task<bool> contactProvider(ContactProvider model)
+        public async Task<bool> ContactProvider(ContactProvider model)
         {
             if(model.email)
             {
@@ -174,7 +174,7 @@ namespace Services.Implementation.AdminServices
                     IsBodyHtml = true,
                     Body = model.Message,   
                 };
-                Physician physician = _userRepository.getPhysicianByPhysicianId(model.providerId);
+                Physician physician = _userRepository.GetPhysicianByPhysicianId(model.providerId);
                 //mailMessage.To.Add(physician.Email);
                 mailMessage.To.Add("tatva.dotnet.avinashpatel@outlook.com");
                 SmtpClient smtpClient = new SmtpClient("smtp.office365.com")
@@ -198,7 +198,7 @@ namespace Services.Implementation.AdminServices
                         IsEmailSent = new BitArray(1, true),
                         RoleId = physician.RoleId,
                     };
-                    await _logsService.addEmailLog(emailLog);
+                    await _logsService.AddEmailLog(emailLog);
                 }
                 catch (Exception ex)
                 {
@@ -208,59 +208,59 @@ namespace Services.Implementation.AdminServices
             return true;
         }
 
-        public CreateProvider getCreateProvider()
+        public CreateProvider GetCreateProvider()
         {
             return new CreateProvider()
             {
-                Regions = _requestClientRepository.getAllRegions().ToDictionary(region => region.RegionId, region => region.Name),
-                Roles = _roleRepository.getRolesByUserType(3).ToDictionary(role => role.RoleId, role => role.Name),
+                Regions = _requestClientRepository.GetAllRegions().ToDictionary(region => region.RegionId, region => region.Name),
+                Roles = _roleRepository.GetRolesByUserType(3).ToDictionary(role => role.RoleId, role => role.Name),
             };
         }
 
-        public async Task<String> createProvider(CreateProvider model)
+        public async Task<String> CreateProvider(CreateProvider model)
         {
-            if (_aspRepository.checkUser(model.Email) == 0)
+            if (_aspRepository.CheckUser(model.Email) == 0)
             {
-                int aspNetRoleId = _aspRepository.checkUserRole(role: "Physician");
+                int aspNetRoleId = _aspRepository.CheckUserRole(role: "Physician");
                 if (aspNetRoleId == 0)
                 {
                     AspNetRole aspNetRole = new()
                     {
                         Name = "Physician",
                     };
-                    aspNetRoleId = await _aspRepository.addUserRole(aspNetRole);
+                    aspNetRoleId = await _aspRepository.AddUserRole(aspNetRole);
                 }
                 AspNetUser aspNetUser = new()
                 {
                     UserName = model.UserName,
                     Email = model.Email,
                     PhoneNumber = model.Phone,
-                    PasswordHash = genrateHash(model.Password),
+                    PasswordHash = GenrateHash(model.Password),
                     CreatedDate = DateTime.Now,
                 };
-                int aspNetUserId = await _aspRepository.addUser(aspNetUser);
+                int aspNetUserId = await _aspRepository.AddUser(aspNetUser);
                 AspNetUserRole aspNetUserRole = new()
                 {
                     UserId = aspNetUserId,
                     RoleId = aspNetRoleId,
                 };
-                await _aspRepository.addAspNetUserRole(aspNetUserRole);
-                filePickUp("Photo", aspNetUserId, model.Photo);
+                await _aspRepository.AddAspNetUserRole(aspNetUserRole);
+                FilePickUp("Photo", aspNetUserId, model.Photo);
                 if (model.IsAgreementDoc)
                 {
-                    filePickUp("AgreementDoc", aspNetUserId, model.AgreementDoc);
+                    FilePickUp("AgreementDoc", aspNetUserId, model.AgreementDoc);
                 }
                 if (model.IsBackgroundDoc)
                 {
-                    filePickUp("BackgroundDoc", aspNetUserId, model.BackgroundDoc);
+                    FilePickUp("BackgroundDoc", aspNetUserId, model.BackgroundDoc);
                 }
                 if (model.IsHIPAACompliance)
                 {
-                    filePickUp("HIPAACompliance", aspNetUserId, model.HIPAACompliance);
+                    FilePickUp("HIPAACompliance", aspNetUserId, model.HIPAACompliance);
                 }
                 if (model.IsNonDisclosureDoc)
                 {
-                    filePickUp("NonDisclosureDoc", aspNetUserId, model.NonDisclosureDoc);
+                    FilePickUp("NonDisclosureDoc", aspNetUserId, model.NonDisclosureDoc);
                 }
                 Physician physician = new Physician()
                 {
@@ -290,14 +290,14 @@ namespace Services.Implementation.AdminServices
                     Photo = model.Photo.FileName,
                     AdminNotes = model.AdminNotes,
                 };
-                if (await _userRepository.addPhysician(physician))
+                if (await _userRepository.AddPhysician(physician))
                 {
                     PhysicianNotification physicianNotification = new PhysicianNotification()
                     {
                         PhysicianId = physician.PhysicianId,
                         IsNotificationStopped = new BitArray(1, false)
                     };
-                    if (await _userRepository.addPhysicianNotification(physicianNotification))
+                    if (await _userRepository.AddPhysicianNotification(physicianNotification))
                     {
                         List<PhysicianRegion> physicianRegions = new List<PhysicianRegion>();
                         foreach (String regionId in model.SelectedRegions)
@@ -309,11 +309,11 @@ namespace Services.Implementation.AdminServices
                             };
                             physicianRegions.Add(physicianRegion);
                         }
-                        if (await _userRepository.addPhysicianRegions(physicianRegions))
+                        if (await _userRepository.AddPhysicianRegions(physicianRegions))
                         {
                             physician.IsNotification = physicianNotification.Id;
-                            _fileService.sendNewAccountMail(model.Email, model.Password);
-                            return await _userRepository.updatePhysician(physician) ? "" : "Faild !!";
+                            _fileService.SendNewAccountMail(model.Email, model.Password);
+                            return await _userRepository.UpdatePhysician(physician) ? "" : "Faild !!";
                         }
                     }
                 }
@@ -322,9 +322,9 @@ namespace Services.Implementation.AdminServices
             return "Email Already Exits";
         }
 
-        public EditProvider getEditProvider(int physicianId)
+        public EditProvider GetEditProvider(int physicianId)
         {
-            Physician physician = _userRepository.getPhysicianWithAspNetUser(physicianId);
+            Physician physician = _userRepository.GetPhysicianWithAspNetUser(physicianId);
             EditProvider editProvider = new EditProvider()
             {
                 UserName = physician.AspNetUser.UserName,
@@ -332,8 +332,8 @@ namespace Services.Implementation.AdminServices
                 LastName = physician.LastName,
                 Add1 = physician.Address1,
                 Add2 = physician.Address2,
-                SelectedRole = (int)physician.RoleId,
-                Status = (int)physician.Status,
+                SelectedRole = physician.RoleId,
+                Status = physician.Status,
                 Email = physician.Email,
                 Phone = physician.Mobile,
                 Phone2 = physician.AltPhone,
@@ -346,42 +346,42 @@ namespace Services.Implementation.AdminServices
                 BusinessName = physician.BusinessName,
                 BusinessWebsite = physician.BusinessWebsite,
                 IsSignature = physician.IsSignature[0],
-                SignaturePath = physician.IsSignature[0] ? getFile("Sign", (int)physician.PhysicianId) : null,
+                SignaturePath = physician.IsSignature[0] ? GetFile("Sign", (int)physician.PhysicianId) : null,
                 AdminNotes = physician.AdminNotes != null ? physician.AdminNotes : "",
-                AgreementDocPath = physician.IsAgreementDoc[0] ? getFile("AgreementDoc", (int)physician.AspNetUserId) : null,
+                AgreementDocPath = physician.IsAgreementDoc[0] ? GetFile("AgreementDoc", (int)physician.AspNetUserId) : null,
                 IsAgreementDoc = physician.IsAgreementDoc[0],
-                BackgroundDocPath = physician.IsBackgroundDoc[0] ? getFile("BackgroundDoc", (int)physician.AspNetUserId) : null,
+                BackgroundDocPath = physician.IsBackgroundDoc[0] ? GetFile("BackgroundDoc", (int)physician.AspNetUserId) : null,
                 IsBackgroundDoc = physician.IsBackgroundDoc[0],
-                HIPAACompliancePath = physician.IsTrainingDoc[0] ? getFile("HIPAACompliance", (int)physician.AspNetUserId) : null,
+                HIPAACompliancePath = physician.IsTrainingDoc[0] ? GetFile("HIPAACompliance", (int)physician.AspNetUserId) : null,
                 IsHIPAACompliance = physician.IsTrainingDoc[0],
-                NonDisclosureDocPath = physician.IsNonDisclosureDoc[0] ? getFile("NonDisclosureDoc", (int)physician.AspNetUserId) : null,
+                NonDisclosureDocPath = physician.IsNonDisclosureDoc[0] ? GetFile("NonDisclosureDoc", (int)physician.AspNetUserId) : null,
                 IsNonDisclosureDoc = physician.IsNonDisclosureDoc[0],
-                SelectedRegions = _userRepository.getAllPhysicianRegionsByPhysicianId(physicianId).Select(x => x.RegionId).ToList(),
-                Regions = _requestClientRepository.getAllRegions().ToDictionary(region => region.RegionId, region => region.Name),
-                Roles = _roleRepository.getRolesByUserType(3).ToDictionary(role => role.RoleId, role => role.Name),
+                SelectedRegions = _userRepository.GetAllPhysicianRegionsByPhysicianId(physicianId).Select(x => x.RegionId).ToList(),
+                Regions = _requestClientRepository.GetAllRegions().ToDictionary(region => region.RegionId, region => region.Name),
+                Roles = _roleRepository.GetRolesByUserType(3).ToDictionary(role => role.RoleId, role => role.Name),
             };
             return editProvider;
         }
 
-        public async Task<bool> editphysicianAccountInformaction(EditProvider model,int physicianId, int aspNetUserId)
+        public async Task<bool> EditphysicianAccountInformaction(EditProvider model, int physicianId, int aspNetUserId)
         {
-            Physician physician = _userRepository.getPhysicianWithAspNetUser(physicianId);
+            Physician physician = _userRepository.GetPhysicianWithAspNetUser(physicianId);
             physician.Status = (short)model.Status != null ? (short)model.Status : physician.Status;
             physician.RoleId = model.SelectedRole != null ? model.SelectedRole : physician.RoleId;
             physician.ModifiedBy = aspNetUserId;
             physician.ModifiedDate = DateTime.Now;
-            if (await _userRepository.updatePhysician(physician))
+            if (await _userRepository.UpdatePhysician(physician))
             {
-                physician.AspNetUser.PasswordHash = genrateHash(model.Password);
+                physician.AspNetUser.PasswordHash = GenrateHash(model.Password);
                 physician.AspNetUser.UserName = model.UserName;
-                return await _aspRepository.changePassword(physician.AspNetUser);
+                return await _aspRepository.ChangePassword(physician.AspNetUser);
             }
             return false;
         }
 
-        public async Task<bool> editphysicianPhysicianInformaction(EditProvider model,int physicianId, int aspNetUserId)
+        public async Task<bool> EditphysicianPhysicianInformaction(EditProvider model, int physicianId, int aspNetUserId)
         {
-            Physician physician = _userRepository.getPhysicianByPhysicianId(physicianId);
+            Physician physician = _userRepository.GetPhysicianByPhysicianId(physicianId);
             physician.FirstName = model.FirstName;
             physician.LastName = model.LastName;
             physician.Email = model.Email;
@@ -391,9 +391,9 @@ namespace Services.Implementation.AdminServices
             physician.SyncEmailAddress = model.SynchronizationEmail;
             physician.ModifiedBy = aspNetUserId;
             physician.ModifiedDate = DateTime.Now;
-            if(await _userRepository.updatePhysician(physician))
+            if(await _userRepository.UpdatePhysician(physician))
             {
-                List<PhysicianRegion> physicianRegions = _userRepository.getAllPhysicianRegionsByPhysicianId(physicianId);
+                List<PhysicianRegion> physicianRegions = _userRepository.GetAllPhysicianRegionsByPhysicianId(physicianId);
                 List<PhysicianRegion> physicianRegionsDelete = new List<PhysicianRegion>();
                 List<PhysicianRegion> physicianRegionsCreate = new List<PhysicianRegion>();
                 foreach(PhysicianRegion physicianRegion in physicianRegions)
@@ -417,20 +417,20 @@ namespace Services.Implementation.AdminServices
                 }
                 if(physicianRegionsCreate.Count > 0) 
                 {
-                    await _userRepository.addPhysicianRegions(physicianRegionsCreate);
+                    await _userRepository.AddPhysicianRegions(physicianRegionsCreate);
                 }
                 if(physicianRegionsDelete.Count > 0)
                 {
-                    return await _userRepository.deletePhysicianRegions(physicianRegionsDelete);
+                    return await _userRepository.DeletePhysicianRegions(physicianRegionsDelete);
                 }
                 return true;
             }
             return false;
         }
 
-        public async Task<bool> editphysicianMailAndBillingInformaction(EditProvider model, int physicianId, int aspNetUserId)
+        public async Task<bool> EditphysicianMailAndBillingInformaction(EditProvider model, int physicianId, int aspNetUserId)
         {
-            Physician physician = _userRepository.getPhysicianByPhysicianId(physicianId);
+            Physician physician = _userRepository.GetPhysicianByPhysicianId(physicianId);
             physician.Address1 = model.Add1;
             physician.Address2 = model.Add2;
             physician.City = model.City;
@@ -439,45 +439,45 @@ namespace Services.Implementation.AdminServices
             physician.AltPhone = model.Phone2;
             physician.ModifiedBy = aspNetUserId;
             physician.ModifiedDate = DateTime.Now;
-            return await _userRepository.updatePhysician(physician);
+            return await _userRepository.UpdatePhysician(physician);
         }
 
-        public async Task<bool> editphysicianProviderProfile(EditProvider model, int physicianId, int aspNetUserId)
+        public async Task<bool> EditphysicianProviderProfile(EditProvider model, int physicianId, int aspNetUserId)
         {
-            Physician physician = _userRepository.getPhysicianByPhysicianId(physicianId);
+            Physician physician = _userRepository.GetPhysicianByPhysicianId(physicianId);
             physician.BusinessName = model.BusinessName;
             physician.BusinessWebsite = model.BusinessWebsite;
             physician.Photo = model.Photo.FileName;
             physician.AdminNotes = model.AdminNotes;
             physician.ModifiedBy = aspNetUserId;
             physician.ModifiedDate = DateTime.Now;
-            filePickUp("Photo", (int)physician.AspNetUserId, model.Photo);
+            FilePickUp("Photo", (int)physician.AspNetUserId, model.Photo);
             if (model.Signature != null)
             {
                 physician.IsSignature = new BitArray(1,true);
-                filePickUp("Sign", physician.PhysicianId, model.Signature);
+                FilePickUp("Sign", physician.PhysicianId, model.Signature);
             }
-            return await _userRepository.updatePhysician(physician);
+            return await _userRepository.UpdatePhysician(physician);
         }
 
-        public async Task<bool> editphysicianOnbordingInformaction(EditProvider model, int physicianId, int aspNetUserId)
+        public async Task<bool> EditphysicianOnbordingInformaction(EditProvider model, int physicianId, int aspNetUserId)
         {
-            Physician physician = _userRepository.getPhysicianByPhysicianId(physicianId);
+            Physician physician = _userRepository.GetPhysicianByPhysicianId(physicianId);
             if (model.IsAgreementDoc)
             {
-                filePickUp("AgreementDoc", aspNetUserId, model.AgreementDoc);
+                FilePickUp("AgreementDoc", aspNetUserId, model.AgreementDoc);
             }
             if (model.IsBackgroundDoc)
             {
-                filePickUp("BackgroundDoc", aspNetUserId, model.BackgroundDoc);
+                FilePickUp("BackgroundDoc", aspNetUserId, model.BackgroundDoc);
             }
             if (model.IsHIPAACompliance)
             {
-                filePickUp("HIPAACompliance", aspNetUserId, model.HIPAACompliance);
+                FilePickUp("HIPAACompliance", aspNetUserId, model.HIPAACompliance);
             }
             if (model.IsNonDisclosureDoc)
             {
-                filePickUp("NonDisclosureDoc", aspNetUserId, model.NonDisclosureDoc);
+                FilePickUp("NonDisclosureDoc", aspNetUserId, model.NonDisclosureDoc);
             }
             physician.IsAgreementDoc = new BitArray(1, model.IsAgreementDoc);
             physician.IsBackgroundDoc = new BitArray(1, model.IsBackgroundDoc);
@@ -485,27 +485,27 @@ namespace Services.Implementation.AdminServices
             physician.IsTrainingDoc = new BitArray(1, model.IsHIPAACompliance);
             physician.ModifiedBy = aspNetUserId;
             physician.ModifiedDate = DateTime.Now;
-            return await _userRepository.updatePhysician(physician);
+            return await _userRepository.UpdatePhysician(physician);
         }
 
-        public ProviderScheduling getProviderSchedulingData()
+        public ProviderScheduling GetProviderSchedulingData()
         {
             CreateShift createShift = new CreateShift()
             {
-                Regions = _requestClientRepository.getAllRegions().ToDictionary(region => region.RegionId, region => region.Name),
+                Regions = _requestClientRepository.GetAllRegions().ToDictionary(region => region.RegionId, region => region.Name),
             };
             return new ProviderScheduling()
             {
-                TableData = _dayWiseScheduling(DateTime.Now, 0),
+                TableData = DayWiseScheduling(DateTime.Now, 0),
                 CreateShift = createShift,
             };
         }
 
-        public async Task<bool> createShift(CreateShift model,int aspNetUserId, bool isAdmin)
+        public async Task<bool> CreateShift(CreateShift model, int aspNetUserId, bool isAdmin)
         {
             if(!isAdmin)
             {
-                model.SelectedPhysician = _userRepository.getPhysicianByAspNetUserId(aspNetUserId).PhysicianId;
+                model.SelectedPhysician = _userRepository.GetPhysicianByAspNetUserId(aspNetUserId).PhysicianId;
             }
             DateTime date = (DateTime)model.ShiftDate;
             Shift shift = new Shift()
@@ -518,7 +518,7 @@ namespace Services.Implementation.AdminServices
                 CreatedBy = aspNetUserId,
                 CreatedDate = DateTime.Now,
             };
-            if(await _shiftRepository.addShift(shift))
+            if(await _shiftRepository.AddShift(shift))
             {
                 List<ShiftDetail> shiftDetails = new List<ShiftDetail>();      
                 ShiftDetail shiftDetail = new ShiftDetail()
@@ -554,10 +554,10 @@ namespace Services.Implementation.AdminServices
                         }
                     };
                 }
-                if(await _shiftRepository.addShiftDetails(shiftDetails))
+                if(await _shiftRepository.AddShiftDetails(shiftDetails))
                 {
-                    return await _shiftRepository.addShiftDetailsRegion(
-                                    _shiftRepository.getAllShiftDetailsFromShiftId(shift.ShiftId)
+                    return await _shiftRepository.AddShiftDetailsRegion(
+                                    _shiftRepository.GetAllShiftDetailsFromShiftId(shift.ShiftId)
                                         .Select(shiftDetail => new ShiftDetailRegion()
                                         {
                                             ShiftDetailId = shiftDetail.ShiftDetailId,
@@ -569,16 +569,16 @@ namespace Services.Implementation.AdminServices
             return false;
         }
 
-        public RequestedShift getRequestedShift()
+        public RequestedShift GetRequestedShift()
         {
             return new RequestedShift()
             {
-                Regions = _requestClientRepository.getAllRegions().ToDictionary(region => region.RegionId, region => region.Name),
-                RequestedShiftModel = getRequestShiftTableDate(0, false, 1),
+                Regions = _requestClientRepository.GetAllRegions().ToDictionary(region => region.RegionId, region => region.Name),
+                RequestedShiftModel = GetRequestShiftTableDate(0, false, 1),
             };
         }
 
-        public RequestShiftModel getRequestShiftTableDate(int regionId, bool isMonth, int pageNo)
+        public RequestShiftModel GetRequestShiftTableDate(int regionId, bool isMonth, int pageNo)
         {
             int skip = (pageNo - 1) * 10;
             DateTime date = new DateTime();
@@ -587,8 +587,8 @@ namespace Services.Implementation.AdminServices
                 date = DateTime.Now;
                 date = new DateTime(date.Year, date.Month, 1);
             }
-            int totalShifts = _shiftRepository.countAllShiftDetails(regionId, isMonth, date);
-            List<RequestedShiftTable> requestedShiftTables = _shiftRepository.getAllShiftDetails(regionId, isMonth, date, skip)
+            int totalShifts = _shiftRepository.CountAllShiftDetails(regionId, isMonth, date);
+            List<RequestedShiftTable> requestedShiftTables = _shiftRepository.GetAllShiftDetails(regionId, isMonth, date, skip)
                 .Select(shiftDetails => new RequestedShiftTable
                 {
                     Name = shiftDetails.Shift.Physician.FirstName + " " + shiftDetails.Shift.Physician.LastName,
@@ -613,7 +613,7 @@ namespace Services.Implementation.AdminServices
             };
         }
 
-        public async Task<bool> changeShiftDetails(string dataList,bool isApprove, int aspNetUserId)
+        public async Task<bool> ChangeShiftDetails(string dataList, bool isApprove, int aspNetUserId)
         {
             List<int> ids = JsonSerializer.Deserialize<List<String>>(dataList).Select(id => int.Parse(id)).ToList();
             if (isApprove)
@@ -621,13 +621,13 @@ namespace Services.Implementation.AdminServices
                 List<ShiftDetail> shiftDetails = new List<ShiftDetail>();
                 foreach (int id in ids)
                 {
-                    ShiftDetail shiftDetail = _shiftRepository.getShiftDetails(id);
+                    ShiftDetail shiftDetail = _shiftRepository.GetShiftDetails(id);
                     shiftDetail.Status = 1;
                     shiftDetail.ModifiedBy = aspNetUserId;
                     shiftDetail.ModifiedDate = DateTime.Now;
                     shiftDetails.Add(shiftDetail);
                 }
-                return await _shiftRepository.updateShiftDetails(shiftDetails);
+                return await _shiftRepository.UpdateShiftDetails(shiftDetails);
             }
             else
             {
@@ -635,30 +635,30 @@ namespace Services.Implementation.AdminServices
                 List<ShiftDetailRegion> shiftDetailRegions = new List<ShiftDetailRegion>();
                 foreach (int id in ids)
                 { 
-                    ShiftDetail shiftDetail = _shiftRepository.getShiftDetails(id);
+                    ShiftDetail shiftDetail = _shiftRepository.GetShiftDetails(id);
                     shiftDetail.IsDeleted = new BitArray(1, true);
                     shiftDetail.ModifiedBy = aspNetUserId;
                     shiftDetail.ModifiedDate = DateTime.Now;
                     shiftDetails.Add(shiftDetail);
-                    ShiftDetailRegion shiftDetailRegion = _shiftRepository.getShiftDetailRegion(id);
+                    ShiftDetailRegion shiftDetailRegion = _shiftRepository.GetShiftDetailRegion(id);
                     shiftDetailRegion.IsDeleted = new BitArray(1, true);
                     shiftDetailRegions.Add(shiftDetailRegion);
                 };
-                if(await _shiftRepository.updateShiftDetails(shiftDetails))
+                if(await _shiftRepository.UpdateShiftDetails(shiftDetails))
                 {
-                    return await _shiftRepository.updateShiftDetailRegions(shiftDetailRegions);
+                    return await _shiftRepository.UpdateShiftDetailRegions(shiftDetailRegions);
                 }
             }
             return false;
         }
 
-        public SchedulingTableMonthWise monthWiseScheduling(int regionId,string dateString)
+        public SchedulingTableMonthWise MonthWiseScheduling(int regionId, string dateString)
         {
             DateTime date = DateTime.Parse(dateString);
             int startDate = (int)date.DayOfWeek;
             Dictionary<int, List<ShiftDetailsMonthWise>> monthWiseScheduling = new Dictionary<int, List<ShiftDetailsMonthWise>>();
             int totalDays = DateTime.DaysInMonth(date.Year, date.Month);
-            _shiftRepository.getShiftDetailByRegionIdAndDAte(regionId,startDate: date, endDate: date.AddMonths(1).AddDays(-1))
+            _shiftRepository.GetShiftDetailByRegionIdAndDAte(regionId,startDate: date, endDate: date.AddMonths(1).AddDays(-1))
                 .ForEach(shiftDetail =>
                 {
                     int currentDay = shiftDetail.ShiftDate.Day;
@@ -683,21 +683,21 @@ namespace Services.Implementation.AdminServices
             };
         }
 
-        public List<SchedulingTable> getSchedulingTableDate(int regionId, int type, string date)
+        public List<SchedulingTable> GetSchedulingTableDate(int regionId, int type, string date)
         {
             switch (type)
             {
-                case 1: return _dayWiseScheduling(DateTime.Parse(date), regionId);
-                case 2: return _weekWiseScheduling(DateTime.Parse(date), regionId);
+                case 1: return DayWiseScheduling(DateTime.Parse(date), regionId);
+                case 2: return WeekWiseScheduling(DateTime.Parse(date), regionId);
                 default: return null;
             }
         }
 
-        private List<SchedulingTable> _dayWiseScheduling(DateTime date, int regionId)
+        private List<SchedulingTable> DayWiseScheduling(DateTime date, int regionId)
         {
             List<SchedulingTable> schedulingTables = new List<SchedulingTable>();
             string path = "/Files//Providers/Photo/";
-            _shiftRepository.getPhysicianWithShiftDetailByRegionIdAndDAte(regionId, date, date)
+            _shiftRepository.GetPhysicianWithShiftDetailByRegionIdAndDAte(regionId, date, date)
                 .ForEach (physician =>
                 {
                     SchedulingTable schedulingTable = new SchedulingTable()
@@ -727,7 +727,7 @@ namespace Services.Implementation.AdminServices
                             {
                                 if (shiftDetail.StartTime.Minute == 30)
                                 {
-                                    schedulingTable.DayWise.FirstOrDefault(shiftDetailsDayWise => shiftDetailsDayWise.Time == shiftDetail.StartTime.Hour)
+                                    schedulingTable.DayWise.First(shiftDetailsDayWise => shiftDetailsDayWise.Time == shiftDetail.StartTime.Hour)
                                                                                                                                 .SecoundHalf = true;
                                     schedulingTable.DayWise.Add(new ShiftDetailsDayWise()
                                     {
@@ -742,12 +742,12 @@ namespace Services.Implementation.AdminServices
                             {
                                 if (shiftDetail.StartTime.Minute == 30)
                                 {
-                                    schedulingTable.DayWise.FirstOrDefault(shiftDetailsDayWise => shiftDetailsDayWise.Time == shiftDetail.StartTime.Hour)
+                                    schedulingTable.DayWise.First(shiftDetailsDayWise => shiftDetailsDayWise.Time == shiftDetail.StartTime.Hour)
                                                                                                                               .SecoundHalf = true;
                                 }
                                 else
                                 {
-                                    schedulingTable.DayWise.FirstOrDefault(shiftDetailsDayWise => shiftDetailsDayWise.Time == shiftDetail.EndTime.Hour)
+                                    schedulingTable.DayWise.First(shiftDetailsDayWise => shiftDetailsDayWise.Time == shiftDetail.EndTime.Hour)
                                                                                                                                  .FirstHalf = true;
                                 }
                             }
@@ -757,11 +757,11 @@ namespace Services.Implementation.AdminServices
             return schedulingTables;
         }
 
-        private List<SchedulingTable> _weekWiseScheduling(DateTime date,int regionId)
+        private List<SchedulingTable> WeekWiseScheduling(DateTime date, int regionId)
         {
             List<SchedulingTable> schedulingTables = new List<SchedulingTable>();
             string path = "/Files//Providers/Photo/";
-            _shiftRepository.getPhysicianWithShiftDetailByRegionIdAndDAte(regionId, date, date.AddDays(6))
+            _shiftRepository.GetPhysicianWithShiftDetailByRegionIdAndDAte(regionId, date, date.AddDays(6))
                 .ForEach(physician =>
                 {
                     SchedulingTable schedulingTable = new SchedulingTable()
@@ -793,7 +793,7 @@ namespace Services.Implementation.AdminServices
         }
 
 
-        private String genrateHash(String password)
+        private String GenrateHash(String password)
         {
             using (var sha256 = SHA256.Create())
             {
@@ -802,14 +802,14 @@ namespace Services.Implementation.AdminServices
             }
         }
 
-        private void filePickUp(String folderName,int aspNetUserId,IFormFile file)
+        private void FilePickUp(String folderName, int aspNetUserId, IFormFile? file)
         {
             String path = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot/Files/Providers/{folderName}/{aspNetUserId.ToString()}");
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
             };
-            FileInfo fileInfo = new FileInfo(file.FileName);
+            FileInfo fileInfo = new FileInfo(file!.FileName);
             string fileName = fileInfo.Name;
             string fileNameWithPath = Path.Combine(path, fileName);
             using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
@@ -818,7 +818,7 @@ namespace Services.Implementation.AdminServices
             }
         }
 
-        private string getFile(String folderName, int aspNetUserId)
+        private string GetFile(String folderName, int aspNetUserId)
         {
             String path = Path.Combine("/Files//Providers/" + folderName + "/" + aspNetUserId.ToString());
             String _path = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot/Files/Providers/{folderName}/{aspNetUserId.ToString()}");

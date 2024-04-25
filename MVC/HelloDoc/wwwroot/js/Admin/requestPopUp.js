@@ -1,5 +1,5 @@
-var requesterTextColor = [ "", "text-danger", "text-success", "text-warning", "text-primary" ];
-var requester = ["", "Business", "Patient", "Family", "Concierge"];
+var requesterTextColor = [ "", "text-danger", "text-success", "text-warning", "text-primary", "text-info" ];
+var requester = ["", "Business", "Patient", "Family", "Concierge", "VIP"];
 
 function changeSelect(document) {
     $.ajax({
@@ -74,32 +74,6 @@ $("#transferForm").submit(function (e) {
     }
     else {
         $("#transferValidationPhysician").css("display", "none");
-    }
-})
-
-$("#sendAgreementForm").submit(function (e) {
-    if ($("#patientNumber").val().length == 0) {
-        e.preventDefault();
-        $("#patientNumberValidation").css("display", "block");
-    }
-    else {
-        $("#patientNumberValidation").css("display", "none");
-    }
-    if ($("#patientEmail").val().length == 0) {
-        e.preventDefault();
-        $("#patientEmailValidation1").css("display", "block");
-        $("#patientEmailValidation2").css("display", "none");
-    }
-    else {
-        $("#patientEmailValidation1").css("display", "none");
-        var validRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
-        if (!$("#patientEmail").val().match(validRegex)) {
-            e.preventDefault();
-            $("#patientEmailValidation2").css("display", "block");
-        }
-        else {
-            $("#patientEmailValidation2").css("display", "none");
-        }
     }
 })
 

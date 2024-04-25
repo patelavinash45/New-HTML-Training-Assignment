@@ -6,24 +6,24 @@ namespace Services.Interfaces.PhysicianServices
 {
     public interface IPhysicianDashboardService
     {
-        PhysicianDashboard getallRequests(int aspNetUserId);
+        PhysicianDashboard GetallRequests(int aspNetUserId);
 
         TableModel GetNewRequest(String status, int pageNo, String patientName, int regionId, int requesterTypeId, int aspNetUserId);
 
-        Task<bool> acceptRequest(int requestId);
+        Task<bool> AcceptRequest(int requestId);
 
-        Task<bool> transferRequest(PhysicianTransferRequest model);
+        Task<bool> TransferRequest(PhysicianTransferRequest model);
 
-        Task<bool> setEncounter(int requestId,bool isVideoCall);
+        Task<bool> SetEncounter(int requestId, bool isVideoCall);
 
-        int getPhysicianIdFromAspNetUserId(int aspNetUserId);
+        int GetPhysicianIdFromAspNetUserId(int aspNetUserId);
 
-        byte[] generateMedicalReport(int requestId);
+        byte[] GenerateMedicalReport(int requestId);
 
-        Task<bool> concludeCare(int requestId, ConcludeCare model);
+        Task<bool> ConcludeCare(int requestId, ConcludeCare model);
 
-        PhysicianScheduling providerScheduling(int physicianId);
+        PhysicianScheduling ProviderScheduling(int physicianId);
 
-        SchedulingTableMonthWise monthWiseScheduling(string dateString, int physicianId);
+        SchedulingTableMonthWise MonthWiseScheduling(string dateString, int physicianId);
     }
 }

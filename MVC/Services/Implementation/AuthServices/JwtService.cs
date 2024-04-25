@@ -17,7 +17,7 @@ namespace Services.Implementation.AuthServices
             _configuration = configuration;
         }
 
-        public string genrateJwtToken(UserDataModel user)
+        public string GenrateJwtToken(UserDataModel user)
         {
             List<Claim> claims = new List<Claim>
             {
@@ -39,7 +39,7 @@ namespace Services.Implementation.AuthServices
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        public string genrateJwtTokenForSendMail(List<Claim> claims, DateTime expries)
+        public string GenrateJwtTokenForSendMail(List<Claim> claims, DateTime expries)
         {
             SymmetricSecurityKey Key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:key"]));
             SigningCredentials creds = new SigningCredentials(Key, SecurityAlgorithms.Aes128CbcHmacSha256);
@@ -53,7 +53,7 @@ namespace Services.Implementation.AuthServices
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        public bool validateToken(String token, out JwtSecurityToken jwtToken)
+        public bool ValidateToken(String token, out JwtSecurityToken jwtToken)
         {
             jwtToken = null;
             if(token != null)

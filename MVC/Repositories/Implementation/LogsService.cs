@@ -15,18 +15,18 @@ namespace Repositories.Implementation
             _dbContext = dbContext;
         }
 
-        public async Task<bool> addEmailLog(EmailLog emailLog)
+        public async Task<bool> AddEmailLog(EmailLog emailLog)
         {
             _dbContext.EmailLogs.Add(emailLog);
             return await _dbContext.SaveChangesAsync() > 0;
         }
 
-        public List<EmailLog> getAllEmailLogs(Func<EmailLog, bool> predicate)
+        public List<EmailLog> GetAllEmailLogs(Func<EmailLog, bool> predicate)
         {
             return _dbContext.EmailLogs.Include(a => a.Role).Where(predicate).ToList();
         }
 
-        public List<Smslog> getAllSMSLogs(Func<Smslog, bool> predicate)
+        public List<Smslog> GetAllSMSLogs(Func<Smslog, bool> predicate)
         {
             return _dbContext.Smslogs.Include(a => a.Role).Where(predicate).ToList();
         }

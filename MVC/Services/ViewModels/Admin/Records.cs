@@ -35,13 +35,13 @@ namespace Services.ViewModels.Admin
 
         public DateTime ColseCaseDate { get; set;}
 
-        public string Email { get; set;}
+        public string? Email { get; set;}
 
-        public string Phone { get; set;}
+        public string? Phone { get; set;}
 
-        public string Address { get; set;}
+        public string? Address { get; set;}
 
-        public string Zip { get; set;}
+        public string? Zip { get; set;}
 
         public int Status { get; set; }
 
@@ -135,20 +135,20 @@ namespace Services.ViewModels.Admin
     {
         public int UserId { get; set; }
 
-        public string FirstName { get; set; }
+        public string? FirstName { get; set; }
 
-        public string LastName { get; set; }
+        public string? LastName { get; set; }
 
-        public string Email { get; set; }
+        public string? Email { get; set; }
 
-        public string Phone { get; set; }
+        public string? Phone { get; set; }
 
-        public string Address { get; set; }
+        public string? Address { get; set; }
     }
 
     public class PatientRecord
     {
-        public List<PatientRecordTableData> patientRecordTableDatas { get; set; }
+        public List<PatientRecordTableData> PatientRecordTableDatas { get; set; }
 
         public int TotalRequests { get; set; }
 
@@ -179,7 +179,7 @@ namespace Services.ViewModels.Admin
 
         public string ProviderName { get; set; }
 
-        public DateTime ConcludeedDate { get; set; }
+        public DateTime? ConcludeedDate { get; set; }
 
         public int Ststus { get; set; }
 
@@ -226,16 +226,16 @@ namespace Services.ViewModels.Admin
     {
         public int RequestId { get; set; }
 
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         public DateTime CratedDate { get; set; }
 
-        public string Notes { get; set; }
+        public string? Notes { get; set; }
         
-        public string Email { get; set; }
+        public string? Email { get; set; }
 
         public bool IsActive { get; set; }
 
-        public string Phone { get; set; }
+        public string? Phone { get; set; }
     }
 }

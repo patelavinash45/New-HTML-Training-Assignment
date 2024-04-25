@@ -4,28 +4,26 @@ namespace Repositories.Interface
 {
     public interface IAspRepository
     {
-        int validateUser(String email,String password);
+        int CheckUser(String email);
 
-        int checkUser(String email);
+        AspNetUser GetUser(int aspNetUserId);
 
-        AspNetUser getUser(int aspNetUserId);
+        AspNetUser GetUserFromEmail(String email);
 
-        AspNetUser getUserFromEmail(String email);
+        Task<int> AddUser(AspNetUser aspNetUser);
 
-        Task<int> addUser(AspNetUser aspNetUser);
+        Task<bool> SetToken(String token, int aspNetUserId);
 
-        Task<bool> setToken(String token, int aspNetUserId);
+        bool CheckToken(String token, int aspNetUserId);
 
-        bool checkToken(String token,int aspNetUserId);
+        Task<bool> ChangePassword(AspNetUser aspNetUser);
 
-        Task<bool> changePassword(AspNetUser aspNetUser);
+        int CheckUserRole(string role);
 
-        int checkUserRole(string role);
+        Task<int> AddUserRole(AspNetRole aspNetRole);
 
-        Task<int> addUserRole(AspNetRole aspNetRole);
+        Task<bool> AddAspNetUserRole(AspNetUserRole aspNetUserRole);
 
-        Task<bool> addAspNetUserRole(AspNetUserRole aspNetUserRole);
-
-        AspNetUserRole validateAspNetUserRole(string email, string password);
+        AspNetUserRole ValidateAspNetUserRole(string email, string password);
     }
 }

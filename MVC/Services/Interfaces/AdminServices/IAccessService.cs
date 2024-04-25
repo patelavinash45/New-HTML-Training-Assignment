@@ -4,22 +4,22 @@ namespace Services.Interfaces.AdminServices
 {
     public interface IAccessService
     {
-        Access getAccessData();
+        Access GetAccessData();
 
-        CreateRole getCreateRole();
+        CreateRole GetCreateRole();
 
-        RolesCheckBox getMenusByRole(int roleId);
+        RolesCheckBox GetMenusByRole(int roleId);
 
-        Task<bool> createRole(CreateRole model, int aspNetUserId);
+        Task<bool> CreateRole(CreateRole model, int aspNetUserId);
 
-        Task<String> delete(int roleId, int aspNetUserId);
+        Task<String> DeleteRole(int roleId, int aspNetUserId);
 
         AdminCreaateAndProfile GetAdminCreaateAndProfile();
 
-        Task<String> createAdmin(AdminCreaateAndProfile model);
+        Task<String> CreateAdmin(AdminCreaateAndProfile model);
 
-        CreateRole getEditRole(int roleId);
+        CreateRole GetEditRole(int roleId);
 
-        Task<bool> editRole(CreateRole model,int roleId,int aspNetUserId);
+        Task<bool> EditRole(CreateRole model, int roleId, int aspNetUserId);
     }
 }

@@ -4,65 +4,62 @@ namespace Repositories.Interfaces
 {
     public interface IUserRepository
     {
-        int countUsers(Func<User, bool> predicat);
+        int CountUsers(Func<User, bool> predicat);
 
-        List<User> getAllUser(Func<User, bool> predicat,int skip);
+        List<User> GetAllUser(Func<User, bool> predicat, int skip);
 
-        int getUserID(int aspNetUserID);
+        int GetUserID(int aspNetUserID);
 
-        Task<int> addUser(User user);
+        Task<int> AddUser(User user);
 
-        User getUser(int aspNetUserID);
+        User GetUser(int aspNetUserID);
 
-        Task<bool> updateProfile(User user);
+        Task<bool> UpdateProfile(User user);
 
-        Admin getAdmionByAspNetUserId(int aspNetUserId);
+        Admin GetAdmionByAspNetUserId(int aspNetUserId);
 
-        Physician getPhysicianByAspNetUserId(int aspNetUserId);
+        Physician GetPhysicianByAspNetUserId(int aspNetUserId);
 
-        Task<bool> addAdmin(Admin admin);
+        Task<bool> AddAdmin(Admin admin);
 
-        List<Physician> getAllPhysicians();
+        List<Physician> GetAllPhysiciansByRegionId(int regionId);
 
-        List<Physician> getAllPhysiciansByRegionId(int regionId);
+        List<PhysicianRegion> GetAllPhysicianRegionsByRegionId(int regionId);
 
-        List<PhysicianRegion> getAllPhysicianRegionsByRegionId(int regionId);
+        List<PhysicianRegion> GetAllPhysicianRegionsByPhysicianId(int physicianId);
 
-        List<PhysicianRegion> getAllPhysicianRegionsByPhysicianId(int physicianId);
+        List<PhysicianRegion> GetAllPhysicianRegionsByAspNetUserIdWithRegionName(int aspNetUserId);
 
-        List<PhysicianRegion> getAllPhysicianRegionsByAspNetUserIdWithRegionName(int aspNetUserId);
+        List<Physician> GetAllUnAssignedPhysician();
 
-        List<Physician> getAllUnAssignedPhysician();
+        PhysicianNotification GetPhysicianNotification(int physicianId);
 
-        PhysicianNotification getPhysicianNotification(int physicianId);
+        Task<bool> UpdatePhysicianNotification(PhysicianNotification physicianNotification);
 
-        Task<bool> updatePhysicianNotification(PhysicianNotification physicianNotification);
+        Physician GetPhysicianByPhysicianId(int physicianId);
 
-        Physician getPhysicianByPhysicianId(int physicianId);
+        Physician GetPhysicianWithAspNetUser(int physicianId);
 
-        Physician getPhysicianWithAspNetUser(int physicianId);
+        List<AdminRegion> GetAdminRegionByAdminId(int adminId);
 
-        List<AdminRegion> getAdminRegionByAdminId(int adminId);
+        Task<bool> UpdateAdmin(Admin admin);
 
-        Task<bool> updateAdmin(Admin admin);
+        Task<bool> AddAdminRgions(List<AdminRegion> adminRegions);
 
-        Task<bool> addAdminRgions(List<AdminRegion> adminRegions);
+        Task<bool> DeleteAdminRgions(List<AdminRegion> adminRegions);
 
-        Task<bool> deleteAdminRgions(List<AdminRegion> adminRegions);
+        Task<bool> AddPhysicianRegions(List<PhysicianRegion> physicianRegions);
 
-        Task<bool> addPhysicianRegions(List<PhysicianRegion> physicianRegions);
+        Task<bool> DeletePhysicianRegions(List<PhysicianRegion> physicianRegions);
 
-        Task<bool> deletePhysicianRegions(List<PhysicianRegion> physicianRegions);
+        Task<bool> AddPhysician(Physician physician);
 
-        Task<bool> addPhysician(Physician physician);
+        Task<bool> UpdatePhysician(Physician physician);
 
-        Task<bool> updatePhysician(Physician physician);
+        Task<bool> AddPhysicianNotification(PhysicianNotification physicianNotification);
 
-        Task<bool> addPhysicianNotification(PhysicianNotification physicianNotification);
+        List<PhysicianLocation> GetAllProviderLocation();
 
-        List<PhysicianLocation> getAllProviderLocation();
-
-        List<Physician> getAllPhysicianWithCurrentShift(int regionId);
-
+        List<Physician> GetAllPhysicianWithCurrentShift(int regionId);
     }
 }

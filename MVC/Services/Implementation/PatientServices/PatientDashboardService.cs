@@ -17,7 +17,7 @@ namespace Services.Implementation.PatientServices
 
         public List<Dashboard> GetUsersMedicalData(int aspNetUserId)
         {
-            return _requestClientRepository.getAllRequestClientForUser(_userRepository.getUserID(aspNetUserId))
+            return _requestClientRepository.GetAllRequestClientForUser(_userRepository.GetUserID(aspNetUserId))
                     .Select(requestClient =>
                     new Dashboard()
                     {

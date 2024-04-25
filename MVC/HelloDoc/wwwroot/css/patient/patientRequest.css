@@ -29,6 +29,7 @@ body {
 }
 
 label,
+.form-select,
 .form-control {
     margin-top: 2vh;
 }

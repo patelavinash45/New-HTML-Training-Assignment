@@ -14,28 +14,28 @@ namespace Repositories.Implementation
             _dbContext = dbContext;
         }
 
-        public async Task<bool> addFile(RequestWiseFile requestWiseFile)
+        public async Task<bool> AddFile(RequestWiseFile requestWiseFile)
         {
             _dbContext.RequestWiseFiles.Add(requestWiseFile);
             return await _dbContext.SaveChangesAsync() > 0;
         }
 
-        public List<RequestWiseFile> getFilesByrequestId(int requestId)
+        public List<RequestWiseFile> GetFilesByrequestId(int requestId)
         {
             return _dbContext.RequestWiseFiles.Where(a => a.RequestId == requestId && a.IsDeleted != new BitArray(1, true)).ToList();
         }
 
-        public List<RequestWiseFile> getRequestWiseFilesByIds(List<int> ids)
+        public List<RequestWiseFile> GetRequestWiseFilesByIds(List<int> ids)
         {
             return _dbContext.RequestWiseFiles.Where(a => ids.Contains(a.RequestWiseFileId)).ToList();
         }
 
-        public RequestWiseFile getFilesByrequestWiseFileId(int requestWiseFileId)
+        public RequestWiseFile GetFilesByrequestWiseFileId(int requestWiseFileId)
         {
             return _dbContext.RequestWiseFiles.FirstOrDefault(a => a.RequestWiseFileId == requestWiseFileId);
         }
 
-        public async Task<bool> updateRequestWiseFiles(List<RequestWiseFile> requestWiseFiles)
+        public async Task<bool> UpdateRequestWiseFiles(List<RequestWiseFile> requestWiseFiles)
         {
             _dbContext.RequestWiseFiles.UpdateRange(requestWiseFiles);
             return await _dbContext.SaveChangesAsync() > 0;

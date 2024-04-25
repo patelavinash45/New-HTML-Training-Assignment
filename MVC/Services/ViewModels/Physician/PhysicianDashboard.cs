@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Services.ViewModels.Admin;
-using System.ComponentModel.DataAnnotations;
 
 namespace Services.ViewModels.Physician
 {

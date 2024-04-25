@@ -35,29 +35,34 @@ namespace Services.Implementation.PatientServices
 
         public bool IsEmailExists(String email)
         {
-            int aspNetUserId = _aspRepository.checkUser(email);
+            int aspNetUserId = _aspRepository.CheckUser(email);
             return aspNetUserId == 0 ? false : true;
         }
 
-        private async Task<int> checkAspNetRole(String role)
+        public Dictionary<int,String> GetRegions()
         {
-            int aspNetRoleId = _aspRepository.checkUserRole(role);
+            return _requestClientRepository.GetAllRegions().ToDictionary(region => region.RegionId, region => region.Name);
+        }
+
+        private async Task<int> CheckAspNetRole(String role)
+        {
+            int aspNetRoleId = _aspRepository.CheckUserRole(role);
             if (aspNetRoleId == 0)
             {
                 AspNetRole aspNetRole = new()
                 {
                     Name = role,
                 };
-                aspNetRoleId = await _aspRepository.addUserRole(aspNetRole);
+                aspNetRoleId = await _aspRepository.AddUserRole(aspNetRole);
             }
             return aspNetRoleId;
         }
 
-        public async Task<bool> addPatientRequest(AddPatientRequest model)
+        public async Task<bool> AddPatientRequest(AddPatientRequest model)
         {
-            int aspNetRoleId = await checkAspNetRole(role: "Patient");
-            int aspNetUserId = _aspRepository.checkUser(email: model.Email);
-            int userId = _userRepository.getUserID(aspNetUserId);
+            int aspNetRoleId = await CheckAspNetRole(role: "Patient");
+            int aspNetUserId = _aspRepository.CheckUser(email: model.Email);
+            int userId = _userRepository.GetUserID(aspNetUserId);
             if (aspNetUserId == 0)
             {
                 AspNetUser aspNetUser = new()
@@ -65,10 +70,10 @@ namespace Services.Implementation.PatientServices
                     UserName = model.FirstName,
                     Email = model.Email,
                     PhoneNumber = model.Mobile,
-                    PasswordHash = genrateHash(model.Password),
+                    PasswordHash = GenrateHash(model.Password),
                     CreatedDate = DateTime.Now,
                 };
-                aspNetUserId = await _aspRepository.addUser(aspNetUser);
+                aspNetUserId = await _aspRepository.AddUser(aspNetUser);
                 User user = new()
                 {
                     FirstName = model.FirstName,
@@ -87,14 +92,14 @@ namespace Services.Implementation.PatientServices
                     IntDate = model.BirthDate.Day,
                     StrMonth = model.BirthDate.Month.ToString(),
                 };
-                userId = await _userRepository.addUser(user);
+                userId = await _userRepository.AddUser(user);
                 AspNetUserRole aspNetUserRole = new()
                 {
                     UserId = aspNetUserId,
                     RoleId = aspNetRoleId,
                 };
-                await _aspRepository.addAspNetUserRole(aspNetUserRole);
-                _fileService.sendNewAccountMail(model.Email, model.Password);
+                await _aspRepository.AddAspNetUserRole(aspNetUserRole);
+                _fileService.SendNewAccountMail(model.Email, model.Password);
             }
             Request request = new()
             {
@@ -106,10 +111,10 @@ namespace Services.Implementation.PatientServices
                 PhoneNumber = model.Mobile,
                 CreatedDate = DateTime.Now,
             };
-            int requestId = await _requestRepository.addRequest(request);
+            int requestId = await _requestRepository.AddRequest(request);
             if (model.File != null)
             {
-                await _fileService.addFile(requestId: requestId, file: model.File, firstName: model.FirstName, lastName:model.LastName);
+                await _fileService.AddFile(requestId: requestId, file: model.File, firstName: model.FirstName, lastName:model.LastName);
             }
             RequestClient requestClient = new()
             {
@@ -127,13 +132,14 @@ namespace Services.Implementation.PatientServices
                 IntYear = DateTime.Now.Year,
                 IntDate = DateTime.Now.Day,
                 StrMonth = DateTime.Now.Month.ToString(),
+                RegionId = model.Region,
             };
-            return await _requestClientRepository.addRequestClient(requestClient);
+            return await _requestClientRepository.AddRequestClient(requestClient);
         }  
 
-        public AddRequestByPatient getModelForRequestByMe(int aspNetUserId)
+        public AddRequestByPatient GetModelForRequestByMe(int aspNetUserId)
         {
-            User user = _userRepository.getUser(aspNetUserId);
+            User user = _userRepository.GetUser(aspNetUserId);
             DateTime birthDay = DateTime.Parse(user.IntYear + "-" + user.StrMonth + "-" + user.IntDate);
             AddRequestByPatient addRequestForMe = new()
             {
@@ -146,7 +152,7 @@ namespace Services.Implementation.PatientServices
             return addRequestForMe;
         }
 
-        public async Task<bool> addRequestForMe(AddRequestByPatient model)
+        public async Task<bool> AddRequestForMe(AddRequestByPatient model)
         {
             AddPatientRequest patientRequest = new()
             {
@@ -163,14 +169,15 @@ namespace Services.Implementation.PatientServices
                 House = model.House,
                 BirthDate = model.BirthDate,
                 File = model.File,
+                Region = model.Region,
             };
-            return await addPatientRequest(patientRequest);
+            return await AddPatientRequest(patientRequest);
         }
 
-        public async Task<bool> addRequestForSomeOneelse(AddRequestByPatient model,int aspNetUserIdMe)
+        public async Task<bool> AddRequestForSomeOneelse(AddRequestByPatient model, int aspNetUserIdMe)
         {
-            int aspNetUserId = _aspRepository.checkUser(email: model.Email);
-            int userId = _userRepository.getUserID(aspNetUserId);
+            int aspNetUserId = _aspRepository.CheckUser(email: model.Email);
+            int userId = _userRepository.GetUserID(aspNetUserId);
             if (aspNetUserId == 0)
             {
                 AspNetUser aspNetUser = new()
@@ -178,10 +185,10 @@ namespace Services.Implementation.PatientServices
                     UserName = model.FirstName,
                     Email = model.Email,
                     PhoneNumber = model.Mobile,
-                    PasswordHash = genrateHash(model.Password),
+                    PasswordHash = GenrateHash(model.Password),
                     CreatedDate = DateTime.Now,
                 };
-                aspNetUserId = await _aspRepository.addUser(aspNetUser);
+                aspNetUserId = await _aspRepository.AddUser(aspNetUser);
                 User user = new()
                 {
                     FirstName = model.FirstName,
@@ -200,16 +207,16 @@ namespace Services.Implementation.PatientServices
                     IntDate = model.BirthDate.Day,
                     StrMonth = model.BirthDate.Month.ToString(),
                 };
-                userId = await _userRepository.addUser(user);
+                userId = await _userRepository.AddUser(user);
                 AspNetUserRole aspNetUserRole = new()
                 {
                     UserId = aspNetUserId,
-                    RoleId = _aspRepository.checkUserRole(role: "Patient"),
+                    RoleId = _aspRepository.CheckUserRole(role: "Patient"),
                 };
-                await _aspRepository.addAspNetUserRole(aspNetUserRole);
-                _fileService.sendNewAccountMail(model.Email, model.Password);
+                await _aspRepository.AddAspNetUserRole(aspNetUserRole);
+                _fileService.SendNewAccountMail(model.Email, model.Password);
             }
-            User userMe = _userRepository.getUser(aspNetUserIdMe);
+            User userMe = _userRepository.GetUser(aspNetUserIdMe);
             Request request = new()
             {
                 RequestTypeId = 3,
@@ -221,10 +228,10 @@ namespace Services.Implementation.PatientServices
                 RelationName = model.Relation,
                 CreatedDate = DateTime.Now,
             };
-            int requestId = await _requestRepository.addRequest(request);
+            int requestId = await _requestRepository.AddRequest(request);
             if (model.File != null)
             {
-                await _fileService.addFile(requestId: requestId, file: model.File, firstName: model.FirstName, lastName: model.LastName);
+                await _fileService.AddFile(requestId: requestId, file: model.File, firstName: model.FirstName, lastName: model.LastName);
             }
             RequestClient requestClient = new()
             {
@@ -242,15 +249,16 @@ namespace Services.Implementation.PatientServices
                 IntYear = DateTime.Now.Year,
                 IntDate = DateTime.Now.Day,
                 StrMonth = DateTime.Now.Month.ToString(),
+                RegionId = model.Region,
             };
-            return await _requestClientRepository.addRequestClient(requestClient);
+            return await _requestClientRepository.AddRequestClient(requestClient);
         }
 
-        public async Task<bool> addConciergeRequest(AddConciergeRequest model)
+        public async Task<bool> AddConciergeRequest(AddConciergeRequest model)
         {
-            int aspNetRoleId = await checkAspNetRole(role: "Patient");
-            int aspNetUserId = _aspRepository.checkUser(email: model.Email);
-            int userId = _userRepository.getUserID(aspNetUserId);
+            int aspNetRoleId = await CheckAspNetRole(role: "Patient");
+            int aspNetUserId = _aspRepository.CheckUser(email: model.Email);
+            int userId = _userRepository.GetUserID(aspNetUserId);
             if (aspNetUserId == 0)
             {
                 AspNetUser aspNetUser = new()
@@ -258,10 +266,10 @@ namespace Services.Implementation.PatientServices
                     UserName = model.FirstName,
                     Email = model.Email,
                     PhoneNumber = model.Mobile,
-                    PasswordHash = genrateHash(password: model.Password),
+                    PasswordHash = GenrateHash(password: model.Password),
                     CreatedDate = DateTime.Now,
                 };
-                aspNetUserId = await _aspRepository.addUser(aspNetUser);
+                aspNetUserId = await _aspRepository.AddUser(aspNetUser);
                 User user = new()
                 {
                     FirstName = model.FirstName,
@@ -280,14 +288,14 @@ namespace Services.Implementation.PatientServices
                     IntDate = model.BirthDate.Value.Day,
                     StrMonth = model.BirthDate.Value.Month.ToString(),
                 };
-                userId = await _userRepository.addUser(user);
+                userId = await _userRepository.AddUser(user);
                 AspNetUserRole aspNetUserRole = new()
                 {
                     UserId = aspNetUserId,
                     RoleId = aspNetRoleId,
                 };
-                await _aspRepository.addAspNetUserRole(aspNetUserRole);
-                _fileService.sendNewAccountMail(model.Email, model.Password);
+                await _aspRepository.AddAspNetUserRole(aspNetUserRole);
+                _fileService.SendNewAccountMail(model.Email, model.Password);
             }
             Request request = new()
             {
@@ -299,10 +307,10 @@ namespace Services.Implementation.PatientServices
                 PhoneNumber = model.ConciergeMobile,
                 CreatedDate = DateTime.Now,
             };
-            int requestId = await _requestRepository.addRequest(request);
+            int requestId = await _requestRepository.AddRequest(request);
             if (model.File != null)
             {
-                await _fileService.addFile(requestId: requestId, file: model.File, firstName: model.ConciergeFirstName, lastName: model.ConciergeLastName);
+                await _fileService.AddFile(requestId: requestId, file: model.File, firstName: model.ConciergeFirstName, lastName: model.ConciergeLastName);
             }
             Concierge concierge = new()
             {
@@ -313,13 +321,13 @@ namespace Services.Implementation.PatientServices
                 ZipCode = model.ConciergeZipCode,
                 CreatedDate = DateTime.Now,
             };
-            int conciergeId = await _businessConciergeRepository.addConcierge(concierge);
+            int conciergeId = await _businessConciergeRepository.AddConcierge(concierge);
             RequestConcierge requestConcierge = new()
             {
                 RequestId = request.RequestId,
                 ConciergeId = concierge.ConciergeId
             };
-            await _businessConciergeRepository.addRequestConcierge(requestConcierge);
+            await _businessConciergeRepository.AddRequestConcierge(requestConcierge);
             RequestClient requestClient = new()
             {
                 RequestId = requestId,
@@ -336,15 +344,16 @@ namespace Services.Implementation.PatientServices
                 IntYear = DateTime.Now.Year,
                 IntDate = DateTime.Now.Day,
                 StrMonth = DateTime.Now.Month.ToString(),
+                RegionId = model.Region,
             };
-            return await _requestClientRepository.addRequestClient(requestClient);
+            return await _requestClientRepository.AddRequestClient(requestClient);
         }
 
-        public async Task<bool> addFamilyFriendRequest(AddFamilyRequest model)
+        public async Task<bool> AddFamilyFriendRequest(AddFamilyRequest model)
         {
-            int aspNetRoleId = await checkAspNetRole(role: "Patient");
-            int aspNetUserId = _aspRepository.checkUser(email: model.Email);
-            int userId = _userRepository.getUserID(aspNetUserId);
+            int aspNetRoleId = await CheckAspNetRole(role: "Patient");
+            int aspNetUserId = _aspRepository.CheckUser(email: model.Email);
+            int userId = _userRepository.GetUserID(aspNetUserId);
             if (aspNetUserId == 0)
             {
                 AspNetUser aspNetUser = new()
@@ -352,10 +361,10 @@ namespace Services.Implementation.PatientServices
                     UserName = model.FirstName,
                     Email = model.Email,
                     PhoneNumber = model.Mobile,
-                    PasswordHash = genrateHash(model.Password),
+                    PasswordHash = GenrateHash(model.Password),
                     CreatedDate = DateTime.Now,
                 };
-                aspNetUserId = await _aspRepository.addUser(aspNetUser);
+                aspNetUserId = await _aspRepository.AddUser(aspNetUser);
                 User user = new()
                 {
                     FirstName = model.FirstName,
@@ -374,14 +383,14 @@ namespace Services.Implementation.PatientServices
                     IntDate = model.BirthDate.Value.Day,
                     StrMonth = model.BirthDate.Value.Month.ToString(),
                 };
-                userId = await _userRepository.addUser(user);
+                userId = await _userRepository.AddUser(user);
                 AspNetUserRole aspNetUserRole = new()
                 {
                     UserId = aspNetUserId,
                     RoleId = aspNetRoleId,
                 };
-                await _aspRepository.addAspNetUserRole(aspNetUserRole);
-                _fileService.sendNewAccountMail(model.Email, model.Password);
+                await _aspRepository.AddAspNetUserRole(aspNetUserRole);
+                _fileService.SendNewAccountMail(model.Email, model.Password);
             }
             Request request = new()
             {
@@ -394,10 +403,10 @@ namespace Services.Implementation.PatientServices
                 CreatedDate = DateTime.Now,
                 RelationName = model.Relation,
             };
-            int requestId = await _requestRepository.addRequest(request);
+            int requestId = await _requestRepository.AddRequest(request);
             if (model.File != null)
             {
-                await _fileService.addFile(requestId: requestId, file: model.File, firstName: model.FamilyFriendFirstName, 
+                await _fileService.AddFile(requestId: requestId, file: model.File, firstName: model.FamilyFriendFirstName, 
                                                                                                       lastName: model.FamilyFriendLastName);
             }
             RequestClient requestClient = new()
@@ -416,15 +425,16 @@ namespace Services.Implementation.PatientServices
                 IntYear = DateTime.Now.Year,
                 IntDate = DateTime.Now.Day,
                 StrMonth = DateTime.Now.Month.ToString(),
+                RegionId = model.Region,
             };
-            return await _requestClientRepository.addRequestClient(requestClient);
+            return await _requestClientRepository.AddRequestClient(requestClient);
         }
 
-        public async Task<bool> addBusinessRequest(AddBusinessRequest model)
+        public async Task<bool> AddBusinessRequest(AddBusinessRequest model)
         {
-            int aspNetRoleId = await checkAspNetRole(role: "Patient");
-            int aspNetUserId = _aspRepository.checkUser(email: model.Email);
-            int userId = _userRepository.getUserID(aspNetUserId);
+            int aspNetRoleId = await CheckAspNetRole(role: "Patient");
+            int aspNetUserId = _aspRepository.CheckUser(email: model.Email);
+            int userId = _userRepository.GetUserID(aspNetUserId);
             if (aspNetUserId == 0)
             {
                 AspNetUser aspNetUser = new()
@@ -432,10 +442,10 @@ namespace Services.Implementation.PatientServices
                     UserName = model.FirstName,
                     Email = model.Email,
                     PhoneNumber = model.Mobile,
-                    PasswordHash = genrateHash(model.Password),
+                    PasswordHash = GenrateHash(model.Password),
                     CreatedDate = DateTime.Now,
                 };
-                aspNetUserId = await _aspRepository.addUser(aspNetUser);
+                aspNetUserId = await _aspRepository.AddUser(aspNetUser);
                 User user = new()
                 {
                     FirstName = model.FirstName,
@@ -454,14 +464,14 @@ namespace Services.Implementation.PatientServices
                     IntDate = model.BirthDate.Value.Day,
                     StrMonth = model.BirthDate.Value.Month.ToString(),
                 };
-                userId = await _userRepository.addUser(user);
+                userId = await _userRepository.AddUser(user);
                 AspNetUserRole aspNetUserRole = new()
                 {
                     UserId = aspNetUserId,
                     RoleId = aspNetRoleId,
                 };
-                await _aspRepository.addAspNetUserRole(aspNetUserRole);
-                _fileService.sendNewAccountMail(model.Email, model.Password);
+                await _aspRepository.AddAspNetUserRole(aspNetUserRole);
+                _fileService.SendNewAccountMail(model.Email, model.Password);
             }
             Request request = new()
             {
@@ -473,10 +483,10 @@ namespace Services.Implementation.PatientServices
                 PhoneNumber = model.BusinessMobile,
                 CreatedDate = DateTime.Now,
             };
-            int requestId = await _requestRepository.addRequest(request);
+            int requestId = await _requestRepository.AddRequest(request);
             if (model.File != null)
             {
-                await _fileService.addFile(requestId: requestId, file: model.File, firstName: model.BusinessFirstName, lastName: model.BusinessLastName);
+                await _fileService.AddFile(requestId: requestId, file: model.File, firstName: model.BusinessFirstName, lastName: model.BusinessLastName);
             }
             Business business = new()
             {
@@ -484,13 +494,13 @@ namespace Services.Implementation.PatientServices
                 PhoneNumber = model.BusinessMobile,
                 CreatedDate = DateTime.Now,
             };
-            int businessId = await _businessConciergeRepository.addBusiness(business);
+            int businessId = await _businessConciergeRepository.AddBusiness(business);
             RequestBusiness requestBusiness = new()
             {
                 RequestId = request.RequestId,
                 BusinessId = business.BusinessId,
             };
-            await _businessConciergeRepository.addRequestBusiness(requestBusiness);
+            await _businessConciergeRepository.AddRequestBusiness(requestBusiness);
             RequestClient requestClient = new()
             {
                 RequestId = requestId,
@@ -507,11 +517,12 @@ namespace Services.Implementation.PatientServices
                 IntYear = DateTime.Now.Year,
                 IntDate = DateTime.Now.Day,
                 StrMonth = DateTime.Now.Month.ToString(),
+                RegionId = model.Region,
             };
-            return await _requestClientRepository.addRequestClient(requestClient);
+            return await _requestClientRepository.AddRequestClient(requestClient);
         }
 
-        private String genrateHash(String password)
+        private String GenrateHash(String password)
         {
             using (var sha256 = SHA256.Create())
             {

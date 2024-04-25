@@ -7,34 +7,34 @@ namespace Services.Interfaces.AdminServices
 {
     public interface IAdminDashboardService
     {
-        AdminDashboard getallRequests();
+        AdminDashboard GetallRequests();
 
         TableModel GetNewRequest(String status, int pageNo, String patientName, int regionId, int requesterTypeId);
 
-        Dictionary<int, String> getPhysiciansByRegion(int regionId);
+        Dictionary<int, String> GetPhysiciansByRegion(int regionId);
 
-        Tuple<String, String, int> getRequestClientEmailAndMobile(int requestId);
+        Tuple<String, String, int> GetRequestClientEmailAndMobile(int requestId);
 
-        Agreement getUserDetails(String token);
+        Agreement GetUserDetails(String token);
 
-        DataTable exportAllData();
+        DataTable ExportAllData();
 
-        DataTable exportData(String status, int pageNo, String patientName, int regionId, int requesterTypeId);
+        DataTable ExportData(String status, int pageNo, String patientName, int regionId, int requesterTypeId);
 
         bool SendRequestLink(SendLink model,HttpContext httpContext);
 
-        Task<bool> createRequest(CreateRequest model, int aspNetUserId, bool isAdmin);
+        Task<bool> CreateRequest(CreateRequest model, int aspNetUserId, bool isAdmin);
 
         bool RequestSupport(RequestSupport model);
 
-        EncounterForm getEncounterDetails(int requestId, bool isAdmin);
+        EncounterForm GetEncounterDetails(int requestId, bool isAdmin);
 
-        Task<bool> updateEncounter(EncounterForm model, int requestId, int aspNetUserId);
+        Task<bool> UpdateEncounter(EncounterForm model, int requestId, int aspNetUserId);
 
-        ViewCase getRequestDetails(int requestId, bool isAdmin);
+        ViewCase GetRequestDetails(int requestId, bool isAdmin);
 
-        Task<bool> updateRequest(ViewCase model);
+        Task<bool> UpdateRequest(ViewCase model);
 
-        ConcludeCare getConcludeCare(int requestId);
+        ConcludeCare GetConcludeCare(int requestId);
     }
 }

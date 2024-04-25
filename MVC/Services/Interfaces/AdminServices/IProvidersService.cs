@@ -4,52 +4,52 @@ namespace Services.Interfaces.AdminServices
 {
     public interface IProvidersService
     {
-        List<ProviderLocation> getProviderLocation();
+        List<ProviderLocation> GetProviderLocation();
 
-        Provider getProviders(int regionId);
+        Provider GetProviders(int regionId);
 
-        Task<bool> editProviderNotification(int providerId, bool isNotification);
+        Task<bool> EditProviderNotification(int providerId, bool isNotification);
 
-        Task<bool> contactProvider(ContactProvider model);
+        Task<bool> ContactProvider(ContactProvider model);
 
-        CreateProvider getCreateProvider();
+        CreateProvider GetCreateProvider();
 
-        EditProvider getEditProvider(int physicianId);
+        EditProvider GetEditProvider(int physicianId);
 
-        Task<String> createProvider(CreateProvider model);
+        Task<String> CreateProvider(CreateProvider model);
 
-        ProviderScheduling getProviderSchedulingData();
+        ProviderScheduling GetProviderSchedulingData();
 
-        List<SchedulingTable> getSchedulingTableDate(int regionId, int type, string date);
+        List<SchedulingTable> GetSchedulingTableDate(int regionId, int type, string date);
 
-        SchedulingTableMonthWise monthWiseScheduling(int regionId, String dateString);
+        SchedulingTableMonthWise MonthWiseScheduling(int regionId, String dateString);
 
-        Task<bool> createShift(CreateShift model, int aspNetUserId, bool isAdmin);
+        Task<bool> CreateShift(CreateShift model, int aspNetUserId, bool isAdmin);
 
-        RequestedShift getRequestedShift();
+        RequestedShift GetRequestedShift();
 
-        RequestShiftModel getRequestShiftTableDate(int regionId, bool isMonth, int pageNo);
+        RequestShiftModel GetRequestShiftTableDate(int regionId, bool isMonth, int pageNo);
 
-        Task<bool> changeShiftDetails(string dataList,bool isApprove, int aspNetUserId);
+        Task<bool> ChangeShiftDetails(string dataList, bool isApprove, int aspNetUserId);
 
-        ViewShift getShiftDetails(int shiftDetailsId);
+        ViewShift GetShiftDetails(int shiftDetailsId);
 
         Task<bool> EditShiftDetails(string data, int aspNetUserId);
 
-        ProviderOnCall getProviderOnCall(int regionId);
+        ProviderOnCall GetProviderOnCall(int regionId);
 
-        ProviderList getProviderList(int regionId);
+        ProviderList GetProviderList(int regionId);
 
         Task<bool> SaveSign(string sign, int physicianId);
 
-        Task<bool> editphysicianAccountInformaction(EditProvider model, int physicianId, int aspNetUserId);
+        Task<bool> EditphysicianAccountInformaction(EditProvider model, int physicianId, int aspNetUserId);
 
-        Task<bool> editphysicianPhysicianInformaction(EditProvider model, int physicianId, int aspNetUserId);
+        Task<bool> EditphysicianPhysicianInformaction(EditProvider model, int physicianId, int aspNetUserId);
 
-        Task<bool> editphysicianMailAndBillingInformaction(EditProvider model, int physicianId, int aspNetUserId);
+        Task<bool> EditphysicianMailAndBillingInformaction(EditProvider model, int physicianId, int aspNetUserId);
 
-        Task<bool> editphysicianProviderProfile(EditProvider model, int physicianId, int aspNetUserId);
+        Task<bool> EditphysicianProviderProfile(EditProvider model, int physicianId, int aspNetUserId);
         
-        Task<bool> editphysicianOnbordingInformaction(EditProvider model, int physicianId, int aspNetUserId);
+        Task<bool> EditphysicianOnbordingInformaction(EditProvider model, int physicianId, int aspNetUserId);
     }
 }

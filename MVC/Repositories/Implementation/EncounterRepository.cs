@@ -13,18 +13,18 @@ namespace Repositories.Implementation
             _dbContext = dbContext;
         }
 
-        public Encounter getEncounter(int requestId)
+        public Encounter GetEncounter(int requestId)
         {
             return _dbContext.Encounters.FirstOrDefault(a => a.RequestId == requestId);
         }
 
-        public async Task<bool> addEncounter(Encounter encounter)
+        public async Task<bool> AddEncounter(Encounter encounter)
         {
             _dbContext.Encounters.Add(encounter);
             return await _dbContext.SaveChangesAsync() > 0;
         }
 
-        public async Task<bool> updateEncounter(Encounter encounter)
+        public async Task<bool> UpdateEncounter(Encounter encounter)
         {
             _dbContext.Encounters.Update(encounter);
             return await _dbContext.SaveChangesAsync() > 0;

@@ -10,109 +10,129 @@ namespace Services.ViewModels.Admin
 
         [StringLength(100)]
         [RegularExpression(@"^[a-zA-Z]+(?: [a-zA-Z]+)*$", ErrorMessage = "The FirstName is not valid")]
-        public string FirstName { get; set; }
+        [Required(ErrorMessage = "The FirstName field is required.")]
+        public string? FirstName { get; set; }
 
         [StringLength(100)]
         [RegularExpression(@"^[a-zA-Z]+(?: [a-zA-Z]+)*$", ErrorMessage = "The LastName is not valid")]
-        public string LastName { get; set; }
+        [Required(ErrorMessage = "The LastName field is required.")]
+        public string? LastName { get; set; }
 
         [StringLength(500)]
-        public string Location { get; set; }
+        [Required(ErrorMessage = "The Location field is required.")]
+        public string? Location { get; set; }
 
         [StringLength(50)]
         [DataType(DataType.EmailAddress, ErrorMessage = "The Email is not valid")]
-        public string Email { get; set; }
+        [Required(ErrorMessage = "The Email field is required.")]
+        public string? Email { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "The BirthDate field is required.")]
         public DateTime? BirthDate { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "The Date field is required.")]
         public DateTime? Date { get; set; }
 
         [StringLength(20)]
         [RegularExpression(@"^(?:\+?91)?\s*([1-9]\d{4})\s*(\d{5})$", ErrorMessage = "The Mobile is not valid")]
-        public string Mobile { get; set; }
+        [Required(ErrorMessage = "The Mobile field is required.")]
+        public string? Mobile { get; set; }
 
         [StringLength(500)]
-        public string HistoryOfIllness { get; set; }
+        [Required(ErrorMessage = "The HistoryOfIllness field is required.")]
+        public string? HistoryOfIllness { get; set; }
 
         [StringLength(500)]
-        public string MedicalHistory { get; set; }
+        [Required(ErrorMessage = "The MedicalHistory field is required.")]
+        public string? MedicalHistory { get; set; }
 
         [StringLength(500)]
-        public string Medications { get; set; }
+        [Required(ErrorMessage = "The Medications field is required.")]
+        public string? Medications { get; set; }
 
         [StringLength(500)]
-        public string Allergies { get; set; }
+        [Required(ErrorMessage = "The Allergies field is required.")]
+        public string? Allergies { get; set; }
 
         [StringLength(20)]
-        public string Temp { get; set; }
+        [Required(ErrorMessage = "The Temp field is required.")]
+        public string? Temp { get; set; }
 
         [StringLength(20)]
-        public string HeartRate { get; set; }
+        [Required(ErrorMessage = "The HeartRate field is required.")]
+        public string? HeartRate { get; set; }
 
         [StringLength(20)]
-        public string RespiratoryRate { get; set; }
+        [Required(ErrorMessage = "The RespiratoryRate field is required.")]
+        public string? RespiratoryRate { get; set; }
 
         [StringLength(20)]
         [Required(ErrorMessage = "The BloodPressure field is required.")]
-        public string BloodPressure1 { get; set; }
+        public string? BloodPressure1 { get; set; }
 
         [StringLength(20)]
         [Required(ErrorMessage = "The BloodPressure field is required.")]
-        public string BloodPressure2 { get; set; }
+        public string? BloodPressure2 { get; set; }
 
         [StringLength(20)]
-        public string O2 { get; set; }
+        [Required(ErrorMessage = "The O2 field is required.")]
+        public string? O2 { get; set; }
 
         [StringLength(500)]
-        public string Pain { get; set; }
+        [Required(ErrorMessage = "The Pain field is required.")]
+        public string? Pain { get; set; }
 
         [StringLength(500)]
-        public string Heent { get; set; }
+        [Required(ErrorMessage = "The Heent field is required.")]
+        public string? Heent { get; set; }
 
         [StringLength(500)]
-        public string CV { get; set; }
+        [Required(ErrorMessage = "The CV field is required.")]
+        public string? CV { get; set; }
 
         [StringLength(500)]
-        public string Chest { get; set; }
+        [Required(ErrorMessage = "The Chest field is required.")]
+        public string? Chest { get; set; }
 
         [StringLength(500)]
-        public string ABD { get; set; }
+        [Required(ErrorMessage = "The ABD field is required.")]
+        public string? ABD { get; set; }
 
         [StringLength(500)]
-        public string Extra { get; set; }
+        [Required(ErrorMessage = "The Extra field is required.")]
+        public string? Extra { get; set; }
 
         [StringLength(500)]
-        public string Skin { get; set; }
+        [Required(ErrorMessage = "The Skin field is required.")]
+        public string? Skin { get; set; }
 
         [StringLength(500)]
-        public string Neuro { get; set; }
+        [Required(ErrorMessage = "The Neuro field is required.")]
+        public string? Neuro { get; set; }
 
         [StringLength(500)]
-        public string Other { get; set; }
+        [Required(ErrorMessage = "The Other field is required.")]
+        public string? Other { get; set; }
 
         [StringLength(500)]
-        public string Diagnosis { get; set; }
+        [Required(ErrorMessage = "The Diagnosis field is required.")]
+        public string? Diagnosis { get; set; }
 
         [StringLength(500)]
-        public string TreatmentPlan { get; set; }
+        [Required(ErrorMessage = "The TreatmentPlan field is required.")]
+        public string? TreatmentPlan { get; set; }
 
         [StringLength(500)]
-        public string Dispensed { get; set; }
+        [Required(ErrorMessage = "The Dispensed field is required.")]
+        public string? Dispensed { get; set; }
 
         [StringLength(500)]
-        public string Procedures { get; set; }
+        [Required(ErrorMessage = "The Procedures field is required.")]
+        public string? Procedures { get; set; }
 
         [StringLength(500)]
-        public string FollowUp { get; set; }
-    }
-
-    public class GeneratePdf
-    {
-        public Dictionary<String, String> PropertyList { get; set; }
-
-        public EncounterForm EncounterForm { get; set; }
+        [Required(ErrorMessage = "The FollowUp field is required.")]
+        public string? FollowUp { get; set; }
     }
 
 }

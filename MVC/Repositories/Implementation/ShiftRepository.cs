@@ -15,7 +15,7 @@ namespace Repositories.Implementation
             _dbContext = dbContext;
         }
 
-        public List<Physician> getPhysicianWithShiftDetailByRegionIdAndDAte(int regionId, DateTime startDate, DateTime endDate)
+        public List<Physician> GetPhysicianWithShiftDetailByRegionIdAndDAte(int regionId, DateTime startDate, DateTime endDate)
         {
             return _dbContext.Physicians.Include(a => a.Shifts).ThenInclude(a => a.ShiftDetails.Where(
                         a => (regionId == 0 || a.RegionId == regionId)
@@ -23,7 +23,7 @@ namespace Repositories.Implementation
                              && a.ShiftDate.Date >= startDate.Date && a.ShiftDate.Date <= endDate.Date)).ToList();
         }
 
-        public List<ShiftDetail> getShiftDetailByPhysicianIdAndDAte(int aspNetUserId, DateTime startDate, DateTime endDate)
+        public List<ShiftDetail> GetShiftDetailByPhysicianIdAndDAte(int aspNetUserId, DateTime startDate, DateTime endDate)
         {
             Func<ShiftDetail, bool> predicate = a =>
             a.Shift.Physician.AspNetUserId == aspNetUserId
@@ -32,7 +32,7 @@ namespace Repositories.Implementation
             return _dbContext.ShiftDetails.Include(a => a.Shift).ThenInclude(a => a.Physician).Where(predicate).ToList();
         }
 
-        public List<ShiftDetail> getShiftDetailByRegionIdAndDAte(int regionId, DateTime startDate, DateTime endDate)
+        public List<ShiftDetail> GetShiftDetailByRegionIdAndDAte(int regionId, DateTime startDate, DateTime endDate)
         {
             Func<ShiftDetail, bool> predicate = a =>
             (regionId == 0 || a.RegionId == regionId)
@@ -41,58 +41,58 @@ namespace Repositories.Implementation
             return _dbContext.ShiftDetails.Include(a => a.Shift).ThenInclude(a => a.Physician).Where(predicate).ToList();
         }
 
-        public List<ShiftDetail> getAllShiftDetailsFromShiftId(int shiftId)
+        public List<ShiftDetail> GetAllShiftDetailsFromShiftId(int shiftId)
         {
             return _dbContext.ShiftDetails.Where(a => a.ShiftId == shiftId).ToList();
         }
 
-        public async Task<bool> addShift(Shift shift)
+        public async Task<bool> AddShift(Shift shift)
         {
             _dbContext.Shifts.Add(shift);
             return await _dbContext.SaveChangesAsync() > 0;
         }
 
-        public async Task<bool> addShiftDetails(List<ShiftDetail> shiftDetails)
+        public async Task<bool> AddShiftDetails(List<ShiftDetail> shiftDetails)
         {
             _dbContext.ShiftDetails.AddRange(shiftDetails);
             return await _dbContext.SaveChangesAsync() > 0;
         }
 
-        public async Task<bool> addShiftDetailsRegion(List<ShiftDetailRegion> shiftDetailRegions)
+        public async Task<bool> AddShiftDetailsRegion(List<ShiftDetailRegion> shiftDetailRegions)
         {
             _dbContext.ShiftDetailRegions.AddRange(shiftDetailRegions);
             return await _dbContext.SaveChangesAsync() > 0;
         }
 
-        public async Task<bool> updateShiftDetails(List<ShiftDetail> shiftDetails)
+        public async Task<bool> UpdateShiftDetails(List<ShiftDetail> shiftDetails)
         {
             _dbContext.ShiftDetails.UpdateRange(shiftDetails);
             return await _dbContext.SaveChangesAsync() > 0;
         }
 
-        public async Task<bool> updateShiftDetailRegions(List<ShiftDetailRegion> shiftDetailRegions)
+        public async Task<bool> UpdateShiftDetailRegions(List<ShiftDetailRegion> shiftDetailRegions)
         {
             _dbContext.ShiftDetailRegions.UpdateRange(shiftDetailRegions);
             return await _dbContext.SaveChangesAsync() > 0;
         }
 
-        public ShiftDetail getShiftDetails(int shiftDetailsId)
+        public ShiftDetail GetShiftDetails(int shiftDetailsId)
         {
             return _dbContext.ShiftDetails.FirstOrDefault(a => a.ShiftDetailId == shiftDetailsId);
         }
 
-        public ShiftDetailRegion getShiftDetailRegion(int shiftDetailsId)
+        public ShiftDetailRegion GetShiftDetailRegion(int shiftDetailsId)
         {
             return _dbContext.ShiftDetailRegions.FirstOrDefault(a => a.ShiftDetailId == shiftDetailsId);
         }
 
-        public ShiftDetail getShiftDetailsWithPhysician(int shiftDetailsId)
+        public ShiftDetail GetShiftDetailsWithPhysician(int shiftDetailsId)
         {
             return _dbContext.ShiftDetails.Include(a => a.Shift.Physician).Include(a => a.Region)
                                                                         .FirstOrDefault(a => a.ShiftDetailId == shiftDetailsId);
         }
 
-        public List<ShiftDetail> getAllShiftDetails(int regionId, bool isThisMonth, DateTime date, int skip)
+        public List<ShiftDetail> GetAllShiftDetails(int regionId, bool isThisMonth, DateTime date, int skip)
         {
             Func<ShiftDetail,bool>  predicate = a => 
             (!isThisMonth || (a.ShiftDate.Date >= date.Date && a.ShiftDate.Date <= date.AddMonths(1).Date)) 
@@ -103,7 +103,7 @@ namespace Repositories.Implementation
                    .Where(predicate).OrderByDescending(a => a.ShiftDate).Skip(skip).Take(10).ToList();
         }
 
-        public int countAllShiftDetails(int regionId, bool isThisMonth, DateTime date)
+        public int CountAllShiftDetails(int regionId, bool isThisMonth, DateTime date)
         {
             Func<ShiftDetail, bool> predicate = a =>
             (!isThisMonth || (a.ShiftDate.Date >= date.Date && a.ShiftDate.Date <= date.AddMonths(1).Date))

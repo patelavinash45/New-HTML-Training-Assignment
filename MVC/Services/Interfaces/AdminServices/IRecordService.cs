@@ -5,28 +5,28 @@ namespace Services.Interfaces.AdminServices
 {
     public interface IRecordService
     {
-        Records getRecords(Records model);
+        Records GetRecords(Records model);
 
-        EmailSmsLogs getEmailLog(EmailSmsLogs model);
+        EmailSmsLogs GetEmailLog(EmailSmsLogs model);
 
-        List<EmailSmsLogTableData> getEmailLogTabledata(EmailSmsLogs model);
+        List<EmailSmsLogTableData> GetEmailLogTabledata(EmailSmsLogs model);
 
-        EmailSmsLogs getSMSlLog(EmailSmsLogs model);
+        EmailSmsLogs GetSMSlLog(EmailSmsLogs model);
 
-        List<EmailSmsLogTableData> getSMSLogTabledata(EmailSmsLogs model);
+        List<EmailSmsLogTableData> GetSMSLogTabledata(EmailSmsLogs model);
 
-        DataTable exportAllRecords();   
+        DataTable ExportAllRecords();   
 
-        PatientHistory getPatientHistory(PatientHistory model,int pageNo);
+        PatientHistory GetPatientHistory(PatientHistory model, int pageNo);
 
-        PatientHistoryTable getPatientHistoryTable(string data, int pageNo);
+        PatientHistoryTable GetPatientHistoryTable(string data, int pageNo);
 
-        PatientRecord getPatientRecord(int userId, int pageNo);
+        PatientRecord GetPatientRecord(int userId, int pageNo);
 
-        BlockHistory getBlockHistory(BlockHistory model, int pageNo);
+        BlockHistory GetBlockHistory(BlockHistory model, int pageNo);
 
-        BlockHistoryTable getBlockHistoryTable(string data, int pageNo, string Date);
+        BlockHistoryTable GetBlockHistoryTable(string data, int pageNo, string Date);
 
-        Task<bool> ubblockRequest(int requestId);
+        Task<bool> UnblockRequest(int requestId);
     }
 }

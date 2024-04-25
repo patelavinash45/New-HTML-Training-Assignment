@@ -17,9 +17,9 @@ namespace Services.Implementation.AdminServices
             _requestWiseFileRepository = requestWiseFileRepository;
         }
 
-        public CloseCase getDaetails(int requestId)
+        public CloseCase GetDaetails(int requestId)
         {
-            List<FileModel> fileList = _requestWiseFileRepository.getFilesByrequestId(requestId)
+            List<FileModel> fileList = _requestWiseFileRepository.GetFilesByrequestId(requestId)
                 .Select(requestWiseFile => new FileModel()
                 {
                     RequestId = requestId,
@@ -28,7 +28,7 @@ namespace Services.Implementation.AdminServices
                     Uploder = requestWiseFile.Uploder,
                     CreatedDate = requestWiseFile.CreatedDate,
                 }).ToList();
-            RequestClient requestClient = _requestClientRepository.getRequestClientAndRequestByRequestId(requestId);
+            RequestClient requestClient = _requestClientRepository.GetRequestClientAndRequestByRequestId(requestId);
             return new CloseCase()
             {
                 ConformationNumber = requestClient.Request.ConfirmationNumber,
@@ -42,23 +42,23 @@ namespace Services.Implementation.AdminServices
             };
         }
 
-        public async Task<bool> updateDetails(CloseCase model,int requestId)
+        public async Task<bool> UpdateDetails(CloseCase model, int requestId)
         {
-            RequestClient requestClient = _requestClientRepository.getRequestClientByRequestId(requestId);
+            RequestClient requestClient = _requestClientRepository.GetRequestClientByRequestId(requestId);
             requestClient.FirstName = model.FirstName;
             requestClient.LastName = model.LastName;
             requestClient.PhoneNumber = model.Phone;
             requestClient.IntDate = model.BirthDate.Value.Day;
             requestClient.IntYear = model.BirthDate.Value.Year;
             requestClient.StrMonth = model.BirthDate.Value.Month.ToString();
-            return await _requestClientRepository.updateRequestClient(requestClient);
+            return await _requestClientRepository.UpdateRequestClient(requestClient);
         }
 
-        public async Task<bool> requestAddToCloseCase(int requestId)
+        public async Task<bool> RequestAddToCloseCase(int requestId)
         {
-            RequestClient requestClient = _requestClientRepository.getRequestClientByRequestId(requestId);
+            RequestClient requestClient = _requestClientRepository.GetRequestClientByRequestId(requestId);
             requestClient.Status = 9;
-            return await _requestClientRepository.updateRequestClient(requestClient);
+            return await _requestClientRepository.UpdateRequestClient(requestClient);
         }
     }
 }

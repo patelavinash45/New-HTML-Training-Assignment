@@ -39,36 +39,36 @@ namespace Services.Implementation.PhysicianServices
             _shiftRepository = shiftRepository;
         }
 
-        public async Task<bool> acceptRequest(int requestId)
+        public async Task<bool> AcceptRequest(int requestId)
         {
-            RequestClient requestClient = _requestClientRepository.getRequestClientByRequestId(requestId);
+            RequestClient requestClient = _requestClientRepository.GetRequestClientByRequestId(requestId);
             requestClient.Status = 2;
-            return await _requestClientRepository.updateRequestClient(requestClient);
+            return await _requestClientRepository.UpdateRequestClient(requestClient);
         }
 
-        public async Task<bool> setEncounter(int requestId, bool isVideoCall)
+        public async Task<bool> SetEncounter(int requestId, bool isVideoCall)
         {
-            RequestClient requestClient = _requestClientRepository.getRequestClientAndRequestByRequestId(requestId);
+            RequestClient requestClient = _requestClientRepository.GetRequestClientAndRequestByRequestId(requestId);
             requestClient.Status = isVideoCall ? 6 : 4;
             requestClient.Request.CallType = isVideoCall ? (short)1 : (short)2;
-            return await _requestClientRepository.updateRequestClient(requestClient);
+            return await _requestClientRepository.UpdateRequestClient(requestClient);
         }
 
-        public int getPhysicianIdFromAspNetUserId(int aspNetUserId)
+        public int GetPhysicianIdFromAspNetUserId(int aspNetUserId)
         {
-            return _userRepository.getPhysicianByAspNetUserId(aspNetUserId).PhysicianId;
+            return _userRepository.GetPhysicianByAspNetUserId(aspNetUserId).PhysicianId;
         }
 
-        public async Task<bool> concludeCare(int requestId, ConcludeCare model)
+        public async Task<bool> ConcludeCare(int requestId, ConcludeCare model)
         {
-            Encounter encounter = _encounterRepository.getEncounter(requestId);
+            Encounter encounter = _encounterRepository.GetEncounter(requestId);
             if (encounter!=null && (bool)encounter.IsFinalize)
             {
-                RequestClient requestClient = _requestClientRepository.getRequestClientAndRequestByRequestId(requestId);
+                RequestClient requestClient = _requestClientRepository.GetRequestClientAndRequestByRequestId(requestId);
                 requestClient.Status = 8;
-                if (await _requestClientRepository.updateRequestClient(requestClient))
+                if (await _requestClientRepository.UpdateRequestClient(requestClient))
                 {
-                    return await _requestStatusLogRepository.addRequestSatatusLog(
+                    return await _requestStatusLogRepository.AddRequestSatatusLog(
                         new RequestStatusLog()
                         {
                             RequestId = requestId,
@@ -81,28 +81,28 @@ namespace Services.Implementation.PhysicianServices
             return false;
         }
 
-        public PhysicianScheduling providerScheduling(int aspNetUserId)
+        public PhysicianScheduling ProviderScheduling(int aspNetUserId)
         {
             CreateShift createShift = new CreateShift()
             {
-                Regions = _userRepository.getAllPhysicianRegionsByAspNetUserIdWithRegionName(aspNetUserId)
+                Regions = _userRepository.GetAllPhysicianRegionsByAspNetUserIdWithRegionName(aspNetUserId)
                                          .ToDictionary(physicianRegion => physicianRegion.RegionId, physicianRegion => physicianRegion.Region.Name),
             };
             DateTime monthStartDate = DateTime.Now.AddDays( 1 - DateTime.Now.Day);
             return new PhysicianScheduling()
             {
-                TableData = monthWiseScheduling(monthStartDate.ToString(), aspNetUserId),
+                TableData = MonthWiseScheduling(monthStartDate.ToString(), aspNetUserId),
                 CreateShift = createShift,
             };
         }
 
-        public SchedulingTableMonthWise monthWiseScheduling(string dateString, int aspNetUserId)
+        public SchedulingTableMonthWise MonthWiseScheduling(string dateString, int aspNetUserId)
         {
             DateTime date = DateTime.Parse(dateString);
             int startDate = (int)date.DayOfWeek;
             Dictionary<int, List<ShiftDetailsMonthWise>> monthWiseScheduling = new Dictionary<int, List<ShiftDetailsMonthWise>>();
             int totalDays = DateTime.DaysInMonth(date.Year, date.Month);
-            _shiftRepository.getShiftDetailByPhysicianIdAndDAte(aspNetUserId, startDate: date, endDate: date.AddMonths(1).AddDays(-1))
+            _shiftRepository.GetShiftDetailByPhysicianIdAndDAte(aspNetUserId, startDate: date, endDate: date.AddMonths(1).AddDays(-1))
                 .ForEach(shiftDetail =>
                 {
                     int currentDay = shiftDetail.ShiftDate.Day;
@@ -127,15 +127,15 @@ namespace Services.Implementation.PhysicianServices
             };
         }
 
-        public async Task<bool> transferRequest(PhysicianTransferRequest model)
+        public async Task<bool> TransferRequest(PhysicianTransferRequest model)
         {
-            RequestClient requestClient = _requestClientRepository.getRequestClientByRequestId(model.RequestId);
+            RequestClient requestClient = _requestClientRepository.GetRequestClientByRequestId(model.RequestId);
             requestClient.Status = 1;
             requestClient.PhysicianId = null;
-            if(await _requestClientRepository.updateRequestClient(requestClient))
+            if(await _requestClientRepository.UpdateRequestClient(requestClient))
             {
                 return await _requestStatusLogRepository
-                    .addRequestSatatusLog(
+                    .AddRequestSatatusLog(
                     new RequestStatusLog()
                     {
                         RequestId = model.RequestId,
@@ -148,24 +148,16 @@ namespace Services.Implementation.PhysicianServices
             return false;
         }
 
-        public PhysicianDashboard getallRequests(int aspNetUserId)
+        public PhysicianDashboard GetallRequests(int aspNetUserId)
         {
-            CancelPopUp cancelPopUp = new()
-            {
-                Reasons = _requestClientRepository.getAllReason().ToDictionary(caseTag => caseTag.CaseTagId, caseTag => caseTag.Reason),
-            };
-            AssignAndTransferPopUp assignAndTransferPopUp = new()
-            {
-                Regions = _requestClientRepository.getAllRegions().ToDictionary(region => region.RegionId, region => region.Name),
-            };
             return new PhysicianDashboard()
             {
                 NewRequests = GetNewRequest(status: "new", pageNo: 1, patientName: "", regionId: 0, requesterTypeId: 0, aspNetUserId),
-                NewRequestCount = _requestClientRepository.countRequestClientByStatusForPhysician(statusList["new"],aspNetUserId),
-                PendingRequestCount = _requestClientRepository.countRequestClientByStatusForPhysician(statusList["pending"], aspNetUserId),
-                ActiveRequestCount = _requestClientRepository.countRequestClientByStatusForPhysician(statusList["active"], aspNetUserId),
-                ConcludeRequestCount = _requestClientRepository.countRequestClientByStatusForPhysician(statusList["conclude"], aspNetUserId),
-                Regions = _requestClientRepository.getAllRegions().ToDictionary(region => region.RegionId, region => region.Name),
+                NewRequestCount = _requestClientRepository.CountRequestClientByStatusForPhysician(statusList["new"],aspNetUserId),
+                PendingRequestCount = _requestClientRepository.CountRequestClientByStatusForPhysician(statusList["pending"], aspNetUserId),
+                ActiveRequestCount = _requestClientRepository.CountRequestClientByStatusForPhysician(statusList["active"], aspNetUserId),
+                ConcludeRequestCount = _requestClientRepository.CountRequestClientByStatusForPhysician(statusList["conclude"], aspNetUserId),
+                Regions = _requestClientRepository.GetAllRegions().ToDictionary(region => region.RegionId, region => region.Name),
             };
         }
 
@@ -180,12 +172,12 @@ namespace Services.Implementation.PhysicianServices
             && a.Physician != null
             && a.Physician.AspNetUserId == aspNetUserId
             && (statusList[status].Contains(a.Status));
-            int totalRequests = _requestClientRepository.countRequestClientByStatusAndFilter(predicate);
-            List<RequestClient> requestClients = _requestClientRepository.getRequestClientByStatus(predicate, skip: skip);
-            return getTableModal(requestClients, totalRequests, pageNo);
+            int totalRequests = _requestClientRepository.CountRequestClientByStatusAndFilter(predicate);
+            List<RequestClient> requestClients = _requestClientRepository.GetRequestClientByStatus(predicate, skip: skip);
+            return GetTableModal(requestClients, totalRequests, pageNo);
         }
 
-        private TableModel getTableModal(List<RequestClient> requestClients, int totalRequests, int pageNo)
+        private TableModel GetTableModal(List<RequestClient> requestClients, int totalRequests, int pageNo)
         {
             int skip = (pageNo - 1) * 10;
             List<TablesData> tablesDatas = requestClients
@@ -226,9 +218,9 @@ namespace Services.Implementation.PhysicianServices
             };
         }
 
-        public byte[] generateMedicalReport(int requestId)
+        public byte[] GenerateMedicalReport(int requestId)
         {
-            Encounter encounter = _encounterRepository.getEncounter(requestId);
+            Encounter encounter = _encounterRepository.GetEncounter(requestId);
             EncounterForm encounterForm = new EncounterForm()
             {
                 FirstName = encounter.FirstName,

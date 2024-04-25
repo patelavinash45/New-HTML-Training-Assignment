@@ -4,8 +4,8 @@ namespace Services.Interfaces
 {
     public interface IFileService
     {
-        Task<bool> addFile(IFormFile file, int requestId, string firstName, string lastName);
+        Task<bool> AddFile(IFormFile file, int requestId, string firstName, string lastName);
 
-        void sendNewAccountMail(string email, string password);
+        void SendNewAccountMail(string email, string password);
     }
 }

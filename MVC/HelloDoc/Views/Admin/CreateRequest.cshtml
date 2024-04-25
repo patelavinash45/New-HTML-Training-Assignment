@@ -95,17 +95,16 @@
             </div>
         </div>
         <div class="row">
+            <div class="form-floating col-xl-6 col-md-6 col-lg-6">
+                <select class="form-select" id="selectRegion" asp-for="Region">
+                    <option selected value="">Select Region</option>
+                </select>
+                <label for="selectedProfession">Select Region</label>
+                <span asp-validation-for="Region" class="text-danger"></span>
+            </div>
             <div class="form-floating col-col-xl-6 col-md-6 col-lg-6">
                 <input asp-for="Room" class="form-control" id="room" placeholder="Room" />
                 <label for="room">Room(Optional)</label>
-            </div>
-            <div class="col-col-xl-6 col-md-6 col-lg-6">
-                <button class="px-3 me-2 bg-white locationButton fw-bold" onclick="checkLocation()" type="button">
-                    Verify
-                </button>
-                <button class="px-3 bg-white locationButton fw-bold" type="button">
-                    Map
-                </button>
             </div>
         </div>
         <h5 class="fw-bold mt-4">

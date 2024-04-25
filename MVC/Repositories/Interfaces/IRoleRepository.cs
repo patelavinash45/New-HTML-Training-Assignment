@@ -4,28 +4,28 @@ namespace Repositories.Interfaces
 {
     public interface IRoleRepository
     {
-        List<Role> getAllRoles();
+        List<Role> GetAllRoles();
 
-        List<Role> getRolesByUserType(int type);
+        List<Role> GetRolesByUserType(int type);
 
-        Role getRoleByRoleId(int roleId);
+        Role GetRoleByRoleId(int roleId);
 
-        List<Menu> getAllMenus();
+        List<Menu> GetAllMenus();
 
-        List<Menu> getAllMenusByRole(int roleId);
+        List<Menu> GetAllMenusByRole(int roleId);
 
-        List<RoleMenu> getAllRoleMenusByRole(int roleId);
+        List<RoleMenu> GetAllRoleMenusByRole(int roleId);
 
-        Task<int> addRole(Role role);
+        Task<int> AddRole(Role role);
 
-        Task<bool> addRoleMenus(List<RoleMenu> roleMenus);
+        Task<bool> AddRoleMenus(List<RoleMenu> roleMenus);
 
-        Task<bool> updateRole(Role role);
+        Task<bool> UpdateRole(Role role);
 
-        Task<bool> deleteRoleMenus(List<RoleMenu> roleMenus);
+        Task<bool> DeleteRoleMenus(List<RoleMenu> roleMenus);
 
-        Admin getRoleWithRoleMenusAndAdmin(int aspNetUserId, int menuId);
+        Admin GetRoleWithRoleMenusAndAdmin(int aspNetUserId, int menuId);
 
-        Physician getRoleWithRoleMenusAndPhysician(int aspNetUserId, int menuId);
+        Physician GetRoleWithRoleMenusAndPhysician(int aspNetUserId, int menuId);
     }
 }

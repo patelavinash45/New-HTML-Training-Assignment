@@ -17,7 +17,7 @@ namespace Services.Implementation
             _requestWiseFileRepository = requestWiseFileRepository;
         }
 
-        public async Task<bool> addFile(IFormFile file, int requestId, string firstName, string lastName)
+        public async Task<bool> AddFile(IFormFile file, int requestId, string firstName, string lastName)
         {
             string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files/"+requestId.ToString());
             if (!Directory.Exists(path))
@@ -39,10 +39,10 @@ namespace Services.Implementation
                 Uploder = $"{firstName} {lastName}",
                 IsDeleted = new BitArray(1, false),
             };
-            return await _requestWiseFileRepository.addFile(requestWiseFile);
+            return await _requestWiseFileRepository.AddFile(requestWiseFile);
         }
 
-        public void sendNewAccountMail(string email, string password)
+        public void SendNewAccountMail(string email, string password)
         {
             MailMessage mailMessage = new MailMessage
             {

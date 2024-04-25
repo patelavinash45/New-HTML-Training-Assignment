@@ -14,24 +14,24 @@ namespace Services.Implementation.AdminServices
             _healthProfessionalRepository = healthProfessionalRepository;
         }
 
-        public SendOrder getSendOrderDetails(int requestId)
+        public SendOrder GetSendOrderDetails(int requestId)
         { 
             return new SendOrder()
             {
-                Professions = _healthProfessionalRepository.getHealthProfessionalTypes()
+                Professions = _healthProfessionalRepository.GetHealthProfessionalTypes()
                                                     .ToDictionary(healthProfessionalType => healthProfessionalType.HealthProfessionalId,
                                                                   healthProfessionalType => healthProfessionalType.ProfessionName),
             };
         }
 
-        public HealthProfessional getBussinessData(int venderId)
+        public HealthProfessional GetBussinessData(int venderId)
         {
-            return _healthProfessionalRepository.getHealthProfessional(venderId);
+            return _healthProfessionalRepository.GetHealthProfessional(venderId);
         }
 
-        public async Task<bool> addOrderDetails(SendOrder model,int requestId)
+        public async Task<bool> AddOrderDetails(SendOrder model,int requestId)
         {
-            return await _healthProfessionalRepository.addOrderDetails(
+            return await _healthProfessionalRepository.AddOrderDetails(
                 new OrderDetail()
                 {
                     VendorId = model.SelectedBusiness,
@@ -45,9 +45,9 @@ namespace Services.Implementation.AdminServices
                 });
         }
 
-        public Dictionary<int, string> getBussinessByProfession(int professionId)
+        public Dictionary<int, string> GetBussinessByProfession(int professionId)
         {
-            return _healthProfessionalRepository.getHealthProfessionalByProfession(professionId)
+            return _healthProfessionalRepository.GetHealthProfessionalByProfession(professionId)
                                            .ToDictionary(healthProfessional => healthProfessional.VendorId,
                                                          healthProfessional => healthProfessional.VendorName);
         }

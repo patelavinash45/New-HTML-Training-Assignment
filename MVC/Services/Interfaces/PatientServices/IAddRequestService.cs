@@ -6,18 +6,20 @@ namespace Services.Interfaces.PatientServices
     {
         bool IsEmailExists(String email);
 
-        AddRequestByPatient getModelForRequestByMe(int aspNetUserId);
+        Dictionary<int, String> GetRegions();
 
-        Task<bool> addPatientRequest(AddPatientRequest model);
+        AddRequestByPatient GetModelForRequestByMe(int aspNetUserId);
 
-        Task<bool> addRequestForMe(AddRequestByPatient model);
+        Task<bool> AddPatientRequest(AddPatientRequest model);
 
-        Task<bool> addRequestForSomeOneelse(AddRequestByPatient model, int aspNetUserIdMe);
+        Task<bool> AddRequestForMe(AddRequestByPatient model);
 
-        Task<bool> addConciergeRequest(AddConciergeRequest model);
+        Task<bool> AddRequestForSomeOneelse(AddRequestByPatient model, int aspNetUserIdMe);
 
-        Task<bool> addFamilyFriendRequest(AddFamilyRequest model);
+        Task<bool> AddConciergeRequest(AddConciergeRequest model);
 
-        Task<bool> addBusinessRequest(AddBusinessRequest model);
+        Task<bool> AddFamilyFriendRequest(AddFamilyRequest model);
+
+        Task<bool> AddBusinessRequest(AddBusinessRequest model);
     }
 }

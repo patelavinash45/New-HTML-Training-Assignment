@@ -6,10 +6,10 @@ namespace Services.Interfaces.AuthServices
 {
     public interface IJwtService
     {
-        string genrateJwtToken(UserDataModel user);
+        string GenrateJwtToken(UserDataModel user);
 
-        string genrateJwtTokenForSendMail(List<Claim> claims, DateTime expries);
+        string GenrateJwtTokenForSendMail(List<Claim> claims, DateTime expries);
 
-        bool validateToken(String token, out JwtSecurityToken jwtToken);
+        bool ValidateToken(String token, out JwtSecurityToken jwtToken);
     }
 }

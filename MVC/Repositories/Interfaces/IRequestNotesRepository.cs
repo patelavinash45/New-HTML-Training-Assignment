@@ -6,8 +6,8 @@ namespace Repositories.Interfaces
     {
         RequestNote GetRequestNoteByRequestId(int requestId);
 
-        Task<bool> addRequestNote(RequestNote requestNote);
+        Task<bool> AddRequestNote(RequestNote requestNote);
 
-        Task<bool> updateRequestNote(RequestNote requestNote);
+        Task<bool> UpdateRequestNote(RequestNote requestNote);
     }
 }

@@ -18,19 +18,13 @@ namespace Repositories.Implementation
             return _dbContext.RequestStatusLogs.Where(a => a.RequestId == requestId).ToList();
         }
 
-        public async Task<bool> addRequestSatatusLog(RequestStatusLog requestStatusLog)
+        public async Task<bool> AddRequestSatatusLog(RequestStatusLog requestStatusLog)
         {
             _dbContext.RequestStatusLogs.Add(requestStatusLog);
             return await _dbContext.SaveChangesAsync() > 0;
         }  
 
-        public async Task<bool> updateRequestSatatusLog(RequestStatusLog requestStatusLog)
-        {
-            _dbContext.RequestStatusLogs.Update(requestStatusLog);
-            return await _dbContext.SaveChangesAsync() > 0;
-        }
-
-        public async Task<bool> addBlockRequest(BlockRequest blockRequest)
+        public async Task<bool> AddBlockRequest(BlockRequest blockRequest)
         {
             _dbContext.BlockRequests.Add(blockRequest);
             return await _dbContext.SaveChangesAsync() > 0;

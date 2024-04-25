@@ -13,19 +13,19 @@ namespace Repositories.Implementation
             _dbContext = dbContext;
         }
 
-        public async Task<int> addRequest(Request request)
+        public async Task<int> AddRequest(Request request)
         {
             _dbContext.Requests.Add(request);
             await _dbContext.SaveChangesAsync();
             return request?.RequestId ?? 0;
         }
 
-        public Request getRequestByRequestId(int requestId)
+        public Request GetRequestByRequestId(int requestId)
         {
             return _dbContext.Requests.FirstOrDefault(a => a.RequestId==requestId);
         }
 
-        public async Task<bool> updateRequest(Request request)
+        public async Task<bool> UpdateRequest(Request request)
         {
             _dbContext.Requests.Update(request);
             return await _dbContext.SaveChangesAsync() > 0;

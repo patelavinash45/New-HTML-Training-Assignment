@@ -4,16 +4,16 @@ namespace Services.Interfaces.AdminServices
 {
     public interface IPartnersService
     {
-        Partners getPartnersData();
+        Partners GetPartnersData();
 
-        List<PartnersTableData> getPartnersTableDatas(int regionId, String searchElement);
+        List<PartnersTableData> GetPartnersTableDatas(int regionId, String searchElement);
 
-        BusinessProfile addBusiness(bool isUpdate,int venderId);
+        BusinessProfile AddBusiness(bool isUpdate, int venderId);
 
-        Task<bool> createBusiness(BusinessProfile businessProfile);
+        Task<bool> CreateBusiness(BusinessProfile businessProfile);
 
-        Task<bool> EditBusiness(BusinessProfile businessProfile,int venderId);
+        Task<bool> EditBusiness(BusinessProfile businessProfile, int venderId);
 
-        Task<bool> deleteBusiness(int venderId);
+        Task<bool> DeleteBusiness(int venderId);
     }
 }
