@@ -31,7 +31,7 @@ namespace Services.Implementation
                 ConformationNumber = requestClient.Request.ConfirmationNumber,
                 FirstName = requestClient.FirstName,
                 LastName = requestClient.LastName,
-                FileList = _requestWiseFileRepository.GetFilesByrequestId(requestId)
+                FileList = _requestWiseFileRepository.GetFilesByRequestId(requestId)
                             .Select(requestWiseFile =>
                             new FileModel()
                             {
@@ -51,7 +51,7 @@ namespace Services.Implementation
 
         public async Task<bool> DeleteFile(int requestWiseFileId)
         {
-            RequestWiseFile requestWiseFile = _requestWiseFileRepository.GetFilesByrequestWiseFileId(requestWiseFileId);
+            RequestWiseFile requestWiseFile = _requestWiseFileRepository.GetFilesByRequestWiseFileId(requestWiseFileId);
             requestWiseFile.IsDeleted = new BitArray(1, true);
             return await _requestWiseFileRepository.UpdateRequestWiseFiles(new List<RequestWiseFile> { requestWiseFile});
         }
@@ -59,7 +59,7 @@ namespace Services.Implementation
         public async Task<bool> DeleteAllFile(String requestWiseFileIds, int requestId)
         {
             List<int> ids = JsonSerializer.Deserialize<List<String>>(requestWiseFileIds).Select(id => int.Parse(id)).ToList();
-            List<RequestWiseFile> requestWiseFiles = _requestWiseFileRepository.GetFilesByrequestId(requestId)
+            List<RequestWiseFile> requestWiseFiles = _requestWiseFileRepository.GetFilesByRequestId(requestId)
                 .Select(requestWiseFile =>
                 {
                     requestWiseFile.IsDeleted = new BitArray(1, true);

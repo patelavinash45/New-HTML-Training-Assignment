@@ -8,14 +8,13 @@
     ViewBag.Header = "_AdminDashboardHeader";
 }
 
-
 <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mt-2 mb-2">
         <h3>
             SMS Logs
         </h3>
         <a asp-controller="Admin" asp-action="Dashboard">
-            <button class="bg-white px-3 fw-bold">
+            <button class="bg-white px-3 fw-bold" onclick="setTab(1)">
                 <i class="bi bi-chevron-left"> </i>
                 Back
             </button>

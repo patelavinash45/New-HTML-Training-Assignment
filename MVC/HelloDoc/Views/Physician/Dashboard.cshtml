@@ -1,6 +1,5 @@
 ﻿@model Services.ViewModels.Physician.PhysicianDashboard
 
-
 @{
     Layout = "_PhysicianLayout";
     ViewData["Title"] = "Physician Dashboard";
@@ -8,7 +7,6 @@
     ViewBag.CssFile = "/css/admin/dashboard.css";
     ViewBag.Header = "_PhysicianDashboardHeader";
 }
-
 
 <partial name="_SendLink" model="@Model.SendLink">
 <partial name="_RequestTransferPhysicianPopUp" model="@Model.PhysicianTransferRequest">

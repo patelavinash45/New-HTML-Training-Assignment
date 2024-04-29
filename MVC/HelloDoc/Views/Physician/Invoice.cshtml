@@ -1,0 +1,47 @@
+﻿@model Services.ViewModels.Physician.InvoicePage
+
+@{
+    Layout = "_PhysicianLayout";
+    ViewData["Title"] = "Invoice";
+    ViewBag.CssFile = "/css/admin/providers.css";
+    ViewBag.Header = "_PhysicianDashboardHeader";
+}
+
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mt-2 mb-3">
+        <h3>
+            Scheduling
+        </h3>
+        <a asp-controller="Physician" asp-action="Dashboard">
+            <button class="bg-white px-3 fw-bold py-2" onclick="setTab(4)">
+                <i class="bi bi-chevron-left"> </i>
+                Back
+            </button>
+        </a>
+    </div>
+    <div class="providerList">
+        <div class="d-flex justify-content-between align-items-center mt-2 mb-3">
+            <select>
+                <option value="@Model.StartDate" selected>@Model.Date.ToString("MM/dd/yyy") - @Model.Date.AddDays(15).ToString("MM/dd/yyy")</option>
+            </select>
+            @if(Model.StartDate == null)
+            {
+                <button class="bg-white px-3 fw-bold py-2">
+                    Finalize Time-sheet
+                </button>
+            }
+        </div>
+        @if (Model.StartDate != null)
+        {
+            <div>
+                startDate = @Model.StartDate
+            </div>
+            <div>
+                EndDate = @Model.EndDate
+            </div>
+            <div>
+                Status = @Model.Status
+            </div>
+        }
+    </div>
+</div>

@@ -20,7 +20,7 @@ namespace Repositories.Implementation
             return await _dbContext.SaveChangesAsync() > 0;
         }
 
-        public List<RequestWiseFile> GetFilesByrequestId(int requestId)
+        public List<RequestWiseFile> GetFilesByRequestId(int requestId)
         {
             return _dbContext.RequestWiseFiles.Where(a => a.RequestId == requestId && a.IsDeleted != new BitArray(1, true)).ToList();
         }
@@ -30,7 +30,7 @@ namespace Repositories.Implementation
             return _dbContext.RequestWiseFiles.Where(a => ids.Contains(a.RequestWiseFileId)).ToList();
         }
 
-        public RequestWiseFile GetFilesByrequestWiseFileId(int requestWiseFileId)
+        public RequestWiseFile GetFilesByRequestWiseFileId(int requestWiseFileId)
         {
             return _dbContext.RequestWiseFiles.FirstOrDefault(a => a.RequestWiseFileId == requestWiseFileId);
         }

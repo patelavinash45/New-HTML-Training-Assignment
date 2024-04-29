@@ -8,14 +8,13 @@
     ViewBag.Header = "_PhysicianDashboardHeader";
 }
 
-
 <div class="container tab-content" id="dashboard_content">
     <div class="d-flex justify-content-between align-content-center mt-3 mb-3">
         <span class="h3">
             Documents
         </span>
         <a asp-controller="Physician" asp-action="Dashboard">
-            <button id="backBox">
+            <button id="backBox" onclick="setTab(1)">
                 <i class="bi bi-chevron-left"> </i>
                 Back
             </button>

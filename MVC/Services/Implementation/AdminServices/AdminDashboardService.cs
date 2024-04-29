@@ -311,7 +311,7 @@ namespace Services.Implementation.AdminServices
                 ConformationNumber = requestClient.Request.ConfirmationNumber,
                 FirstName = requestClient.FirstName,
                 LastName = requestClient.LastName,
-                FileList = _requestWiseFileRepository.GetFilesByrequestId(requestId)
+                FileList = _requestWiseFileRepository.GetFilesByRequestId(requestId)
                             .Select(requestWiseFile =>
                             new FileModel()
                             {
@@ -447,6 +447,7 @@ namespace Services.Implementation.AdminServices
             RequestClient requestClient = _requestClientRepository.GetRequestClientAndRequestByRequestId(requestId);
             return new ViewCase()
             {
+                ConformationNumber = requestClient.Request.ConfirmationNumber,
                 IsAdmin = isAdmin,
                 Status = requestClient.Status,
                 Requester = requestClient.Request.RequestTypeId,

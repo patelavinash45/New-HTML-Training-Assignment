@@ -4,6 +4,8 @@ namespace Services.ViewModels.Admin
 {
     public class ViewCase
     {
+        public string? ConformationNumber { get; set; }
+
         public bool IsAdmin { get; set; } = true;
 
         public int? Status { get; set; }

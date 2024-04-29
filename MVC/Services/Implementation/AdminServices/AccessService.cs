@@ -101,9 +101,9 @@ namespace Services.Implementation.AdminServices
                     role.IsDeleted = new BitArray(1, true);
                     role.ModifiedDate = DateTime.Now;
                     role.ModifiedBy = aspNetUserId.ToString();
-                    return await _roleRepository.UpdateRole(role) ? "" : "Faild !!";
+                    return await _roleRepository.UpdateRole(role) ? "" : "Failed !!";
                 }
-                return "Faild !!";
+                return "Failed !!";
             }
             return "This Role can not be Delete";
         }
@@ -173,9 +173,9 @@ namespace Services.Implementation.AdminServices
                         });
                     }
                     _fileService.SendNewAccountMail(model.Email, model.Password);
-                    return await _userRepository.AddAdminRgions(adminRegions) ? "" : "Faild !!";
+                    return await _userRepository.AddAdminRgions(adminRegions) ? "" : "Failed !!";
                 }
-                return "Faild !!";
+                return "Failed !!";
             }
             return "Email Already Exits";
         }

@@ -123,7 +123,6 @@ namespace Services.Implementation.AdminServices
                         });
                         goto NextPhysician;
                     }
-
                     providerOffDuty.Add(new ProviderOnCallTable()
                     {
                         Photo = $"{path}{physician.AspNetUserId}/{physician.Photo}",
@@ -311,11 +310,11 @@ namespace Services.Implementation.AdminServices
                         {
                             physician.IsNotification = physicianNotification.Id;
                             _fileService.SendNewAccountMail(model.Email, model.Password);
-                            return await _userRepository.UpdatePhysician(physician) ? "" : "Faild !!";
+                            return await _userRepository.UpdatePhysician(physician) ? "" : "Failed !!";
                         }
                     }
                 }
-                return "Faild !!";
+                return "Failed !!";
             }
             return "Email Already Exits";
         }

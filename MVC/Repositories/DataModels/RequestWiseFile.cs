@@ -55,6 +55,9 @@ public partial class RequestWiseFile
     [InverseProperty("RequestWiseFiles")]
     public virtual Physician? Physician { get; set; }
 
+    [InverseProperty("RequestWiseFile")]
+    public virtual ICollection<Reimbursement> Reimbursements { get; set; } = new List<Reimbursement>();
+
     [ForeignKey("RequestId")]
     [InverseProperty("RequestWiseFiles")]
     public virtual Request Request { get; set; } = null!;

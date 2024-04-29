@@ -1,4 +1,5 @@
-function sidebar() {  /// for mobile view silebar
+
+function sidebar() {  /// for mobile view sidebar
     var temp = $("#side-bar").css("display");
     if (temp == "none") {
         $("#side-bar").css("display","block");
@@ -24,4 +25,6 @@ $(document).on("click", "#log-out", function () {
     localStorage.removeItem("tab");
 })
 
-
+function setTab(temp){
+    localStorage.setItem("tab", `tab${temp}`);
+}

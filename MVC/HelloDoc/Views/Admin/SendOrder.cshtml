@@ -10,14 +10,13 @@
     ViewBag.Header = $"_{role}DashboardHeader";
 }
 
-
 <div class="container">
     <div class="d-flex justify-content-between align-content-center mt-3 mb-3">
         <span class="h3 mt-2">
             Send Order
         </span>
         <a asp-controller="@role" asp-action="Dashboard">
-            <button id="backBox">
+            <button id="backBox" onclick="setTab(1)">
                 <i class="bi bi-chevron-left"> </i>
                 Back
             </button>
@@ -40,9 +39,9 @@
             <div class="form-floating col-xl-6 col-md-6 col-lg-6">
                 <select class="form-select" id="selectedBusiness" asp-for="SelectedBusiness"
                     onchange="changeBussiness()">
-                    <option disabled selected value="">Select Bussiness</option>
+                    <option disabled selected value="">Select Business</option>
                 </select>
-                <label for="selectedBusiness">Bussiness</label>
+                <label for="selectedBusiness">Business</label>
                 <span asp-validation-for="SelectedBusiness" class="text-danger"></span>
             </div>
         </div>

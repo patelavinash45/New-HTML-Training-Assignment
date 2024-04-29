@@ -42,6 +42,10 @@ public partial class HalloDocDbContext : DbContext
 
     public virtual DbSet<HealthProfessionalType> HealthProfessionalTypes { get; set; }
 
+    public virtual DbSet<Invoice> Invoices { get; set; }
+
+    public virtual DbSet<InvoiceDetail> InvoiceDetails { get; set; }
+
     public virtual DbSet<Menu> Menus { get; set; }
 
     public virtual DbSet<OrderDetail> OrderDetails { get; set; }
@@ -55,6 +59,8 @@ public partial class HalloDocDbContext : DbContext
     public virtual DbSet<PhysicianRegion> PhysicianRegions { get; set; }
 
     public virtual DbSet<Region> Regions { get; set; }
+
+    public virtual DbSet<Reimbursement> Reimbursements { get; set; }
 
     public virtual DbSet<Request> Requests { get; set; }
 
@@ -218,6 +224,26 @@ public partial class HalloDocDbContext : DbContext
             entity.HasKey(e => e.HealthProfessionalId).HasName("HealthProfessionalType_pkey");
         });
 
+        modelBuilder.Entity<Invoice>(entity =>
+        {
+            entity.HasKey(e => e.InvoiceId).HasName("Invoice_pkey");
+
+            entity.Property(e => e.InvoiceId)
+                .UseIdentityAlwaysColumn()
+                .HasIdentityOptions(null, null, null, 99999999L, null, null);
+
+            entity.HasOne(d => d.Physician).WithMany(p => p.Invoices).HasConstraintName("PhysicianId");
+        });
+
+        modelBuilder.Entity<InvoiceDetail>(entity =>
+        {
+            entity.HasKey(e => e.InvoiceDetailsId).HasName("InvoiceDetail_pkey");
+
+            entity.Property(e => e.InvoiceDetailsId).ValueGeneratedNever();
+
+            entity.HasOne(d => d.Invoice).WithMany(p => p.InvoiceDetails).HasConstraintName("InvoiceId");
+        });
+
         modelBuilder.Entity<Menu>(entity =>
         {
             entity.HasKey(e => e.MenuId).HasName("Menu_pkey");
@@ -271,6 +297,21 @@ public partial class HalloDocDbContext : DbContext
         modelBuilder.Entity<Region>(entity =>
         {
             entity.HasKey(e => e.RegionId).HasName("Region_pkey");
+        });
+
+        modelBuilder.Entity<Reimbursement>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("Reimbursement_pkey");
+
+            entity.Property(e => e.Id)
+                .UseIdentityAlwaysColumn()
+                .HasIdentityOptions(null, null, null, 9999999L, null, null);
+
+            entity.HasOne(d => d.InvoiceDetails).WithMany(p => p.Reimbursements).HasConstraintName("InvoiceDetailsId");
+
+            entity.HasOne(d => d.Invoice).WithMany(p => p.Reimbursements).HasConstraintName("InvoiceId");
+
+            entity.HasOne(d => d.RequestWiseFile).WithMany(p => p.Reimbursements).HasConstraintName("RequestWiseFileId");
         });
 
         modelBuilder.Entity<Request>(entity =>

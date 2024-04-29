@@ -14,13 +14,15 @@ namespace HelloDoc.Controllers
         private readonly INotyfService _notyfService;
         private readonly IPhysicianDashboardService _physicianDashboardService;
         private readonly IAdminDashboardService _adminDashboardService;
+        private readonly IInvoiceService _invoiceService;
 
         public PhysicianController(INotyfService notyfService, IPhysicianDashboardService physicianDashboardService,
-                                                  IAdminDashboardService adminDashboardService)
+                                                  IAdminDashboardService adminDashboardService, IInvoiceService invoiceService)
         {
             _notyfService = notyfService;
             _physicianDashboardService = physicianDashboardService;  
             _adminDashboardService = adminDashboardService; 
+            _invoiceService = invoiceService;
         }
 
         public IActionResult AccessDenied()
@@ -50,6 +52,12 @@ namespace HelloDoc.Controllers
             return View(_physicianDashboardService.ProviderScheduling(aspNetUserId));
         }
 
+        public IActionResult Invoice()
+        {
+            int aspNetUserId = HttpContext.Session.GetInt32("aspNetUserId").Value;
+            return View(_invoiceService.GetInvoice(aspNetUserId));
+        }
+
         public async Task<IActionResult> AcceptRequest(int requestId)
         {
             if (await _physicianDashboardService.AcceptRequest(requestId))
@@ -58,7 +66,7 @@ namespace HelloDoc.Controllers
             }
             else
             {
-                _notyfService.Error("Faild !!");
+                _notyfService.Error("Failed !!");
             }
             return RedirectToAction("Dashboard", "Physician");
         }
@@ -72,7 +80,7 @@ namespace HelloDoc.Controllers
             }
             else
             {
-                _notyfService.Error("Faild !!");
+                _notyfService.Error("Failed !!");
             }
             return RedirectToAction("Dashboard", "Physician");
         }
@@ -115,7 +123,7 @@ namespace HelloDoc.Controllers
             }
             else
             {
-                _notyfService.Error("Update Faild !!");
+                _notyfService.Error("Update Failed !!");
             }
             return RedirectToAction("Dashboard", "Physician");
         }

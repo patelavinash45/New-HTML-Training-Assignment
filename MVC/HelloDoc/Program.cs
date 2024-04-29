@@ -57,6 +57,8 @@ builder.Services.AddScoped<IPartnersService, PartnersService>();
 builder.Services.AddScoped<IRecordService, RecordService>();
 builder.Services.AddScoped<ILogsService, LogsService>();
 builder.Services.AddScoped<IPhysicianDashboardService, PhysicianDashboardService>();
+builder.Services.AddScoped<IInvoiceService, InvoiceService>();
+builder.Services.AddScoped<IInvoiceRepository, InvoiceRepository>();
 
 
 var app = builder.Build();

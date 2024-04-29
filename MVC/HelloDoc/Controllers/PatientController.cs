@@ -213,7 +213,7 @@ namespace HelloDoc.Controllers
             }
             else
             {
-                _notyfService.Error("Faild!");
+                _notyfService.Error("Failed!");
             }
             return RedirectToAction("ViewProfile", "Patient");
         }
@@ -260,7 +260,7 @@ namespace HelloDoc.Controllers
             }
             else
             {
-                _notyfService.Error("Add Request Faild");
+                _notyfService.Error("Add Request Failed");
                 return RedirectToAction("RequestForMe", "Patient");
             }
         }
@@ -277,7 +277,7 @@ namespace HelloDoc.Controllers
             }
             else
             {
-                _notyfService.Error("Add Request Faild");
+                _notyfService.Error("Add Request Failed");
                 return RedirectToAction("RequestForSomeOne", "Patient");
             }
         }
@@ -293,7 +293,7 @@ namespace HelloDoc.Controllers
             }
             else
             {
-                _notyfService.Error("Add Request Faild");
+                _notyfService.Error("Add Request Failed");
                 return RedirectToAction("PatientRequest", "Patient");
             }
         }
@@ -309,7 +309,7 @@ namespace HelloDoc.Controllers
             }
             else
             {
-                _notyfService.Error("Add Request Faild");
+                _notyfService.Error("Add Request Failed");
                 return RedirectToAction("ConciergeRequest", "Patient");
             }
         }
@@ -325,7 +325,7 @@ namespace HelloDoc.Controllers
             }
             else
             {
-                _notyfService.Error("Add Request Faild");
+                _notyfService.Error("Add Request Failed");
                 return RedirectToAction("FamilyFriendRequest", "Patient");
             }
         }
@@ -341,7 +341,7 @@ namespace HelloDoc.Controllers
             }
             else
             {
-                _notyfService.Error("Add Request Faild");
+                _notyfService.Error("Add Request Failed");
                 return RedirectToAction("BusinessRequest", "Patient");
             }
         }

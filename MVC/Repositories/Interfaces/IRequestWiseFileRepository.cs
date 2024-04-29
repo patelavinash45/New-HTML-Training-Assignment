@@ -6,11 +6,11 @@ namespace Repositories.Interfaces
     {
         Task<bool> AddFile(RequestWiseFile requestWiseFile);
 
-        List<RequestWiseFile> GetFilesByrequestId(int requestId);
+        List<RequestWiseFile> GetFilesByRequestId(int requestId);
         
         List<RequestWiseFile> GetRequestWiseFilesByIds(List<int> ids);
 
-        RequestWiseFile GetFilesByrequestWiseFileId(int requestWiseFileId);
+        RequestWiseFile GetFilesByRequestWiseFileId(int requestWiseFileId);
 
         Task<bool> UpdateRequestWiseFiles(List<RequestWiseFile> requestWiseFile);
     }

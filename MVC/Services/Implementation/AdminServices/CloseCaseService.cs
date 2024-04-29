@@ -19,7 +19,7 @@ namespace Services.Implementation.AdminServices
 
         public CloseCase GetDaetails(int requestId)
         {
-            List<FileModel> fileList = _requestWiseFileRepository.GetFilesByrequestId(requestId)
+            List<FileModel> fileList = _requestWiseFileRepository.GetFilesByRequestId(requestId)
                 .Select(requestWiseFile => new FileModel()
                 {
                     RequestId = requestId,

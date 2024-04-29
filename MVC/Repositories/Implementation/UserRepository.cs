@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿// Ignore Spelling: admin Rgions
+
+using Microsoft.EntityFrameworkCore;
 using Repositories.DataContext;
 using Repositories.DataModels;
 using Repositories.Interfaces;

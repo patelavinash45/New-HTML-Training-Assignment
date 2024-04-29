@@ -294,21 +294,21 @@ namespace HelloDoc.Controllers
             return RedirectToAction("PatientSite", "Patient");
         }
 
-        public async Task<JsonResult> DeleteAllFiles(String requestWiseFileIdsList)   // delete all seleted file - view documents
+        public async Task<JsonResult> DeleteAllFiles(String requestWiseFileIdsList)   // delete all selected file - view documents
         {
             int requestId = HttpContext.Session.GetInt32("requestId").Value;
             if (await _viewDocumentsServices.DeleteAllFile(requestWiseFileIdsList, requestId))
             {
                 _notyfService.Success("Successfully File Deleted");
             }
-            else
+            else  
             {
-                _notyfService.Error("Faild!");
+                _notyfService.Error("Failed!");
             }
             return Json(new { redirect = Url.Action("ViewDocument", "Admin") });
         }
 
-        public async Task<IActionResult> DeleteFile(int requestWiseFileId)   /// delete perticuler one file - view documents
+        public async Task<IActionResult> DeleteFile(int requestWiseFileId)   /// delete particulate one file - view documents
         {
             if (await _viewDocumentsServices.DeleteFile(requestWiseFileId))
             {
@@ -316,7 +316,7 @@ namespace HelloDoc.Controllers
             }
             else
             {
-                _notyfService.Error("Faild!");
+                _notyfService.Error("Failed!");
             }
             return RedirectToAction("ViewDocument", "Admin");
         }
@@ -330,7 +330,7 @@ namespace HelloDoc.Controllers
             }
             else
             {
-                _notyfService.Error("Faild!");
+                _notyfService.Error("Failed!");
             }
             return Json(new { redirect = Url.Action("ViewDocument", "Admin") });
         }
@@ -339,11 +339,11 @@ namespace HelloDoc.Controllers
         {
             if (await _viewNotesService.CancleRequest(model))
             {
-                _notyfService.Success("Successfully Reuqest Cancel");
+                _notyfService.Success("Successfully Request Cancel");
             }
             else
             {
-                _notyfService.Error("Request Cancel Faild!");
+                _notyfService.Error("Request Cancel Failed!");
             }
             return RedirectToAction("Dashboard", "Admin");
         }
@@ -352,11 +352,11 @@ namespace HelloDoc.Controllers
         {
             if (await _viewNotesService.AssignRequest(model))
             {
-                _notyfService.Success("Successfully Reuqest Assign");
+                _notyfService.Success("Successfully Request Assign");
             }
             else
             {
-                _notyfService.Error("Request Assign Faild!");
+                _notyfService.Error("Request Assign Failed!");
             }
             return RedirectToAction("Dashboard", "Admin");
         }
@@ -367,11 +367,11 @@ namespace HelloDoc.Controllers
             {
                 if (await _viewNotesService.AssignRequest(model))
                 {
-                    _notyfService.Success("Successfully Reuqest Transfer");
+                    _notyfService.Success("Successfully Request Transfer");
                 }
                 else
                 {
-                    _notyfService.Error("Request Transfer Faild!");
+                    _notyfService.Error("Request Transfer Failed!");
                 }
                 return RedirectToAction("Dashboard", "Admin");
             }
@@ -384,11 +384,11 @@ namespace HelloDoc.Controllers
             {
                 if (await _viewNotesService.BlockRequest(model))
                 {
-                    _notyfService.Success("Successfully Reuqest Block");
+                    _notyfService.Success("Successfully Request Block");
                 }
                 else
                 {
-                    _notyfService.Error("Request Block Faild!");
+                    _notyfService.Error("Request Block Failed!");
                 }
                 return RedirectToAction("Dashboard", "Admin");
             }
@@ -400,11 +400,11 @@ namespace HelloDoc.Controllers
         {
             if (await _viewNotesService.ClearRequest(requestId))
             {
-                _notyfService.Success("Successfully Reuqest Clear");
+                _notyfService.Success("Successfully Request Clear");
             }
             else
             {
-                _notyfService.Error("Request Clear Faild !!");
+                _notyfService.Error("Request Clear Failed !!");
             }
             return Json(new { redirect = Url.Action("Dashboard", "Admin") });
         }
@@ -417,7 +417,7 @@ namespace HelloDoc.Controllers
             }
             else
             {
-                _notyfService.Error("Agreement Send Faild!");
+                _notyfService.Error("Agreement Send Failed!");
             }
             string role = HttpContext.Session.GetString("role");
             return RedirectToAction("Dashboard", role);
@@ -433,7 +433,7 @@ namespace HelloDoc.Controllers
                 }
                 else
                 {
-                    _notyfService.Error("Faild!");
+                    _notyfService.Error("Failed!");
                 }
                 return RedirectToAction("Dashboard", "Admin");
             }
@@ -453,7 +453,7 @@ namespace HelloDoc.Controllers
                 }
                 else
                 {
-                    _notyfService.Error("Faild!");
+                    _notyfService.Error("Failed!");
                 }
                 return isAdmin ? RedirectToAction("ProviderScheduling", "Admin") : RedirectToAction("Scheduling", "Physician");
             }
@@ -468,7 +468,7 @@ namespace HelloDoc.Controllers
             }
             else
             {
-                _notyfService.Error("Faild!");
+                _notyfService.Error("Failed!");
             }
             return RedirectToAction("PatientSite", "Patient");
         }
@@ -481,7 +481,7 @@ namespace HelloDoc.Controllers
             }
             else
             {
-                _notyfService.Error("Faild!");
+                _notyfService.Error("Failed!");
             }
             return RedirectToAction("PatientSite", "Patient");
         }
@@ -506,7 +506,7 @@ namespace HelloDoc.Controllers
             return Json(_adminDashboardService.GetRequestClientEmailAndMobile(requestId));
         }
 
-        [HttpGet] //// Assigncase and TransfercasePopUp
+        [HttpGet] //// Assign case and TransfercasePopUp
         public JsonResult GetPhysicians(int regionId)
         {
             return Json(_adminDashboardService.GetPhysiciansByRegion(regionId));
@@ -524,7 +524,7 @@ namespace HelloDoc.Controllers
             return PartialView("_ProviderTable", _providersService.GetProviders(regionId: regionId).Providers);
         }
 
-        [HttpGet] //// change checkboc menus on create role page
+        [HttpGet] //// change check box menus on create role page
         public IActionResult ChangeMenusByRole(int roleId)
         {
             return PartialView("_CreateRoleCheckBox", _accessService.GetMenusByRole(roleId));
@@ -540,7 +540,7 @@ namespace HelloDoc.Controllers
             }
             else
             {
-                _notyfService.Error("Faild !!");
+                _notyfService.Error("Failed !!");
             }
             return RedirectToAction("Access", "Admin");
         }
@@ -556,7 +556,7 @@ namespace HelloDoc.Controllers
             }
             else
             {
-                _notyfService.Error("Faild !!");
+                _notyfService.Error("Failed !!");
             }
             return RedirectToAction("Access", "Admin");
         }
@@ -577,7 +577,7 @@ namespace HelloDoc.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]  /////  sendlink ---  Dashboard
+        [ValidateAntiForgeryToken]  /////  send link ---  Dashboard
         public IActionResult SendLink(SendLink model)
         {
             if (_adminDashboardService.SendRequestLink(model, HttpContext))
@@ -586,7 +586,7 @@ namespace HelloDoc.Controllers
             }
             else
             {
-                _notyfService.Error("Link Send Faild !!");
+                _notyfService.Error("Link Send Failed !!");
             }
             string role = HttpContext.Session.GetString("role");
             return RedirectToAction("Dashboard", role);
@@ -604,7 +604,7 @@ namespace HelloDoc.Controllers
             }
             else
             {
-                _notyfService.Error("Faild!");
+                _notyfService.Error("Failed!");
             }
             string role = HttpContext.Session.GetString("role");
             return RedirectToAction("Dashboard", role);
@@ -707,7 +707,7 @@ namespace HelloDoc.Controllers
                 }
                 else
                 {
-                    _notyfService.Error("Order Faild !!");
+                    _notyfService.Error("Order Failed !!");
                 }
                 string role = HttpContext.Session.GetString("role");
                 return RedirectToAction("Dashboard", role);
@@ -729,7 +729,7 @@ namespace HelloDoc.Controllers
                 }
                 else
                 {
-                    _notyfService.Error("Update Faild !!");
+                    _notyfService.Error("Update Failed !!");
                 }
                 return RedirectToAction("Dashboard", "Admin");
             }
@@ -779,7 +779,7 @@ namespace HelloDoc.Controllers
             }
             else
             {
-                _notyfService.Error("Update Faild");
+                _notyfService.Error("Update Failed");
             }
             return RedirectToAction("ViewCase", "Admin");
         }
@@ -793,7 +793,7 @@ namespace HelloDoc.Controllers
             }
             else
             {
-                _notyfService.Error("Message Send Faild");
+                _notyfService.Error("Message Send Failed");
             }
             return RedirectToAction("Providers", "Admin");
         }
@@ -808,7 +808,7 @@ namespace HelloDoc.Controllers
             }
             else
             {
-                _notyfService.Error("Update Faild");
+                _notyfService.Error("Update Failed");
             }
             return RedirectToAction("CloseCase", "Admin");
         }
@@ -822,7 +822,7 @@ namespace HelloDoc.Controllers
             }
             else
             {
-                _notyfService.Error("Faild");
+                _notyfService.Error("Failed");
             }
             return RedirectToAction("Dashboard", "Admin");
         }
@@ -837,7 +837,7 @@ namespace HelloDoc.Controllers
             }
             else
             {
-                _notyfService.Error("Faild");
+                _notyfService.Error("Failed");
             }
             return Json(new { redirect = Url.Action("ViewProfile", "Admin") });
         }
@@ -854,7 +854,7 @@ namespace HelloDoc.Controllers
             }
             else
             {
-                _notyfService.Error("Faild");
+                _notyfService.Error("Failed");
             }
             return Json(new { redirect = Url.Action("ViewProfile", "Admin") });
         }
@@ -869,7 +869,7 @@ namespace HelloDoc.Controllers
             }
             else
             {
-                _notyfService.Error("Faild");
+                _notyfService.Error("Failed");
             }
             return Json(new { redirect = Url.Action("ViewProfile", "Admin") });
         }
@@ -926,7 +926,7 @@ namespace HelloDoc.Controllers
             }
             else
             {
-                _notyfService.Error("Add Business Faild");
+                _notyfService.Error("Add Business Failed");
             }
             return RedirectToAction("Partners", "Admin");
         }
@@ -942,7 +942,7 @@ namespace HelloDoc.Controllers
             }
             else
             {
-                _notyfService.Error("Update Business Faild");
+                _notyfService.Error("Update Business Failed");
             }
             return RedirectToAction("Partners", "Admin");
         }
@@ -955,7 +955,7 @@ namespace HelloDoc.Controllers
             }
             else
             {
-                _notyfService.Error("Delete Business Faild");
+                _notyfService.Error("Delete Business Failed");
             }
             return RedirectToAction("Partners", "Admin");
         }
@@ -974,7 +974,7 @@ namespace HelloDoc.Controllers
                 }
                 else
                 {
-                    _notyfService.Error("Add Notes Faild");
+                    _notyfService.Error("Add Notes Failed");
                 }
             }
             return RedirectToAction("ViewNotes", "Admin");
@@ -1019,7 +1019,7 @@ namespace HelloDoc.Controllers
             }
             else
             {
-                _notyfService.Error("Faild!");
+                _notyfService.Error("Failed!");
             }
             return Json(new { redirect = Url.Action("RequestedShift", "Admin") });
         }
@@ -1103,7 +1103,7 @@ namespace HelloDoc.Controllers
             return PartialView("_ProviderOnCallTable", _providersService.GetProviderList(regionId));
         }
 
-        [HttpGet]    // Provider Reacord page 
+        [HttpGet]    // Provider Record page 
         public IActionResult GetPatientRecord(int pageNo)
         {
             int userId = HttpContext.Session.GetInt32("userId").Value;
@@ -1125,12 +1125,12 @@ namespace HelloDoc.Controllers
             }
             else
             {
-                _notyfService.Error("UnBlock Faild");
+                _notyfService.Error("UnBlock Failed");
             }
             return Json(new { redirect = Url.Action("BlockHistory", "Admin") });
         }
 
-        [HttpPost]    //  edit provider account informaction
+        [HttpPost]    //  edit provider account information
         public async Task<IActionResult> EditphysicianAccountInformaction(EditProvider model)
         {
             int physicianId = HttpContext.Session.GetInt32("physicianId").Value;
@@ -1141,12 +1141,12 @@ namespace HelloDoc.Controllers
             }
             else
             {
-                _notyfService.Error("Faild");
+                _notyfService.Error("Failed");
             }
             return RedirectToAction("EditProvider", "Admin");
         }
 
-        [HttpPost]    //  edit provider Physician Informaction
+        [HttpPost]    //  edit provider Physician Information
         public async Task<IActionResult> EditphysicianPhysicianInformaction(EditProvider model)
         {
             int physicianId = HttpContext.Session.GetInt32("physicianId").Value;
@@ -1157,7 +1157,7 @@ namespace HelloDoc.Controllers
             }
             else
             {
-                _notyfService.Error("Faild");
+                _notyfService.Error("Failed");
             }
             return RedirectToAction("EditProvider", "Admin");
         }
@@ -1173,7 +1173,7 @@ namespace HelloDoc.Controllers
             }
             else
             {
-                _notyfService.Error("Faild");
+                _notyfService.Error("Failed");
             }
             return RedirectToAction("EditProvider", "Admin");
         }
@@ -1189,12 +1189,12 @@ namespace HelloDoc.Controllers
             }
             else
             {
-                _notyfService.Error("Faild");
+                _notyfService.Error("Failed");
             }
             return RedirectToAction("EditProvider", "Admin");
         }
 
-        [HttpPost]    //  edit provider Onbording informaction
+        [HttpPost]    //  edit provider Onbording information
         public async Task<IActionResult> EditphysicianOnbordingInformaction(EditProvider model)
         {
             int physicianId = HttpContext.Session.GetInt32("physicianId").Value;
@@ -1205,7 +1205,7 @@ namespace HelloDoc.Controllers
             }
             else
             {
-                _notyfService.Error("Faild");
+                _notyfService.Error("Failed");
             }
             return RedirectToAction("EditProvider", "Admin");
         }
@@ -1220,7 +1220,7 @@ namespace HelloDoc.Controllers
             }
             else
             {
-                _notyfService.Error("Faild");
+                _notyfService.Error("Failed");
             }
             return Json(new { redirect = Url.Action("EditProvider", "Admin")});
         }

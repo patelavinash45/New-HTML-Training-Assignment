@@ -8,14 +8,13 @@
     ViewBag.Header = "_PatientDashboardHeader";
 }
 
-
 <div class="tab-content container" id="profile_content">
     <div class="d-flex justify-content-between align-content-center mt-3 mb-3">
         <span class="h3">
             User Profile
         </span>
         <a asp-controller="Patient" asp-action="Dashboard">
-            <button id="backBox" class="bg-white">
+            <button id="backBox" class="bg-white" onclick="setTab(1)">
                 <i class="bi bi-chevron-left"> </i>
                 Back
             </button>
@@ -108,7 +107,7 @@
                 Submit
             </button>
             <button class="bottom-button" id="submit-button" onclick="ProfileEdit(false)" type="button">
-                Cancle
+                Cancel
             </button>
         </div>
     </form>

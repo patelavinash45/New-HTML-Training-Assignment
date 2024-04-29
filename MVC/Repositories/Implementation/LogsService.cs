@@ -12,7 +12,7 @@ namespace Repositories.Implementation
 
         public LogsService(HalloDocDbContext dbContext)
         {
-            _dbContext = dbContext;
+            _dbContext = dbContext;   
         }
 
         public async Task<bool> AddEmailLog(EmailLog emailLog)

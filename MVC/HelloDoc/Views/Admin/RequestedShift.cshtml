@@ -8,14 +8,13 @@
     ViewBag.Header = "_AdminDashboardHeader";
 }
 
-
 <div class="container">
     <div class="d-flex justify-content-between align-items-center mt-2 mb-3">
         <h3>
             Requested Shift
         </h3>
         <a asp-controller="Admin" asp-action="ProviderScheduling">
-            <button class="bg-white px-3 fw-bold">
+            <button class="bg-white px-3 fw-bold" onclick="setTab(4)">
                 <i class="bi bi-chevron-left"> </i>
                 Back
             </button>

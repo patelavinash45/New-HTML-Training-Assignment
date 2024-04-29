@@ -231,7 +231,7 @@ namespace Services.Implementation.PatientServices
             int requestId = await _requestRepository.AddRequest(request);
             if (model.File != null)
             {
-                await _fileService.AddFile(requestId: requestId, file: model.File, firstName: model.FirstName, lastName: model.LastName);
+                await _fileService.AddFile(requestId: requestId, file: model.File, firstName: userMe.FirstName, lastName: userMe.LastName);
             }
             RequestClient requestClient = new()
             {

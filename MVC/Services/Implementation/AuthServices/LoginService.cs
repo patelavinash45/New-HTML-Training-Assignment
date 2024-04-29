@@ -200,7 +200,7 @@ namespace Services.Implementation.AuthServices
             }
             catch(Exception ex)
             {
-                setNewPassword.ErrorMessage = "Link is Not Vlaid";
+                setNewPassword.ErrorMessage = "Link is Not Valid";
             }
             return setNewPassword;
         }
