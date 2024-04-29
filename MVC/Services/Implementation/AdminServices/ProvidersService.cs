@@ -25,7 +25,7 @@ namespace Services.Implementation.AdminServices
         private readonly IFileService _fileService;
 
         public ProvidersService(IUserRepository userRepository, IRequestClientRepository requestClientRepository, IRoleRepository roleRepository,
-                                 IAspRepository aspRepository, IShiftRepository shiftRepository,ILogsService logsService, IFileService fileService)
+                                 IAspRepository aspRepository, IShiftRepository shiftRepository, ILogsService logsService, IFileService fileService)
         {
             _userRepository = userRepository;
             _requestClientRepository = requestClientRepository;
@@ -45,7 +45,7 @@ namespace Services.Implementation.AdminServices
             shiftDetail.EndTime = viewShift.EndTime;
             shiftDetail.ModifiedBy = aspNetUserId;
             shiftDetail.ModifiedDate = DateTime.Now;
-            return _shiftRepository.UpdateShiftDetails(new List<ShiftDetail> { shiftDetail});
+            return _shiftRepository.UpdateShiftDetails(new List<ShiftDetail> { shiftDetail });
         }
 
         public ViewShift GetShiftDetails(int shiftDetailsId)
@@ -76,7 +76,7 @@ namespace Services.Implementation.AdminServices
         public Provider GetProviders(int regionId)
         {
             Dictionary<int, string> regions = new Dictionary<int, string>();
-            if(regionId == 0)  // for first time page load - on filter this part not execute
+            if (regionId == 0)  // for first time page load - on filter this part not execute
             {
                 regions = _requestClientRepository.GetAllRegions().ToDictionary(region => region.RegionId, region => region.Name);
             }
@@ -113,26 +113,24 @@ namespace Services.Implementation.AdminServices
             _userRepository.GetAllPhysicianWithCurrentShift(regionId)
                 .ForEach(physician =>
                 {
-                    foreach (var shift in physician.Shifts)
+                    foreach (var shift in physician.Shifts.Where(x => x.ShiftDetails.Count > 0))
                     {
-                        if (shift.ShiftDetails.Count > 0)
+                        providerOnCalls.Add(new ProviderOnCallTable()
                         {
-                            providerOnCalls.Add(new ProviderOnCallTable()
-                            {
-                                Photo = $"{path}{physician.AspNetUserId}/{physician.Photo}",
-                                FirstName = physician.FirstName,
-                                LastName = physician.LastName,
-                            });
-                            goto NextPhysician;
-                        }
+                            Photo = $"{path}{physician.AspNetUserId}/{physician.Photo}",
+                            FirstName = physician.FirstName,
+                            LastName = physician.LastName,
+                        });
+                        goto NextPhysician;
                     }
+
                     providerOffDuty.Add(new ProviderOnCallTable()
                     {
                         Photo = $"{path}{physician.AspNetUserId}/{physician.Photo}",
                         FirstName = physician.FirstName,
                         LastName = physician.LastName,
                     });
-                    NextPhysician:;
+                NextPhysician:;
                 });
             return new ProviderList()
             {
@@ -151,7 +149,7 @@ namespace Services.Implementation.AdminServices
         public async Task<bool> SaveSign(string sign, int physicianId)
         {
             String path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files/Providers/Sign/" + physicianId.ToString());
-            if(!Directory.Exists(path))
+            if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
             };
@@ -165,14 +163,14 @@ namespace Services.Implementation.AdminServices
 
         public async Task<bool> ContactProvider(ContactProvider model)
         {
-            if(model.email)
+            if (model.email)
             {
                 MailMessage mailMessage = new MailMessage
                 {
                     From = new MailAddress("tatva.dotnet.avinashpatel@outlook.com"),
                     Subject = "Message From Admin",
                     IsBodyHtml = true,
-                    Body = model.Message,   
+                    Body = model.Message,
                 };
                 Physician physician = _userRepository.GetPhysicianByPhysicianId(model.providerId);
                 //mailMessage.To.Add(physician.Email);
@@ -391,21 +389,21 @@ namespace Services.Implementation.AdminServices
             physician.SyncEmailAddress = model.SynchronizationEmail;
             physician.ModifiedBy = aspNetUserId;
             physician.ModifiedDate = DateTime.Now;
-            if(await _userRepository.UpdatePhysician(physician))
+            if (await _userRepository.UpdatePhysician(physician))
             {
                 List<PhysicianRegion> physicianRegions = _userRepository.GetAllPhysicianRegionsByPhysicianId(physicianId);
                 List<PhysicianRegion> physicianRegionsDelete = new List<PhysicianRegion>();
                 List<PhysicianRegion> physicianRegionsCreate = new List<PhysicianRegion>();
-                foreach(PhysicianRegion physicianRegion in physicianRegions)
+                foreach (PhysicianRegion physicianRegion in physicianRegions)
                 {
-                    if(!model.SelectedRegions.Contains(physicianRegion.RegionId))
+                    if (!model.SelectedRegions.Contains(physicianRegion.RegionId))
                     {
                         physicianRegionsDelete.Add(physicianRegion);
                     }
                 }
                 foreach (int regionId in model.SelectedRegions)
                 {
-                    if(!physicianRegions.Any(a => a.RegionId == regionId))
+                    if (!physicianRegions.Any(a => a.RegionId == regionId))
                     {
                         physicianRegionsCreate.Add(
                             new PhysicianRegion()
@@ -415,11 +413,11 @@ namespace Services.Implementation.AdminServices
                             });
                     }
                 }
-                if(physicianRegionsCreate.Count > 0) 
+                if (physicianRegionsCreate.Count > 0)
                 {
                     await _userRepository.AddPhysicianRegions(physicianRegionsCreate);
                 }
-                if(physicianRegionsDelete.Count > 0)
+                if (physicianRegionsDelete.Count > 0)
                 {
                     return await _userRepository.DeletePhysicianRegions(physicianRegionsDelete);
                 }
@@ -454,7 +452,7 @@ namespace Services.Implementation.AdminServices
             FilePickUp("Photo", (int)physician.AspNetUserId, model.Photo);
             if (model.Signature != null)
             {
-                physician.IsSignature = new BitArray(1,true);
+                physician.IsSignature = new BitArray(1, true);
                 FilePickUp("Sign", physician.PhysicianId, model.Signature);
             }
             return await _userRepository.UpdatePhysician(physician);
@@ -503,7 +501,7 @@ namespace Services.Implementation.AdminServices
 
         public async Task<bool> CreateShift(CreateShift model, int aspNetUserId, bool isAdmin)
         {
-            if(!isAdmin)
+            if (!isAdmin)
             {
                 model.SelectedPhysician = _userRepository.GetPhysicianByAspNetUserId(aspNetUserId).PhysicianId;
             }
@@ -511,16 +509,16 @@ namespace Services.Implementation.AdminServices
             Shift shift = new Shift()
             {
                 PhysicianId = model.SelectedPhysician,
-                StartDate = new DateOnly(date.Year,date.Month,date.Day),
+                StartDate = new DateOnly(date.Year, date.Month, date.Day),
                 IsRepeat = new BitArray(1, model.IsRepeat),
-                WeekDays = model.IsRepeat ? String.Join("",model.SelectedDays):  "",
+                WeekDays = model.IsRepeat ? String.Join("", model.SelectedDays) : "",
                 RepeatUpto = model.RepeatEnd,
                 CreatedBy = aspNetUserId,
                 CreatedDate = DateTime.Now,
             };
-            if(await _shiftRepository.AddShift(shift))
+            if (await _shiftRepository.AddShift(shift))
             {
-                List<ShiftDetail> shiftDetails = new List<ShiftDetail>();      
+                List<ShiftDetail> shiftDetails = new List<ShiftDetail>();
                 ShiftDetail shiftDetail = new ShiftDetail()
                 {
                     ShiftId = shift.ShiftId,
@@ -534,10 +532,10 @@ namespace Services.Implementation.AdminServices
                 shiftDetails.Add(shiftDetail);
                 if (model.IsRepeat)
                 {
-                    foreach(int day in model.SelectedDays)
+                    foreach (int day in model.SelectedDays)
                     {
                         date = (DateTime)model.ShiftDate;
-                        for(int i=0;i<model.RepeatEnd;i++)
+                        for (int i = 0; i < model.RepeatEnd; i++)
                         {
                             date = date.AddDays(day - (int)date.DayOfWeek + 7);
                             shiftDetail = new ShiftDetail()
@@ -554,7 +552,7 @@ namespace Services.Implementation.AdminServices
                         }
                     };
                 }
-                if(await _shiftRepository.AddShiftDetails(shiftDetails))
+                if (await _shiftRepository.AddShiftDetails(shiftDetails))
                 {
                     return await _shiftRepository.AddShiftDetailsRegion(
                                     _shiftRepository.GetAllShiftDetailsFromShiftId(shift.ShiftId)
@@ -634,7 +632,7 @@ namespace Services.Implementation.AdminServices
                 List<ShiftDetail> shiftDetails = new List<ShiftDetail>();
                 List<ShiftDetailRegion> shiftDetailRegions = new List<ShiftDetailRegion>();
                 foreach (int id in ids)
-                { 
+                {
                     ShiftDetail shiftDetail = _shiftRepository.GetShiftDetails(id);
                     shiftDetail.IsDeleted = new BitArray(1, true);
                     shiftDetail.ModifiedBy = aspNetUserId;
@@ -644,7 +642,7 @@ namespace Services.Implementation.AdminServices
                     shiftDetailRegion.IsDeleted = new BitArray(1, true);
                     shiftDetailRegions.Add(shiftDetailRegion);
                 };
-                if(await _shiftRepository.UpdateShiftDetails(shiftDetails))
+                if (await _shiftRepository.UpdateShiftDetails(shiftDetails))
                 {
                     return await _shiftRepository.UpdateShiftDetailRegions(shiftDetailRegions);
                 }
@@ -658,7 +656,7 @@ namespace Services.Implementation.AdminServices
             int startDate = (int)date.DayOfWeek;
             Dictionary<int, List<ShiftDetailsMonthWise>> monthWiseScheduling = new Dictionary<int, List<ShiftDetailsMonthWise>>();
             int totalDays = DateTime.DaysInMonth(date.Year, date.Month);
-            _shiftRepository.GetShiftDetailByRegionIdAndDAte(regionId,startDate: date, endDate: date.AddMonths(1).AddDays(-1))
+            _shiftRepository.GetShiftDetailByRegionIdAndDAte(regionId, startDate: date, endDate: date.AddMonths(1).AddDays(-1))
                 .ForEach(shiftDetail =>
                 {
                     int currentDay = shiftDetail.ShiftDate.Day;
@@ -685,12 +683,11 @@ namespace Services.Implementation.AdminServices
 
         public List<SchedulingTable> GetSchedulingTableDate(int regionId, int type, string date)
         {
-            switch (type)
+            return type switch
             {
-                case 1: return DayWiseScheduling(DateTime.Parse(date), regionId);
-                case 2: return WeekWiseScheduling(DateTime.Parse(date), regionId);
-                default: return null;
-            }
+                1 => DayWiseScheduling(DateTime.Parse(date), regionId),
+                2 => WeekWiseScheduling(DateTime.Parse(date), regionId),
+            };
         }
 
         private List<SchedulingTable> DayWiseScheduling(DateTime date, int regionId)
@@ -698,7 +695,7 @@ namespace Services.Implementation.AdminServices
             List<SchedulingTable> schedulingTables = new List<SchedulingTable>();
             string path = "/Files//Providers/Photo/";
             _shiftRepository.GetPhysicianWithShiftDetailByRegionIdAndDAte(regionId, date, date)
-                .ForEach (physician =>
+                .ForEach(physician =>
                 {
                     SchedulingTable schedulingTable = new SchedulingTable()
                     {
@@ -711,7 +708,7 @@ namespace Services.Implementation.AdminServices
                     schedulingTables.Add(schedulingTable);
                     foreach (Shift shift in physician.Shifts)
                     {
-                        foreach(ShiftDetail shiftDetail in shift.ShiftDetails)
+                        foreach (ShiftDetail shiftDetail in shift.ShiftDetails)
                         {
                             int totalHalfHour = (int)(shiftDetail.EndTime - shiftDetail.StartTime).TotalMinutes / 30;
                             schedulingTable.DayWise.AddRange(
@@ -804,7 +801,7 @@ namespace Services.Implementation.AdminServices
 
         private void FilePickUp(String folderName, int aspNetUserId, IFormFile? file)
         {
-            String path = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot/Files/Providers/{folderName}/{aspNetUserId.ToString()}");
+            String path = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot/Files/Providers/{folderName}/{aspNetUserId}");
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
@@ -821,9 +818,9 @@ namespace Services.Implementation.AdminServices
         private string GetFile(String folderName, int aspNetUserId)
         {
             String path = Path.Combine("/Files//Providers/" + folderName + "/" + aspNetUserId.ToString());
-            String _path = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot/Files/Providers/{folderName}/{aspNetUserId.ToString()}");
-            FileInfo[] Files = new DirectoryInfo(_path).GetFiles().OrderBy(p => p.LastWriteTime).ToArray(); 
-            return Path.Combine(path, Files[Files.Length - 1].Name);
+            String _path = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot/Files/Providers/{folderName}/{aspNetUserId}");
+            FileInfo[] Files = new DirectoryInfo(_path).GetFiles().OrderBy(p => p.LastWriteTime).ToArray();
+            return Path.Combine(path, Files[^1].Name);
         }
 
     }

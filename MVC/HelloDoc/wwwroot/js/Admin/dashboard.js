@@ -97,7 +97,6 @@ $(document).on("click", "#exportData", function () {
         data: {
             pageNo: pageNo,
             status: statusStrings[currentStatus],
-            partialViewName: statusTableStrings[currentStatus],
             patinetName: $(".searchPatient").val(),
             regionId: $(".searchRegion").val(),
             requesterTypeId: requesterType,

@@ -13,7 +13,7 @@ function ProfileEdit(temp) {
 }
 
 function checkLocation() {
-    var link = "http://maps.google.com/?q=" + $("#street").val() + "+" + $("#city").val() + "+" + $("#state").val() + "+" + $("#zip-code").val();
+    var link = "http://maps.google.com/?q=" + $("#address").val();
     link = link.replace(/\s+/g, "");
     window.open(link, "_blank");
 }

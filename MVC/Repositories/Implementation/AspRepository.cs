@@ -30,7 +30,7 @@ namespace Repositories.Implementation
         public bool CheckToken(String token, int aspNetUserId)
         {
             AspNetUser aspNetUser = _dbContext.AspNetUsers.FirstOrDefault(a => a.Id == aspNetUserId && a.ResetPasswordToken == token);
-            return aspNetUser!=null?true:false;
+            return aspNetUser != null;
         }
 
         public async Task<bool> SetToken(String token, int aspNetUserId)

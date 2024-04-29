@@ -57,8 +57,6 @@ $(document).on("change", "#shiftDate", function () {
     });
     var currentDate = new Date();
     var selectedDate = new Date($(this).val());
-    console.log(currentDate);
-    console.log(selectedDate);
     if (formatter.format(selectedDate) == formatter.format(currentDate)) {
         var currentTime = currentDate.getHours() + ":" + currentDate.getMinutes();
         $("#startTime").attr('min', currentTime);

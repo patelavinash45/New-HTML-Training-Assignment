@@ -82,7 +82,7 @@ namespace HelloDoc.Controllers
             return View();
         }
 
-        public IActionResult NewPassword(String token, int id, string time)
+        public IActionResult NewPassword(String token)
         {
             SetNewPassword setNewPassword = _loginService.ValidatePasswordLink(token);
             if (!setNewPassword.IsValidLink)
@@ -121,7 +121,7 @@ namespace HelloDoc.Controllers
         }
 
         [Authorization("Patient")]
-        public IActionResult Dashboard(string tab)
+        public IActionResult Dashboard()
         {
             int aspNetUserId = HttpContext.Session.GetInt32("aspNetUserId").Value;
             return View(_dashboardService.GetUsersMedicalData(aspNetUserId));

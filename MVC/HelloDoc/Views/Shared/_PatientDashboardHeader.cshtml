@@ -32,36 +32,17 @@
             </button>
         </div>
     </div>
-    <hr/>
+    <hr class="h5 m-1"/>
     <div id="header-buttom" class="mx-2">
-        <a asp-controller="Patient" asp-action="Dashboard" class="mx-2">
+        <a asp-controller="Patient" asp-action="Dashboard" class="mx-2 headerTab" id="tab1">
             <div class="mx-2 h6">
                 Dashboard
             </div>
         </a>
-        <a asp-controller="Patient" asp-action="ViewProfile" class="mx-2">
+        <a asp-controller="Patient" asp-action="ViewProfile" class="mx-2 headerTab" id="tab2">
             <div class="mx-2 h6">
                 Profile
             </div>
         </a>
     </div>
 </header>
-@*<div id="side-bar" >
-    <a asp-controller="Patient" asp-action="Dashboard" asp-route-id="@Model.AspNetUserId">
-        <button class="sidebar-button navbar-item w-75" id="dashboard" onclick="changeTab(true)">
-            Dashboard
-        </button>
-    </a>
-    <a asp-controller="Patient" asp-action="ViewProfile" asp-route-id="@Model.AspNetUserId">
-        <button class="sidebar-button navbar-item w-75" id="profile" onclick="changeTab(false)">
-            Profile
-        </button>
-    </a>
-</div>*@
-@*<script>
-    function logout(){
-        @{
-          HttpContextAccessor.HttpContext.Session.Remove("aspNetUserId");
-        }
-    }
-</script>*@

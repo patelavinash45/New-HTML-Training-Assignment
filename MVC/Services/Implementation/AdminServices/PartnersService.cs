@@ -33,9 +33,9 @@ namespace Services.Implementation.AdminServices
             return new Partners()
             {
                 PartnersTableDatas = partnersTableDatas,
-                ProfessionList = _healthProfessionalRepository.GetHealthProfessionalTypes().ToDictionary(
-                                   healthProfessionalType => healthProfessionalType.HealthProfessionalId,
-                                   healthProfessionalType => healthProfessionalType.ProfessionName),
+                ProfessionList = _healthProfessionalRepository.GetHealthProfessionalTypes()
+                                       .ToDictionary(healthProfessionalType => healthProfessionalType.HealthProfessionalId,
+                                                     healthProfessionalType => healthProfessionalType.ProfessionName),
             };
         }
 

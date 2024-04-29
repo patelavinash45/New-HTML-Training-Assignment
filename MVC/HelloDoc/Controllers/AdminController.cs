@@ -896,7 +896,7 @@ namespace HelloDoc.Controllers
         }
 
         [HttpGet]   // Export selected Data 
-        public IActionResult ExportData(String status, int pageNo, String partialViewName, String patinetName, int regionId, int requesterTypeId)
+        public IActionResult ExportData(String status, int pageNo, String patinetName, int regionId, int requesterTypeId)
         {
             DataTable dataTable = _adminDashboardService.ExportData(status, pageNo, patinetName, regionId, requesterTypeId);
             using (XLWorkbook wb = new XLWorkbook())
@@ -989,13 +989,11 @@ namespace HelloDoc.Controllers
         [HttpGet]    // provider scheduling page 
         public IActionResult ChangeTab(string name, int regionId, int type, String time)
         {
-            switch(type)
+            return type switch
             {
-                default:
-                case 1:     ///  for case 1 and 2 function is same
-                case 2: return PartialView(name, _providersService.GetSchedulingTableDate(regionId, type, time));
-                case 3: return PartialView(name, _providersService.MonthWiseScheduling(regionId,time));
-            }
+                1 or 2 => PartialView(name, _providersService.GetSchedulingTableDate(regionId, type, time)), ///  for case 1 and 2 function is same
+                3 or _ => PartialView(name, _providersService.MonthWiseScheduling(regionId, time)),
+            };
         }
 
         [HttpGet]    // RequestShift page  

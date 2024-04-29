@@ -33,89 +33,89 @@
             </button>
         </div>
     </div>
-    <hr class="h5" />
+    <hr class="h5 m-1" />
     <div id="header-buttom" class="mx-2">
-        <a asp-controller="Admin" asp-action="Dashboard"  class="mx-2">
+        <a asp-controller="Admin" asp-action="Dashboard" class="mx-2 headerTab" id="tab1">
             <div class="mx-2 h6">
                 Dashboard
             </div>
         </a>
-        <a asp-controller="Admin" asp-action="ProviderLocation" class="mx-2">
+        <a asp-controller="Admin" asp-action="ProviderLocation" class="mx-2 headerTab" id="tab2">
             <div class="mx-2 h6">
                 Provider Location
             </div>
         </a>
-        <a asp-controller="Admin" asp-action="ViewProfile"  class="mx-2">
+        <a asp-controller="Admin" asp-action="ViewProfile" class="mx-2 headerTab" id="tab3">
             <div class="mx-2 h6">
                 My Profile
             </div>
         </a>
-        <div class="mx-2">
-            <button class="h6 bg-transparent border-0 h-auto" data-bs-toggle="dropdown" aria-expanded="false">
+        <div class="mx-2" id="tab4">
+            <button class="h6 bg-transparent border-0 h-auto tab4" data-bs-toggle="dropdown" aria-expanded="false">
                 Providers
             </button>
             <ul class="dropdown-menu">
-                <li>
-                    <a class="dropdown-item" asp-controller="Admin" asp-action="Providers">
+                <li> 
+                    <a class="dropdown-item headerTab" asp-controller="Admin" asp-action="Providers" id="tab4">
                         Providers
                     </a>
                 </li>
                 <li>
-                    <a class="dropdown-item" asp-controller="Admin" asp-action="ProviderScheduling">
+                    <a class="dropdown-item headerTab" asp-controller="Admin" asp-action="ProviderScheduling" id="tab4">
                         Scheduling
                     </a>
                 </li>
             </ul>
         </div>
-        <a asp-controller="Admin" asp-action="Partners" class="mx-2">
+        <a asp-controller="Admin" asp-action="Partners" class="mx-2 headerTab" id="tab5">
             <div class="mx-2 h6">
                 Partners
             </div>
         </a>
-        <div class="mx-2">
-            <button class="h6 bg-transparent border-0 h-auto" data-bs-toggle="dropdown" aria-expanded="false">
+        <div class="mx-2" id="tab6">
+            <button class="h6 bg-transparent border-0 h-auto tab6" data-bs-toggle="dropdown" aria-expanded="false">
                 Access
             </button>
             <ul class="dropdown-menu">
                 <li>
-                    <a class="dropdown-item" asp-controller="Admin" asp-action="Access">
+                    <a class="dropdown-item headerTab" asp-controller="Admin" asp-action="Access" id="tab6">
                         Access
                     </a>
                 </li>
                 <li>
-                    <a class="dropdown-item" asp-controller="Admin" asp-action="CreateAdmin">
+                    <a class="dropdown-item headerTab" asp-controller="Admin" asp-action="CreateAdmin" id="tab6">
                         Create Admin
                     </a>
                 </li>
             </ul>
         </div>
-        <div class="mx-2">
-            <button class="h6 bg-transparent border-0 h-auto" data-bs-toggle="dropdown" aria-expanded="false">
+        <div class="mx-2" id="tab7">
+            <button class="h6 bg-transparent border-0 h-auto tab7" data-bs-toggle="dropdown" aria-expanded="false">
                 Records
             </button>
             <ul class="dropdown-menu">
                 <li>
-                    <a class="dropdown-item" asp-controller="Admin" asp-action="Records">
+                    <a class="dropdown-item headerTab" asp-controller="Admin" asp-action="Records" id="tab7">
                         Records
                     </a>
                 </li>
                 <li>
-                    <a class="dropdown-item" asp-controller="Admin" asp-action="EmailLogs">
+                    <a class="dropdown-item headerTab" asp-controller="Admin" asp-action="EmailLogs" id="tab7">
                         Email Logs
                     </a>
                 </li>
                 <li>
-                    <a class="dropdown-item" asp-controller="Admin" asp-action="SmsLogs">
+                    <a class="dropdown-item headerTab" asp-controller="Admin" asp-action="SmsLogs" id="tab7">
                         SMS Logs
                     </a>
                 </li>
                 <li>
-                    <a class="dropdown-item" asp-controller="Admin" asp-action="PatientHistory">
+                    <a class="dropdown-item headerTab" asp-controller="Admin" asp-action="PatientHistory" id="tab7">
                         Patient History
                     </a>
                 </li>
                 <li>
-                    <a class="dropdown-item" asp-controller="Admin" asp-action="BlockHistory">
+                    <a class="dropdown-item headerTab" asp-controller="Admin" asp-action="BlockHistory" id="tab7">
                         Block History
                     </a>
                 </li>

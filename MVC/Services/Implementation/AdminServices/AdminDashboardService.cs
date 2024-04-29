@@ -27,7 +27,7 @@ namespace Services.Implementation.AdminServices
         private readonly IEncounterRepository _encounterRepository;
         private readonly IRequestWiseFileRepository _requestWiseFileRepository;
 
-        private Dictionary<string, List<int>> statusList { get; set; } = new Dictionary<string, List<int>>()
+        private Dictionary<string, List<int>> StatusList { get; set; } = new Dictionary<string, List<int>>()
             {
                 {"new", new List<int> { 1 } },
                 {"pending", new List<int> { 2 } },
@@ -63,12 +63,12 @@ namespace Services.Implementation.AdminServices
             return new AdminDashboard()
             {
                 NewRequests = GetNewRequest(status: "new", pageNo: 1, patientName: "" , regionId: 0, requesterTypeId: 0),
-                NewRequestCount = _requestClientRepository.CountRequestClientByStatusForAdmin(statusList["new"]),
-                PendingRequestCount = _requestClientRepository.CountRequestClientByStatusForAdmin(statusList["pending"]),
-                ActiveRequestCount = _requestClientRepository.CountRequestClientByStatusForAdmin(statusList["active"]),
-                ConcludeRequestCount = _requestClientRepository.CountRequestClientByStatusForAdmin(statusList["conclude"]),
-                TocloseRequestCount = _requestClientRepository.CountRequestClientByStatusForAdmin(statusList["close"]),
-                UnpaidRequestCount = _requestClientRepository.CountRequestClientByStatusForAdmin(statusList["unpaid"]),
+                NewRequestCount = _requestClientRepository.CountRequestClientByStatusForAdmin(StatusList["new"]),
+                PendingRequestCount = _requestClientRepository.CountRequestClientByStatusForAdmin(StatusList["pending"]),
+                ActiveRequestCount = _requestClientRepository.CountRequestClientByStatusForAdmin(StatusList["active"]),
+                ConcludeRequestCount = _requestClientRepository.CountRequestClientByStatusForAdmin(StatusList["conclude"]),
+                TocloseRequestCount = _requestClientRepository.CountRequestClientByStatusForAdmin(StatusList["close"]),
+                UnpaidRequestCount = _requestClientRepository.CountRequestClientByStatusForAdmin(StatusList["unpaid"]),
                 CancelPopup = cancelPopUp,
                 AssignAndTransferPopup = assignAndTransferPopUp,
             };
@@ -83,7 +83,7 @@ namespace Services.Implementation.AdminServices
             && (patientName == null || a.FirstName.ToLower().Contains(patientName) 
                                     || a.LastName.ToLower().Contains(patientName)
                                     || $"{a.FirstName} {a.LastName}".ToLower().Contains(patientName.ToLower()))
-            && (statusList[status].Contains(a.Status));
+            && (StatusList[status].Contains(a.Status));
             int totalRequests = _requestClientRepository.CountRequestClientByStatusAndFilter(predicate);
             List<RequestClient> requestClients = _requestClientRepository.GetRequestClientByStatus(predicate, skip: skip);
             return GetTableModal(requestClients, totalRequests, pageNo);
@@ -214,12 +214,12 @@ namespace Services.Implementation.AdminServices
                 };
                 await _aspRepository.AddAspNetUserRole(aspNetUserRole);
             }
-            Request request = new Request();
+            int requestId = 0;
             int physicianId = 0;
             if(isAdmin)
             {
                 Admin admin = _userRepository.GetAdmionByAspNetUserId(aspNetUserIdUser);
-                request = new Request()
+                Request request = new Request()
                 {
                     RequestTypeId = 5,
                     FirstName = admin.FirstName,
@@ -229,11 +229,12 @@ namespace Services.Implementation.AdminServices
                     UserId = userId,
                     CreatedDate = DateTime.Now,
                 };
+                requestId = await _requestRepository.AddRequest(request);
             }
             else
             {
                 Physician physician = _userRepository.GetPhysicianByAspNetUserId(aspNetUserIdUser);
-                request = new Request()
+                Request request = new Request()
                 {
                     RequestTypeId = 5,
                     FirstName = physician.FirstName,
@@ -243,9 +244,9 @@ namespace Services.Implementation.AdminServices
                     UserId = userId,
                     CreatedDate = DateTime.Now,
                 };
+                requestId = await _requestRepository.AddRequest(request);
                 physicianId = physician.PhysicianId;
             }
-            int requestId = await _requestRepository.AddRequest(request);
             RequestClient requestClient = new()
             {
                 RequestId = requestId,
@@ -537,8 +538,10 @@ namespace Services.Implementation.AdminServices
         private DataTable ConvertRequestClientToDataTable(List<RequestClient> requestClients)
         {
             List<String> columnsNames = new List<String>();
-            DataTable dataTable = new DataTable();
-            dataTable.TableName = "RequestDatas";
+            DataTable dataTable = new DataTable()
+            {
+                TableName = "RequestDatas",
+            };
             int currentRow = 1, index = 1;
             foreach (PropertyInfo propertyInfo in typeof(RequestClient).GetProperties())
             {
@@ -567,8 +570,10 @@ namespace Services.Implementation.AdminServices
         private DataTable ConvertRequestClientToDataTable(List<TablesData> tablesDatas)
         {
             List<String> columnsNames = new List<String>();
-            DataTable dataTable = new DataTable();
-            dataTable.TableName = "RequestDatas";
+            DataTable dataTable = new DataTable()
+            {
+                TableName = "RequestDatas",
+            };
             foreach (PropertyInfo propertyInfo in typeof(TablesData).GetProperties())
             {
                 dataTable.Columns.Add(propertyInfo.Name);

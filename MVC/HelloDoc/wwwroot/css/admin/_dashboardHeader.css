@@ -80,6 +80,10 @@ a {
     color: white;
 }
 
+.hrheight{
+    height: 5px!important;
+}
+
 
 /* -------------------media-queries-------------------*/
 @media screen and (max-width: 778px) {

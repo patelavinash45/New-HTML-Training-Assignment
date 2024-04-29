@@ -123,8 +123,10 @@ namespace Services.Implementation.AdminServices
         public DataTable ExportAllRecords()
         {
             List<String> columnsNames = new List<String>();
-            DataTable dataTable = new DataTable();
-            dataTable.TableName = "Records";
+            DataTable dataTable = new DataTable()
+            {
+                TableName = "RequestDatas",
+            };
             int currentRow = 1, index = 1;
             foreach (PropertyInfo propertyInfo in typeof(RequestClient).GetProperties())
             {

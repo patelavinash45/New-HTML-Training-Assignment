@@ -1,25 +1,3 @@
-function changeTab(element1, element2) {
-    //var temp;
-    //temp = document.getElementsByClassName("tab-content");
-    //for (i = 0; i < temp.length; i++) {
-    //    temp[i].style.display = "none";
-    //}
-    // display.getElementsByClassName("element").style.fontweight="bold";
-    //element1.style.display = "Block";
-    if (element2) {
-        document.getElementById("dashboard").style.backgroundColor = "#dcdbdb";
-        document.getElementById("dashboard").style.color = "cadetblue";
-        document.getElementById("profile").style.backgroundColor = "white";
-        document.getElementById("profile").style.color = "black";
-    } else {
-        document.getElementById("profile").style.backgroundColor = "#dcdbdb";
-        document.getElementById("profile").style.color = "cadetblue";
-        document.getElementById("dashboard").style.backgroundColor = "white";
-        document.getElementById("dashboard").style.color = "black";
-    }
-    /*//document.getElementById("side-bar").style.display = "none";*/
-}
-
 function sidebar() {  /// for mobile view silebar
     var temp = $("#header-buttom").css("display");
     if (temp == "none") {
@@ -34,26 +12,15 @@ function ProfileEdit(temp) {
         $('#edit').css("display", "none");
         $('#submit').css("display", "flex");
         $('#submit').css("justifyContent", "end");
-        document.getElementById("Fieldset").disabled = false;
+        $('#Fieldset').prop("disabled", false);
     }
     else {
-        document.getElementById("Fieldset").disabled = true;
+        $('#Fieldset').prop("disabled", true);
         $('#edit').css("display", "flex");
         $('#edit').css("justifyContent", "end");
         $('#submit').css("display", "none");
     }
 }
-
-//function changeTab(element1) {
-//    if (element1) {
-//        $("#dashboardHr").css("display", "block");
-//        $("#profileHr").css("display", "none");
-//    }
-//    else {
-//        $("#profileHr").css("display", "block");
-//        $("#dashboardHr").css("display", "none");
-//    }
-//}
 
 function changeRadio(element) {
     if (element) {
@@ -85,3 +52,22 @@ function NavigatToViewDocument(id) {
         }
     })
 }
+
+// header
+
+$(document).ready(function () { 
+    var id = localStorage.getItem("tab");
+    if (id == null || id == "undefined") {
+        id = "tab1";
+    }
+    $(`#${id}`).append(`<hr class="h1 m-0 text-black hrheight rounded-top "/>`);
+    $(`#${id}`).addClass("text-black");
+    $(`.${id}`).addClass("text-black");
+})
+
+$(document).on("click", ".headerTab", function () {
+    localStorage.setItem("tab", $(this).attr("id"));
+})
+$(document).on("click", "#log-out", function () {
+    localStorage.removeItem("tab");
+})

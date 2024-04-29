@@ -19,20 +19,10 @@ $(document).on("change", "#type", function () {
 
 var selectedMenus = [];
 
-function changeCheckBox(doc) {
-    if ($(doc).is(":checked")) {
-        selectedMenus.push($(doc).attr("value"));
-        $("#menuValidation").text("");
-    }
-    else {
-        var index = selectedMenus.indexOf($(doc).attr("value"));
-        if (index > -1) {
-            selectedMenus.splice(index, 1);
-        }
-    } 
-}
-
 $(document).on("submit", "#createRoleForm", function (e) {
+    $(".form-check-input:checked").each(function () {
+        selectedMenus.push($(this).val());
+    });
     if (selectedMenus.length == 0 && $("#type").val() != 1) {
         e.preventDefault();
         $("#menuValidation").text("Select Any One Filed");

@@ -10,7 +10,7 @@ namespace Services.Implementation
     public class ViewProfileService : IViewProfileService
     {
         private readonly IUserRepository _userRepository;
-        private IRequestClientRepository _requestClientRepository;
+        private readonly IRequestClientRepository _requestClientRepository;
 
         public ViewProfileService(IUserRepository userRepository, IRequestClientRepository requestClientRepository)
         {
@@ -47,7 +47,7 @@ namespace Services.Implementation
             user.Street = model.Street;
             user.City = model.City;
             user.State = model.State;
-            user.IsMobile[0] = model.IsMobile == 1 ? true : false;
+            user.IsMobile[0] = model.IsMobile == 1;
             user.ZipCode = model.ZipCode;
             user.IntDate = model.BirthDate.Value.Day;
             user.StrMonth = model.BirthDate.Value.Month.ToString();
@@ -91,9 +91,9 @@ namespace Services.Implementation
             };
         }
 
-        public async Task<bool> EditEditAdministratorInformastion(String data1, int aspNetUserId)
+        public async Task<bool> EditEditAdministratorInformastion(String data, int aspNetUserId)
         {
-            AdminCreaateAndProfile _data = JsonSerializer.Deserialize<AdminCreaateAndProfile>(data1);
+            AdminCreaateAndProfile _data = JsonSerializer.Deserialize<AdminCreaateAndProfile>(data);
             Admin admin = _userRepository.GetAdmionByAspNetUserId(aspNetUserId);
             admin.FirstName = _data.FirstName; 
             admin.LastName = _data.LastName;

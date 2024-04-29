@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Services.ViewModels.Admin;
+﻿using Services.ViewModels.Admin;
 using Services.ViewModels.Physician;
 
 namespace Services.Interfaces.PhysicianServices
