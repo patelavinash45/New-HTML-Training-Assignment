@@ -1,7 +1,19 @@
 var statusStrings = ["", "new", "pending", "active", "conclude", "close", "unpaid"];
 var statusTableStrings = ["", "_NewTable", "_PendingTable", "_ActiveTable", "_ConcludeTable", "_CloseTable", "_UnpaidTable"];
 var currentStatus = 1;         /// for which state is current
-var url = "/Admin/GetTablesData"
+var url = "/Admin/GetTablesData";
+
+$(document).ready(function () {
+    if ($("#physician").length > 0) {
+        statusTableStrings = ["", "_NewTablePhysician", "_PendingTablePhysician", "_ActiveTablePhysician", "_ConcludeTablePhysician"];
+        url = "/Physician/GetTablesData";
+    }
+    currentStatus = localStorage.getItem("status");
+    if (currentStatus == null || currentStatus == "undefined") {
+        currentStatus = 1;
+    }
+    changeTable(currentStatus);
+})
 
 function changeTable(temp) {      /// change view according to status
     $(".tables").css("display", "none");
@@ -9,7 +21,8 @@ function changeTable(temp) {      /// change view according to status
     currentStatus = temp;
     $(`#${statusStrings[currentStatus]}`).css("display", "block");
     $(`#${statusStrings[currentStatus]}Option`).css('box-shadow', '10px 10px 5px #AAA');
-    $("#statusText").text(`(${statusStrings[currentStatus]})`);
+    $("#statusText").text(`(${statusStrings[currentStatus].toUpperCase()})`);
+    localStorage.setItem("status", currentStatus);
     getTableData(1);
 }
 
@@ -22,18 +35,14 @@ function getTableData(pageNo) { ///get table data
             pageNo: pageNo,
             status: statusStrings[currentStatus],
             partialViewName: statusTableStrings[currentStatus],
-            patinetName: $(".searchPatient").val().trim().toLowerCase(),
+            patientName: $(".searchPatient").val().trim().toLowerCase(),
             regionId: $(".searchRegion").val(),
             requesterTypeId: requesterType,
         },
         success: function (response) {
-            setTableData(response);
+            $(`#${statusStrings[currentStatus]}`).html(response);
         }
     })
-}
-
-function setTableData(response) {       /// set table date in tableview
-    $(`#${statusStrings[currentStatus]}`).html(response);
 }
 
 requesterType = 0;
@@ -97,7 +106,7 @@ $(document).on("click", "#exportData", function () {
         data: {
             pageNo: pageNo,
             status: statusStrings[currentStatus],
-            patinetName: $(".searchPatient").val(),
+            patientName: $(".searchPatient").val(),
             regionId: $(".searchRegion").val(),
             requesterTypeId: requesterType,
         },
@@ -111,10 +120,3 @@ $(document).on("click", "#exportData", function () {
     })
 })
 
-
-$(document).ready(function () {
-    if ($("#physician").length > 0) {
-        statusTableStrings = ["", "_NewTablePhysician", "_PendingTablePhysician", "_ActiveTablePhysician", "_ConcludeTablePhysician"];
-        url = "/Physician/GetTablesData";
-    }
-})

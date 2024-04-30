@@ -9,7 +9,7 @@ namespace Services.Interfaces.AdminServices
 
         Task<bool> AddAdminNotes(String newNotes, int requestId, int aspNetUserId, bool isAdmin);
 
-        Task<bool> CancleRequest(CancelPopUp model);
+        Task<bool> CancelRequest(CancelPopUp model);
 
         Task<bool> AssignRequest(AssignAndTransferPopUp model);
 

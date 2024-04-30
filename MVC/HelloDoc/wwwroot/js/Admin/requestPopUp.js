@@ -12,7 +12,7 @@ function changeSelect(document) {
         success: function (response) {
             $(".physician").html('<option disabled selected value="">Physicians</option>');
             $.each(response, function (index, item) {
-                var option = "<option value=" + index + ">"+item+"</option>";
+                var option = `<option value="${index}">${item}</option>`;
                 $(".physician").append(option);
             });
         }
@@ -20,9 +20,8 @@ function changeSelect(document) {
 }
 
 function displayPopUp(id) {
-    var idName = "#name-" + id;
     $(".patientRequestId").val(id);
-    $(".patientName").text($(idName).text());
+    $(".patientName").text($(`#name-${id}`).text());
     $('.validation').css("display", "none");
 }
 
@@ -131,7 +130,7 @@ function navigation(actionName, requestId) {
 }
 
 
-//// provider popup - contect provider
+//// provider popup - contact provider
 
 var email = false, sms = false;
 
@@ -239,13 +238,12 @@ function careButtonChnage(temp) {
     if (temp) {
         $("#videoCall").addClass("activeButton");
         $("#houseVisit").removeClass("activeButton");
-        isvideoCall = true;
     }
     else {
-        isvideoCall = false;
         $("#houseVisit").addClass("activeButton");
         $("#videoCall").removeClass("activeButton");
     }
+    isvideoCall = !isvideoCall;
 }
 
 function encounter() {
@@ -263,7 +261,7 @@ function encounter() {
     })
 }
 
-//// download pdf popup
+//// download pdf pop-up
 
 $(document).on("click", ".downloadPdf", function () {
     $("#downloadReport").modal('hide');

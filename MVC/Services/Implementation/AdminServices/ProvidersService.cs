@@ -655,7 +655,7 @@ namespace Services.Implementation.AdminServices
             int startDate = (int)date.DayOfWeek;
             Dictionary<int, List<ShiftDetailsMonthWise>> monthWiseScheduling = new Dictionary<int, List<ShiftDetailsMonthWise>>();
             int totalDays = DateTime.DaysInMonth(date.Year, date.Month);
-            _shiftRepository.GetShiftDetailByRegionIdAndDAte(regionId, startDate: date, endDate: date.AddMonths(1).AddDays(-1))
+            _shiftRepository.GetShiftDetailByRegionIdAndDate(regionId, startDate: date, endDate: date.AddMonths(1).AddDays(-1))
                 .ForEach(shiftDetail =>
                 {
                     int currentDay = shiftDetail.ShiftDate.Day;
@@ -693,7 +693,7 @@ namespace Services.Implementation.AdminServices
         {
             List<SchedulingTable> schedulingTables = new List<SchedulingTable>();
             string path = "/Files//Providers/Photo/";
-            _shiftRepository.GetPhysicianWithShiftDetailByRegionIdAndDAte(regionId, date, date)
+            _shiftRepository.GetPhysicianWithShiftDetailByRegionIdAndDate(regionId, date, date)
                 .ForEach(physician =>
                 {
                     SchedulingTable schedulingTable = new SchedulingTable()
@@ -757,7 +757,7 @@ namespace Services.Implementation.AdminServices
         {
             List<SchedulingTable> schedulingTables = new List<SchedulingTable>();
             string path = "/Files//Providers/Photo/";
-            _shiftRepository.GetPhysicianWithShiftDetailByRegionIdAndDAte(regionId, date, date.AddDays(6))
+            _shiftRepository.GetPhysicianWithShiftDetailByRegionIdAndDate(regionId, date, date.AddDays(6))
                 .ForEach(physician =>
                 {
                     SchedulingTable schedulingTable = new SchedulingTable()

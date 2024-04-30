@@ -50,7 +50,7 @@ namespace Services.Implementation.AdminServices
             _requestWiseFileRepository = requestWiseFileRepository;
         }
 
-        public AdminDashboard GetallRequests()
+        public AdminDashboard GetAllRequests()
         {
             CancelPopUp cancelPopUp = new()
             {

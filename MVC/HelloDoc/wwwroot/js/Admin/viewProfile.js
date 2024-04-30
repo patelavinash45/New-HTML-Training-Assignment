@@ -109,7 +109,7 @@ $(document).on("click", "#resetpassword", function () {
     }
 })
 
-////  Administrator Informaction
+////  Administrator Information
 
 function validateRadioButton() {
     if (radioList.length == 0) {
@@ -204,7 +204,7 @@ $(document).on("click", "#administratorForm", function () {
         $("#confirmEmailValidation").text("Confirm Email and Email is not Same");
     }
     if (!$("#email").val().match(validRegex)) {
-        $("#emailValidation").text("Emai is Not Valid");
+        $("#emailValidation").text("Email is Not Valid");
     }
     if (radioList.length == 0) {
         validateRadioButton();
@@ -251,7 +251,7 @@ $(document).on("change", "#zip", function () {
 
 $(document).on("change", "#phone2", function () {
     if ($(this).val().length == 0) {
-        $("#phone2Validation").text("Addtional-Mobile is required");
+        $("#phone2Validation").text("Additional-Mobile is required");
     }
     else {
         $("#phone2Validation").text("");

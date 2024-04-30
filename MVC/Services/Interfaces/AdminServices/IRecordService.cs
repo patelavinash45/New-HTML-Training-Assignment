@@ -11,7 +11,7 @@ namespace Services.Interfaces.AdminServices
 
         List<EmailSmsLogTableData> GetEmailLogTabledata(EmailSmsLogs model);
 
-        EmailSmsLogs GetSMSlLog(EmailSmsLogs model);
+        EmailSmsLogs GetSMSLog(EmailSmsLogs model);
 
         List<EmailSmsLogTableData> GetSMSLogTabledata(EmailSmsLogs model);
 

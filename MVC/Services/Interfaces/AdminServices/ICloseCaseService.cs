@@ -4,7 +4,7 @@ namespace Services.Interfaces.AdminServices
 {
     public interface ICloseCaseService
     {
-        CloseCase GetDaetails(int requestId);
+        CloseCase GetDetails(int requestId);
 
         Task<bool> UpdateDetails(CloseCase model, int requestId);
 

@@ -91,7 +91,7 @@ namespace Services.Implementation
             };
         }
 
-        public async Task<bool> EditEditAdministratorInformastion(String data, int aspNetUserId)
+        public async Task<bool> EditEditAdministratorInformation(String data, int aspNetUserId)
         {
             AdminCreaateAndProfile _data = JsonSerializer.Deserialize<AdminCreaateAndProfile>(data);
             Admin admin = _userRepository.GetAdmionByAspNetUserId(aspNetUserId);

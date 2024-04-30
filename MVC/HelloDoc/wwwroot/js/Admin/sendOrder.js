@@ -1,6 +1,6 @@
 function changeSelect() {
     $.ajax({
-        url: "/Admin/GetBussinesses",
+        url: "/Admin/GetBusinesses",
         type: "Get",
         contentType: "application/json",
         data: {
@@ -10,12 +10,12 @@ function changeSelect() {
             $("#selectedBusiness").children().remove();
             $("#selectedBusiness").append('<option disabled selected value="">Business</option>');
             $.each(response, function (index, item) {
-                var option = "<option value=" + index + ">" + item + "</option>";
+                var option = `<option value="${index}">${item}</option>`;
                 $("#selectedBusiness").append(option);
             });
-            $(".contact").val("").change();
-            $(".email").val("").change();
-            $(".faxNumber").val("").change();
+            $(".contact").val("");
+            $(".email").val("");
+            $(".faxNumber").val("");
         }
     });
 }
@@ -24,7 +24,7 @@ function changeBussiness() {
     var venderId = $('#selectedBusiness').val();
     if (venderId != null) {
         $.ajax({
-            url: "/Admin/GetBussinessData",
+            url: "/Admin/GetBusinessData",
             type: 'Get',
             contentType: 'appliaction/json',
             data: {
@@ -32,16 +32,16 @@ function changeBussiness() {
             },
             success: function (response) {
                 var valus = Object.values(response);
-                $(".contact").val(valus[15]).change();
-                $(".email").val(valus[14]).change();
-                $(".faxNumber").val(valus[3]).change();
+                $(".contact").val(valus[15]);
+                $(".email").val(valus[14]);
+                $(".faxNumber").val(valus[3]);
             }
         })
     }
     else {
-        $(".contact").val("").change();
-        $(".email").val("").change();
-        $(".faxNumber").val("").change();
+        $(".contact").val("");
+        $(".email").val("");
+        $(".faxNumber").val("");
     }
 }
 

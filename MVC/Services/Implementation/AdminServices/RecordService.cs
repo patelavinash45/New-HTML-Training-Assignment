@@ -91,7 +91,7 @@ namespace Services.Implementation.AdminServices
                 }).ToList();
         }
 
-        public EmailSmsLogs GetSMSlLog(EmailSmsLogs model)
+        public EmailSmsLogs GetSMSLog(EmailSmsLogs model)
         {
             model.EmailSmsLogTableDatas = GetSMSLogTabledata(model);
             model.Roles = _roleRepository.GetAllRoles().ToDictionary(role => role.RoleId, role => role.Name);

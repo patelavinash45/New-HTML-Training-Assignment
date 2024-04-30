@@ -4,11 +4,11 @@ namespace Repositories.Interfaces
 {
     public interface IShiftRepository
     {
-        List<Physician> GetPhysicianWithShiftDetailByRegionIdAndDAte(int regionId, DateTime startDate, DateTime endDate);
+        List<Physician> GetPhysicianWithShiftDetailByRegionIdAndDate(int regionId, DateTime startDate, DateTime endDate);
 
-        List<ShiftDetail> GetShiftDetailByPhysicianIdAndDAte(int aspNetUserId, DateTime startDate, DateTime endDate);
+        List<ShiftDetail> GetShiftDetailByPhysicianIdAndDate(int aspNetUserId, DateTime startDate, DateTime endDate);
 
-        List<ShiftDetail> GetShiftDetailByRegionIdAndDAte(int regionId, DateTime startDate, DateTime endDate);
+        List<ShiftDetail> GetShiftDetailByRegionIdAndDate(int regionId, DateTime startDate, DateTime endDate);
 
         List<ShiftDetail> GetAllShiftDetailsFromShiftId(int shiftId);
 

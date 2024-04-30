@@ -102,7 +102,7 @@ namespace Services.Implementation.PhysicianServices
             int startDate = (int)date.DayOfWeek;
             Dictionary<int, List<ShiftDetailsMonthWise>> monthWiseScheduling = new Dictionary<int, List<ShiftDetailsMonthWise>>();
             int totalDays = DateTime.DaysInMonth(date.Year, date.Month);
-            _shiftRepository.GetShiftDetailByPhysicianIdAndDAte(aspNetUserId, startDate: date, endDate: date.AddMonths(1).AddDays(-1))
+            _shiftRepository.GetShiftDetailByPhysicianIdAndDate(aspNetUserId, startDate: date, endDate: date.AddMonths(1).AddDays(-1))
                 .ForEach(shiftDetail =>
                 {
                     int currentDay = shiftDetail.ShiftDate.Day;
@@ -148,7 +148,7 @@ namespace Services.Implementation.PhysicianServices
             return false;
         }
 
-        public PhysicianDashboard GetallRequests(int aspNetUserId)
+        public PhysicianDashboard GetAllRequests(int aspNetUserId)
         {
             return new PhysicianDashboard()
             {

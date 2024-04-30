@@ -1,5 +1,4 @@
-﻿
-///  For Record Page
+﻿///  For Record Page
 
 $(document).on("click", ".searchButton", function () {
     getRecordData();
@@ -86,7 +85,7 @@ function getPatientHistory(pageNo, isSearch = false) {
         Phone: isSearch ? $("#phone").val() : null,
     })
     $.ajax({
-        url: "/Admin/GetPatinetHistoryTableDate",
+        url: "/Admin/GetPatientHistoryTableDate",
         type: "Post",
         data: {
             model: data,

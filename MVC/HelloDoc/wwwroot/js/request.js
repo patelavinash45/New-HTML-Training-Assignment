@@ -10,7 +10,7 @@
         type: "Get",
         success: function (response, xhr) {
             $.each(response, function (index, item) {
-                var option = "<option value=" + index + ">" + item + "</option>";
+                var option = `<option value="${index}">${item}</option>`;
                 $("#selectRegion").append(option);
             });
         }
@@ -37,7 +37,7 @@ function checkEmail(element) {
 }
 
 function checkLocation() {
-    var link = "http://maps.google.com/?q=" + $("#address").val();
+    var link = `http://maps.google.com/?q=${$("#address").val()}`;
     link = link.replace(/\s+/g, "");
     window.open(link, "_blank");
 }

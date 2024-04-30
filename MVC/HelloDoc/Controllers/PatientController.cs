@@ -1,5 +1,5 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
-using HelloDoc.Authentication;
+using HelloDoc.Auth;
 using Microsoft.AspNetCore.Mvc;
 using Services.Interfaces;
 using Services.Interfaces.AuthServices;
@@ -120,7 +120,7 @@ namespace HelloDoc.Controllers
             return View(_viewDocumentsServices.GetDocumentList(requestId: requestId,aspNetUserId: aspNetUserId));
         }
 
-        [Authorization("Patient")]
+        [Auth.Authorization("Patient")]
         public IActionResult Dashboard()
         {
             int aspNetUserId = HttpContext.Session.GetInt32("aspNetUserId").Value;

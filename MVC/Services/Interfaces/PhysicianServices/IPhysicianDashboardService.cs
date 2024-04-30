@@ -5,7 +5,7 @@ namespace Services.Interfaces.PhysicianServices
 {
     public interface IPhysicianDashboardService
     {
-        PhysicianDashboard GetallRequests(int aspNetUserId);
+        PhysicianDashboard GetAllRequests(int aspNetUserId);
 
         TableModel GetNewRequest(String status, int pageNo, String patientName, int regionId, int requesterTypeId, int aspNetUserId);
 

@@ -1,6 +1,4 @@
-
 $(document).on("change", "#type", function () {
-    selectedMenus = [];
     if ($(this).val().length != 0) {
         $.ajax({
             url: "/Admin/ChangeMenusByRole",
@@ -17,13 +15,13 @@ $(document).on("change", "#type", function () {
     }
 })
 
-var selectedMenus = [];
 
 $(document).on("submit", "#createRoleForm", function (e) {
+    var selectedMenus = false;
     $(".form-check-input:checked").each(function () {
-        selectedMenus.push($(this).val());
+        selectedMenus = true;
     });
-    if (selectedMenus.length == 0 && $("#type").val() != 1) {
+    if (!selectedMenus && $("#type").val() != 1) {
         e.preventDefault();
         $("#menuValidation").text("Select Any One Filed");
     }

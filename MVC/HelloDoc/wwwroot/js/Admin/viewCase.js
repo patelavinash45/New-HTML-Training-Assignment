@@ -13,13 +13,13 @@ function ProfileEdit(temp) {
 }
 
 function checkLocation() {
-    var link = "http://maps.google.com/?q=" + $("#address").val();
+    var link = `http://maps.google.com/?q=${$("#address").val()}`;
     link = link.replace(/\s+/g, "");
     window.open(link, "_blank");
 }
 
 function cancelPopUp(id) {
     $("#patientRequestId").val(id);
-    $(".patientName").text($('#first-name').val() + ' ' + $('#last-name').val());
+    $(".patientName").text(`${$("#firstName").val()} ${$("#lastName").val()}`);
 }
 

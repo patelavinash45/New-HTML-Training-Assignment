@@ -108,7 +108,7 @@ namespace Services.Implementation.AdminServices
             return "This Role can not be Delete";
         }
 
-        public AdminCreaateAndProfile GetAdminCreaateAndProfile()
+        public AdminCreaateAndProfile GetAdminCreateAndProfile()
         {
             return new AdminCreaateAndProfile()
             {

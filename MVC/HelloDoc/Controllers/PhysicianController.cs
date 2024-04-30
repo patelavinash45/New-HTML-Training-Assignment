@@ -1,5 +1,5 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
-using HelloDoc.Authentication;
+using HelloDoc.Auth;
 using Microsoft.AspNetCore.Mvc;
 using Services.Interfaces.AdminServices;
 using Services.Interfaces.PhysicianServices;
@@ -34,14 +34,14 @@ namespace HelloDoc.Controllers
         public IActionResult Dashboard()
         {
             int aspNetUserId = HttpContext.Session.GetInt32("aspNetUserId").Value;
-            return View(_physicianDashboardService.GetallRequests(aspNetUserId));
+            return View(_physicianDashboardService.GetAllRequests(aspNetUserId));
         }
 
         [HttpGet]   // Dashboard 
-        public IActionResult GetTablesData(String status, int pageNo, String partialViewName, String patinetName, int regionId, int requesterTypeId)
+        public IActionResult GetTablesData(String status, int pageNo, String partialViewName, String patientName, int regionId, int requesterTypeId)
         {
             int aspNetUserId = HttpContext.Session.GetInt32("aspNetUserId").Value;
-            TableModel tableModel = _physicianDashboardService.GetNewRequest(status, pageNo, patinetName, regionId, requesterTypeId, aspNetUserId);
+            TableModel tableModel = _physicianDashboardService.GetNewRequest(status, pageNo, patientName, regionId, requesterTypeId, aspNetUserId);
             return tableModel.TableDatas.Count != 0 ? PartialView(partialViewName, tableModel) : PartialView("_NoTableDataFound");
         }
 
@@ -90,6 +90,11 @@ namespace HelloDoc.Controllers
         {
             await _physicianDashboardService.SetEncounter(requestId, isVideoCall);
             return Json(new { redirect = Url.Action("Dashboard", "Physician") });
+        }
+
+        public async Task<IActionResult> CreateInvoice(CreateInvoice model)
+        {
+            return View();
         }
 
         public async Task<IActionResult> HomeVisit(int requestId)

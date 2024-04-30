@@ -21,15 +21,14 @@ $(function () {
 var isArrowUp = true;
 function shortTable() {
     if (isArrowUp) {
-        isArrowUp = false;
         $(".bi-arrow-up").css("display", "none");
         $(".bi-arrow-down").css("display", "inline-block");
     }
     else {
-        isArrowUp = true;
         $(".bi-arrow-up").css("display", "inline-block");
         $(".bi-arrow-down").css("display", "none");
     }
+    isArrowUp = !isArrowUp;
     $('tbody').each(function () {
         var list = $(this).children('tr');
         $(this).html(list.get().reverse());

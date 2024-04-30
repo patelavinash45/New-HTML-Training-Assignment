@@ -104,7 +104,7 @@
                                         </button>
                                     </li>
                                     <li>
-                                        <button class="dropdown-item" onclick="navigatToEncounterForm(@data.RequestId)">
+                                        <button class="dropdown-item" onclick="navigatToEncounterForm(@data.RequestId,@data.Isfinalize)">
                                             Encounter Form
                                         </button>
                                     </li>
@@ -240,7 +240,7 @@
                             </button>
                         </div>
                         <div class="px-2 col-md-4 col-sm-6 col-6">
-                            <button class="w-100 bg-success text-white fw-bold py-1" onclick="navigatToEncounterForm(@data.RequestId)">
+                            <button class="w-100 bg-success text-white fw-bold py-1" onclick="navigatToEncounterForm(@data.RequestId,@data.Isfinalize)">
                                 Encounter
                             </button>
                         </div>

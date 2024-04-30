@@ -11,15 +11,19 @@ namespace Services.ViewModels.Physician
         public string EndDate { get; set; }
 
         public string Status { get; set; }
+
+        public CreateInvoice CreateInvoice { get; set; }
     }
 
     public class CreateInvoice
     {
-        public List<int> ShiftHours { get; set; }
+        public DateTime StartDate { get; set; }
+
+        public Dictionary<int,double> ShiftHours { get; set; }
 
         public List<int> TotalHours { get; set; }
 
-        public List<bool> IsHoliday { get; set; }
+        public List<int> IsHoliday { get; set; }
 
         public List<int> NoOfHouseCall { get; set; }
 

@@ -23,6 +23,7 @@ $(document).on("click", ".headerTab", function () {
 })
 $(document).on("click", "#log-out", function () {
     localStorage.removeItem("tab");
+    localStorage.removeItem("status");
 })
 
 function setTab(temp){

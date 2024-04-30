@@ -73,6 +73,7 @@ a {
 
 .name {
     color: cadetblue;
+    text-overflow: ellipsis;    
 }
 
 .slectedButton {

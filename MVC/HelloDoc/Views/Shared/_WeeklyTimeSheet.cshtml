@@ -1,0 +1,75 @@
+﻿@model Services.ViewModels.Physician.CreateInvoice
+
+@{
+    DateTime date = Model.StartDate;
+    int totaldays = date.Day < 15 ? 14 : DateTime.DaysInMonth(date.Year, date.Month);
+}
+
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th class="bg-transparent">
+                    Date
+                </th>
+                <th class="bg-transparent">
+                    On-Call Hours
+                </th>
+                <th class="bg-transparent">
+                    Total Hours
+                </th>
+                <th class="bg-transparent">
+                    Weekend / Holiday
+                </th>
+                <th class="bg-transparent">
+                    Number Of HouseCall
+                </th>
+                <th class="bg-transparent">
+                    Number of Phone Consults 
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <form asp-controller="Physician" asp-action="CreateInvoice">
+                @for(int i = date.Day; i < totaldays; i++ )
+                {
+                    <tr class="align-middle bg-white">
+                        <td>
+                            @date.ToString("MM/dd/yyyy")
+                        </td>
+                        <td>
+                            @{
+                                if (@Model.ShiftHours.ContainsKey(i))
+                                {
+                                    <span>
+                                        @Model.ShiftHours[i]
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span>0</span>
+                                }
+                            }
+                        </td>
+                        <td>
+                            <input name="TotalHours" value="0"/>
+                        </td>
+                        <td>
+                            <input name="IsHoliday" type="checkbox" value="@date.Day"/>
+                        </td>
+                        <td>
+                            <input name="NoOfHouseCall" value="0" />
+                        </td>
+                        <td>
+                            <input name="NoOfPhoneConsults" value="0" />
+                        </td>
+                    </tr>
+                    date = date.AddDays(1);
+                }
+                <button class="btn" type="submit">
+                    submit
+                </button>
+            </form>
+        </tbody>
+    </table>
+</div>

@@ -26,7 +26,7 @@ function navigateToLastPage(totalRequestCount) {       /// for last page in pagi
 
 function getTableData(pageNo) {     ///get table data 
     $.ajax({
-        url: '/Admin/GetRequestShifTableData',
+        url: '/Admin/GetRequestShiftTableData',
         type: 'GET',
         contentType: 'application/json',
         data: {
@@ -99,11 +99,11 @@ function onCheckboxChnage(fileId, totalcount) {
     }
 }
 
-$(document).on("click", "#delete", function () {     ///  for slected shift delete
+$(document).on("click", "#delete", function () {     ///  for selected shift delete
     chnageShiftDetails(false);
 });
 
-$(document).on("click", "#approved", function () {     ///  for slected shift approve
+$(document).on("click", "#approved", function () {     ///  for selected shift approve
     chnageShiftDetails(true);
 });
 

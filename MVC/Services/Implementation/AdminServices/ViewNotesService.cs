@@ -65,7 +65,7 @@ namespace Services.Implementation.AdminServices
             return await _requestNotesRepository.UpdateRequestNote(requestNote);
         }
 
-        public async Task<bool> CancleRequest(CancelPopUp model)
+        public async Task<bool> CancelRequest(CancelPopUp model)
         {
             RequestClient requestClient = _requestClientRepository.GetRequestClientByRequestId(model.RequestId);
             requestClient.Status = 3;

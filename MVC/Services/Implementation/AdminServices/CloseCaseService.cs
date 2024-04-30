@@ -17,7 +17,7 @@ namespace Services.Implementation.AdminServices
             _requestWiseFileRepository = requestWiseFileRepository;
         }
 
-        public CloseCase GetDaetails(int requestId)
+        public CloseCase GetDetails(int requestId)
         {
             List<FileModel> fileList = _requestWiseFileRepository.GetFilesByRequestId(requestId)
                 .Select(requestWiseFile => new FileModel()

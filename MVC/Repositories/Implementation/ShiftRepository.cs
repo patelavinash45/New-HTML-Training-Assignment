@@ -15,7 +15,7 @@ namespace Repositories.Implementation
             _dbContext = dbContext;
         }
 
-        public List<Physician> GetPhysicianWithShiftDetailByRegionIdAndDAte(int regionId, DateTime startDate, DateTime endDate)
+        public List<Physician> GetPhysicianWithShiftDetailByRegionIdAndDate(int regionId, DateTime startDate, DateTime endDate)
         {
             return _dbContext.Physicians.Include(a => a.Shifts).ThenInclude(a => a.ShiftDetails.Where(
                         a => (regionId == 0 || a.RegionId == regionId)
@@ -23,7 +23,7 @@ namespace Repositories.Implementation
                              && a.ShiftDate.Date >= startDate.Date && a.ShiftDate.Date <= endDate.Date)).ToList();
         }
 
-        public List<ShiftDetail> GetShiftDetailByPhysicianIdAndDAte(int aspNetUserId, DateTime startDate, DateTime endDate)
+        public List<ShiftDetail> GetShiftDetailByPhysicianIdAndDate(int aspNetUserId, DateTime startDate, DateTime endDate)
         {
             Func<ShiftDetail, bool> predicate = a =>
             a.Shift.Physician.AspNetUserId == aspNetUserId
@@ -32,7 +32,7 @@ namespace Repositories.Implementation
             return _dbContext.ShiftDetails.Include(a => a.Shift).ThenInclude(a => a.Physician).Where(predicate).ToList();
         }
 
-        public List<ShiftDetail> GetShiftDetailByRegionIdAndDAte(int regionId, DateTime startDate, DateTime endDate)
+        public List<ShiftDetail> GetShiftDetailByRegionIdAndDate(int regionId, DateTime startDate, DateTime endDate)
         {
             Func<ShiftDetail, bool> predicate = a =>
             (regionId == 0 || a.RegionId == regionId)

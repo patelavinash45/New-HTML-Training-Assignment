@@ -24,7 +24,7 @@ namespace Services.Implementation.AdminServices
             };
         }
 
-        public HealthProfessional GetBussinessData(int venderId)
+        public HealthProfessional GetBusinessData(int venderId)
         {
             return _healthProfessionalRepository.GetHealthProfessional(venderId);
         }
@@ -45,7 +45,7 @@ namespace Services.Implementation.AdminServices
                 });
         }
 
-        public Dictionary<int, string> GetBussinessByProfession(int professionId)
+        public Dictionary<int, string> GetBusinessByProfession(int professionId)
         {
             return _healthProfessionalRepository.GetHealthProfessionalByProfession(professionId)
                                            .ToDictionary(healthProfessional => healthProfessional.VendorId,

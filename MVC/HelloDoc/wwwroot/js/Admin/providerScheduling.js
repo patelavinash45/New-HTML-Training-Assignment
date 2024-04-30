@@ -145,7 +145,7 @@ async function viewMore(date) {   ///  on click of view more on monthwise Schedu
 }
 
 
-/////   popup - create shift
+/////   pop up - create shift
 
 $(document).on("change", "#isRepeat", function () {
     if ($(this).is(":checked")) {
@@ -233,7 +233,7 @@ $(document).on("change", "#shiftDate", function () {
 
 
 
-/////   popup - View(edit) shift
+/////   pop up - View(edit) shift
 
 var date, startTime, endTime, Id;
 
@@ -283,7 +283,7 @@ function openViewShiftModal(shiftDetailsId) {
     });
 }
 
-$(document).on("click", ".conformButton", function () {    ////   for save changes from viewshift popup
+$(document).on("click", ".conformButton", function () {    ////   for save changes from view shift pop up
     var data = JSON.stringify({
         ShiftDate: $("#shiftDateViewShift").val(),
         EndTime: $("#endTimeViewShift").val(),
@@ -303,7 +303,7 @@ $(document).on("click", ".conformButton", function () {    ////   for save chang
     });
 })
 
-$(document).on("click", "#deletebutton", function () {     ///   for delete shift from viewshift opo up
+$(document).on("click", "#deletebutton", function () {     ///   for delete shift from view shift pop up
     $.ajax({
         url: '/Admin/DeleteShiftDetails',
         type: 'GET',

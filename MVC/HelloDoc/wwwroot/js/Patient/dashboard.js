@@ -1,4 +1,4 @@
-function sidebar() {  /// for mobile view silebar
+function sidebar() {  /// for mobile view sidebar
     var temp = $("#header-buttom").css("display");
     if (temp == "none") {
         $("#header-buttom").css("display", "flex");
@@ -70,6 +70,7 @@ $(document).on("click", ".headerTab", function () {
 })
 $(document).on("click", "#log-out", function () {
     localStorage.removeItem("tab");
+    localStorage.removeItem("status");
 })
 
 function setTab(temp) {

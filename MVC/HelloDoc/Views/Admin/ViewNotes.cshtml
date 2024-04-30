@@ -5,7 +5,7 @@
     string role = httpContextAccessor.HttpContext.Session.GetString("role");
     Layout = $"_{role}Layout";
     ViewData["Title"] = "ViewCase";
-    ViewBag.CssFile = "/css/Admin/ViewNotes.css";
+    ViewBag.CssFile = "/css/Admin/viewNotes.css";
     ViewBag.Header = $"_{role}DashboardHeader";
     int count = 0;
 }

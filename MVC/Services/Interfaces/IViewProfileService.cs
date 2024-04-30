@@ -11,7 +11,7 @@ namespace Services.Interfaces
 
         AdminCreaateAndProfile GetAdminViewProfile(int aspNetUserId);
 
-        Task<bool> EditEditAdministratorInformastion(String data, int aspNetUserId);
+        Task<bool> EditEditAdministratorInformation(String data, int aspNetUserId);
 
         Task<bool> EditMailingAndBillingInformation(String data1, int aspNetUserId);
     }

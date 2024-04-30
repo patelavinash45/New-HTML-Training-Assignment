@@ -1,5 +1,4 @@
 ﻿var monthWise;
-
 $(document).ready(function () {
     monthWise = new Date();
     monthWise.setDate(1);
@@ -69,7 +68,7 @@ $(document).on("change", "#shiftDate", function () {
 })
 
 
-/// create shift (popup)
+/// create shift (pop up)
 
 $(document).on("change", "#isRepeat", function () {
     if ($(this).is(":checked")) {

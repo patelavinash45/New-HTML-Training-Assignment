@@ -7,10 +7,10 @@ namespace Services.Interfaces.AdminServices
     {
         SendOrder GetSendOrderDetails(int requestId);
 
-        HealthProfessional GetBussinessData(int venderId);
+        HealthProfessional GetBusinessData(int venderId);
 
         Task<bool> AddOrderDetails(SendOrder model, int requestId); 
 
-        Dictionary<int, string> GetBussinessByProfession(int professionId);
+        Dictionary<int, string> GetBusinessByProfession(int professionId);
     }
 }

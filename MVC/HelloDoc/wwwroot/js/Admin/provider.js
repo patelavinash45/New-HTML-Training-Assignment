@@ -4,7 +4,7 @@ function onnotificationClick(doc) {
         type: "Get",
         contentType: "application/json",
         data: {
-            physicanId : $(doc).attr("id"),
+            physicianId : $(doc).attr("id"),
             isNotification : $(doc).is(":checked"),
         },
     })

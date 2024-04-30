@@ -1,6 +1,6 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using ClosedXML.Excel;
-using HelloDoc.Authentication;
+using HelloDoc.Auth;
 using Microsoft.AspNetCore.Mvc;
 using Repositories.DataModels;
 using Services.Interfaces;
@@ -76,7 +76,7 @@ namespace HelloDoc.Controllers
         [Authorization(6,"Admin")]
         public IActionResult Dashboard()
         {
-            return View(_adminDashboardService.GetallRequests());
+            return View(_adminDashboardService.GetAllRequests());
         }
 
         [Authorization("Admin", "Physician")]
@@ -129,7 +129,7 @@ namespace HelloDoc.Controllers
         [Authorization(4,"Admin")]
         public IActionResult CreateAdmin()
         {
-            return View(_accessService.GetAdminCreaateAndProfile());
+            return View(_accessService.GetAdminCreateAndProfile());
         }
 
         [Authorization(8,"Admin")]
@@ -183,7 +183,7 @@ namespace HelloDoc.Controllers
         [Authorization(17,"Admin")]
         public IActionResult SMSLogs()
         {
-            return View(_recordService.GetSMSlLog(new EmailSmsLogs()));
+            return View(_recordService.GetSMSLog(new EmailSmsLogs()));
         }
 
         [Authorization("Admin")]
@@ -228,7 +228,7 @@ namespace HelloDoc.Controllers
         public IActionResult CloseCase()
         {
             int requestId = HttpContext.Session.GetInt32("requestId").Value;
-            return View(_closeCaseService.GetDaetails(requestId));
+            return View(_closeCaseService.GetDetails(requestId));
         }
 
         [Authorization(24,"Admin")]
@@ -337,7 +337,7 @@ namespace HelloDoc.Controllers
 
         public async Task<IActionResult> CancelPopUp(CancelPopUp model)
         {
-            if (await _viewNotesService.CancleRequest(model))
+            if (await _viewNotesService.CancelRequest(model))
             {
                 _notyfService.Success("Successfully Request Cancel");
             }
@@ -513,9 +513,9 @@ namespace HelloDoc.Controllers
         }
 
         [HttpGet] //// Send Order
-        public JsonResult GetBussinesses(int professionId)
+        public JsonResult GetBusinesses(int professionId)
         {
-            return Json(_sendOrderService.GetBussinessByProfession(professionId));
+            return Json(_sendOrderService.GetBusinessByProfession(professionId));
         }
 
         [HttpGet] //// Region Filter on Provider page
@@ -561,7 +561,7 @@ namespace HelloDoc.Controllers
             return RedirectToAction("Access", "Admin");
         }
 
-        public async Task<IActionResult> DeteteRole(int roleId)  ////   delete role - access page
+        public async Task<IActionResult> DeleteRole(int roleId)  ////   delete role - access page
         {
             int aspNetUserId = HttpContext.Session.GetInt32("aspNetUserId").Value;
             string result = await _accessService.DeleteRole(roleId, aspNetUserId);
@@ -651,7 +651,7 @@ namespace HelloDoc.Controllers
                 }
                 return RedirectToAction("Dashboard", "Admin");
             }
-            AdminCreaateAndProfile adminCreaateAndProfile = _accessService.GetAdminCreaateAndProfile();
+            AdminCreaateAndProfile adminCreaateAndProfile = _accessService.GetAdminCreateAndProfile();
             model.Roles = adminCreaateAndProfile.Roles;
             model.Regions = adminCreaateAndProfile.Regions;
             _notyfService.Warning("Add Required Field.");
@@ -662,10 +662,10 @@ namespace HelloDoc.Controllers
         [HttpPost("/Case/ViewDocument")]
         public async Task<IActionResult> ViewDocument(ViewDocument model)
         {
-            String firstname = HttpContext.Session.GetString("firstName");
+            String firstName = HttpContext.Session.GetString("firstName");
             String lastName = HttpContext.Session.GetString("lastName");
             int requestId = HttpContext.Session.GetInt32("requestId").Value;
-            if (await _viewDocumentsServices.UploadFile(model, firstname, lastName, requestId))
+            if (await _viewDocumentsServices.UploadFile(model, firstName, lastName, requestId))
             {
                 _notyfService.Success("Successfully File Added.");
             }
@@ -680,10 +680,10 @@ namespace HelloDoc.Controllers
         [HttpPost("/Case/ConcludeCare")]
         public async Task<IActionResult> ConcludeCare(ViewDocument model)
         {
-            String firstname = HttpContext.Session.GetString("firstName");
+            String firstName = HttpContext.Session.GetString("firstName");
             String lastName = HttpContext.Session.GetString("lastName");
             int requestId = HttpContext.Session.GetInt32("requestId").Value;
-            if (await _viewDocumentsServices.UploadFile(model, firstname, lastName, requestId))
+            if (await _viewDocumentsServices.UploadFile(model, firstName, lastName, requestId))
             {
                 _notyfService.Success("Successfully File Added.");
             }
@@ -846,7 +846,7 @@ namespace HelloDoc.Controllers
         public async Task<IActionResult> EditAdministratorInformation(String data1, String firstName, String lastName)
         {
             int aspNetUserId = HttpContext.Session.GetInt32("aspNetUserId").Value;
-            if (await _viewProfileService.EditEditAdministratorInformastion(data1, aspNetUserId))
+            if (await _viewProfileService.EditEditAdministratorInformation(data1, aspNetUserId))
             {
                 HttpContext.Session.SetString("firstName", firstName);
                 HttpContext.Session.SetString("lastName", lastName);
@@ -875,9 +875,9 @@ namespace HelloDoc.Controllers
         }
 
         [HttpGet]   //  Edit Mailing And Billing Information view profile
-        public async Task<IActionResult> EditProviderNotification(int physicanId, bool isNotification)
+        public async Task<IActionResult> EditProviderNotification(int physicianId, bool isNotification)
         {
-            return Json(new { result = await _providersService.EditProviderNotification(physicanId, isNotification) });
+            return Json(new { result = await _providersService.EditProviderNotification(physicianId, isNotification) });
         }
 
         [HttpGet]   // Export All Data 
@@ -896,9 +896,9 @@ namespace HelloDoc.Controllers
         }
 
         [HttpGet]   // Export selected Data 
-        public IActionResult ExportData(String status, int pageNo, String patinetName, int regionId, int requesterTypeId)
+        public IActionResult ExportData(String status, int pageNo, String patientName, int regionId, int requesterTypeId)
         {
-            DataTable dataTable = _adminDashboardService.ExportData(status, pageNo, patinetName, regionId, requesterTypeId);
+            DataTable dataTable = _adminDashboardService.ExportData(status, pageNo, patientName, regionId, requesterTypeId);
             using (XLWorkbook wb = new XLWorkbook())
             {
                 wb.Worksheets.Add(dataTable);
@@ -911,9 +911,9 @@ namespace HelloDoc.Controllers
         }
 
         [HttpGet]   // Dashboard 
-        public IActionResult GetTablesData(String status, int pageNo, String partialViewName, String patinetName, int regionId, int requesterTypeId)
+        public IActionResult GetTablesData(String status, int pageNo, String partialViewName, String patientName, int regionId, int requesterTypeId)
         {
-            TableModel tableModel = _adminDashboardService.GetNewRequest(status, pageNo, patinetName, regionId, requesterTypeId);
+            TableModel tableModel = _adminDashboardService.GetNewRequest(status, pageNo, patientName, regionId, requesterTypeId);
             return tableModel.TableDatas.Count != 0 ? PartialView(partialViewName, tableModel) : PartialView("_NoTableDataFound");
         }
 
@@ -981,9 +981,9 @@ namespace HelloDoc.Controllers
         }
 
         [HttpGet]    // Send Order
-        public HealthProfessional GetBussinessData(int venderId)
+        public HealthProfessional GetBusinessData(int venderId)
         {
-            return _sendOrderService.GetBussinessData(venderId);
+            return _sendOrderService.GetBusinessData(venderId);
         }
 
         [HttpGet]    // provider scheduling page 
@@ -997,7 +997,7 @@ namespace HelloDoc.Controllers
         }
 
         [HttpGet]    // RequestShift page  
-        public IActionResult GetRequestShifTableData(int regionId, bool isMonth, int pageNo)
+        public IActionResult GetRequestShiftTableData(int regionId, bool isMonth, int pageNo)
         {
             return PartialView("_RequestedShiftTable", _providersService.GetRequestShiftTableDate(regionId, isMonth, pageNo));
         }
@@ -1053,7 +1053,7 @@ namespace HelloDoc.Controllers
         }
 
         [HttpGet]    // Partners page 
-        public IActionResult GetPatnersData(int regionId, string searchElement)
+        public IActionResult GetPartnersData(int regionId, string searchElement)
         {
             return PartialView("_PartnersTable", _partnersService.GetPartnersTableDatas(regionId, searchElement));
         }
@@ -1092,7 +1092,7 @@ namespace HelloDoc.Controllers
         }
         
         [HttpPost]    // Patient History filters
-        public IActionResult GetPatinetHistoryTableDate(string model,int pageNo)
+        public IActionResult GetPatientHistoryTableDate(string model,int pageNo)
         {
             return PartialView("_PatientHistoryTable", _recordService.GetPatientHistoryTable(model,pageNo));
         }

@@ -4,7 +4,7 @@ using Services.Interfaces.AuthServices;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
-namespace HelloDoc.Authentication
+namespace HelloDoc.Auth
 {
     public class Authorization : Attribute, IAuthorizationFilter
     {
@@ -28,7 +28,7 @@ namespace HelloDoc.Authentication
             IJwtService jwtService = context.HttpContext.RequestServices.GetService<IJwtService>();
             if (jwtService != null)
             {
-                String token = context.HttpContext.Request.Cookies["jwtToken"];
+                string token = context.HttpContext.Request.Cookies["jwtToken"];
                 JwtSecurityToken jwtToken = new JwtSecurityToken();
                 if (token == null)
                 {
@@ -48,7 +48,7 @@ namespace HelloDoc.Authentication
                 }
                 else
                 {
-                    String jwtRole = jwtToken.Claims.First(a => a.Type == ClaimTypes.Role).Value;
+                    string jwtRole = jwtToken.Claims.First(a => a.Type == ClaimTypes.Role).Value;
                     if (!_roles.Contains(jwtRole))
                     {
                         context.Result = new RedirectToRouteResult(new RouteValueDictionary(new
@@ -57,13 +57,13 @@ namespace HelloDoc.Authentication
                             action = "AccessDenied",
                         }));
                     }
-                    else 
+                    else
                     {
                         int jwtId = int.Parse(jwtToken.Claims.First(a => a.Type == "aspNetUserId").Value);
                         if (context.HttpContext.Session.GetInt32("aspNetUserId") == null)
                         {
-                            String jwtFirstName = jwtToken.Claims.First(a => a.Type == "firstName").Value;
-                            String jwtLastName = jwtToken.Claims.First(a => a.Type == "lastName").Value;
+                            string jwtFirstName = jwtToken.Claims.First(a => a.Type == "firstName").Value;
+                            string jwtLastName = jwtToken.Claims.First(a => a.Type == "lastName").Value;
                             context.HttpContext.Session.SetString("role", jwtRole);
                             context.HttpContext.Session.SetString("firstName", jwtFirstName);
                             context.HttpContext.Session.SetString("lastName", jwtLastName);

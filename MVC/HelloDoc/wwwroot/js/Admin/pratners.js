@@ -8,7 +8,7 @@ $(document).on("input", "#searchPartners", function () {
 
 function getTableData() {
     $.ajax({
-        url: "/Admin/GetPatnersData",
+        url: "/Admin/GetPartnersData",
         type: "Get",
         contentType: "application/json",
         data: {
