@@ -9,7 +9,7 @@ namespace Services.Interfaces
 
         Task<bool> UpdatePatientProfile(ViewProfile model, int aspNetUserId);
 
-        AdminCreaateAndProfile GetAdminViewProfile(int aspNetUserId);
+        AdminCreateAndProfile GetAdminViewProfile(int aspNetUserId);
 
         Task<bool> EditEditAdministratorInformation(String data, int aspNetUserId);
 

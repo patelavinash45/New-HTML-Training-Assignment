@@ -75,9 +75,7 @@
             <form asp-controller="Admin" asp-action="ViewNotes" id="form">
                 <div class="card p-3 d-flex align-items-end">
                     <div class="form-floating w-100">
-                        <textarea class="form-control border-2 mb-2 h-100" placeholder="Additional Notes" rows="5" asp-for="NewNotes" id="newnotes">
-
-                        </textarea>
+                        <textarea class="form-control border-2 mb-2 h-100" placeholder="Additional Notes" rows="5" asp-for="NewNotes" id="newnotes"> </textarea>
                         <label for="newnotes">Additional Notes</label>
                         <span asp-validation-for="NewNotes" class="text-danger mb-2"></span>
                     </div>

@@ -52,6 +52,7 @@ namespace HelloDoc.Controllers
             return View(_physicianDashboardService.ProviderScheduling(aspNetUserId));
         }
 
+        [Authorization(30, "Physician")]
         public IActionResult Invoice()
         {
             int aspNetUserId = HttpContext.Session.GetInt32("aspNetUserId").Value;

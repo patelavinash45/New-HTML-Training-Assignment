@@ -64,29 +64,33 @@ namespace Services.Implementation.AdminServices
 
         public async Task<bool> CreateRole(CreateRole model, int aspNetUserId)
         {
-            Role role = new Role()
+            Role role = _roleRepository.GetRoleByName(model.RoleName);
+            if(role == null)
             {
-                Name = model.RoleName,
-                AccountType = model.SlectedAccountType,
-                CreatedDate = DateTime.Now,
-                CreatedBy = aspNetUserId.ToString(),
-            };
-            int roleId = await _roleRepository.AddRole(role);
-            if (roleId > 0 && model.SelectedMenus.Count > 0)
-            {
-                await _roleRepository.AddRoleMenus(
-                        model.SelectedMenus.Select(menuId =>
-                        new RoleMenu()
-                        {
-                            RoleId = roleId,
-                            MenuId = menuId,
-                        }).ToList()
-                );
-                return true;
-            }
-            else if (roleId > 0)
-            {
-                return true;
+                role = new Role()
+                {
+                    Name = model.RoleName,
+                    AccountType = model.SlectedAccountType,
+                    CreatedDate = DateTime.Now,
+                    CreatedBy = aspNetUserId.ToString(),
+                };
+                int roleId = await _roleRepository.AddRole(role);
+                if (roleId > 0 && model.SelectedMenus.Count > 0)
+                {
+                    await _roleRepository.AddRoleMenus(
+                            model.SelectedMenus.Select(menuId =>
+                            new RoleMenu()
+                            {
+                                RoleId = roleId,
+                                MenuId = menuId,
+                            }).ToList()
+                    );
+                    return true;
+                }
+                else if (roleId > 0)
+                {
+                    return true;
+                }
             }
             return false;
         }
@@ -108,16 +112,16 @@ namespace Services.Implementation.AdminServices
             return "This Role can not be Delete";
         }
 
-        public AdminCreaateAndProfile GetAdminCreateAndProfile()
+        public AdminCreateAndProfile GetAdminCreateAndProfile()
         {
-            return new AdminCreaateAndProfile()
+            return new AdminCreateAndProfile()
             {
                 Regions = _requestClientRepository.GetAllRegions().ToDictionary(region => region.RegionId, region => region.Name),
                 Roles = _roleRepository.GetRolesByUserType(2).ToDictionary(role => role.RoleId, role => role.Name),
             };
         }
 
-        public async Task<String> CreateAdmin(AdminCreaateAndProfile model)
+        public async Task<String> CreateAdmin(AdminCreateAndProfile model)
         {
             if (_aspRepository.CheckUser(model.Email) == 0)
             {

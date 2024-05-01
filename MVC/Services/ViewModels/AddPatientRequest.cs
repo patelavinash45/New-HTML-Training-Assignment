@@ -21,10 +21,12 @@ namespace Services.ViewModels
         public string? Email { get; set; } 
 
         [StringLength(100)]
+        [Required(ErrorMessage = "The Password field is required.")]
         public string? Password { get; set; }
 
         [StringLength(100)]
         [CompareAttribute("Password", ErrorMessage = "The Password doesn't match.")]
+        [Required(ErrorMessage = "The ConformPassword field is required.")]
         public string? ConformPassword { get; set; }
 
         [StringLength(20)]
@@ -106,10 +108,12 @@ namespace Services.ViewModels
         public string? Email { get; set; }
 
         [StringLength(100)]
+        [Required(ErrorMessage = "The Password field is required.")]
         public string? Password { get; set; }
 
         [StringLength(100)]
         [CompareAttribute("Password", ErrorMessage = "The Password doesn't match.")]
+        [Required(ErrorMessage = "The ConformPassword field is required.")]
         public string? ConformPassword { get; set; }
 
         [StringLength(20)]
@@ -209,10 +213,12 @@ namespace Services.ViewModels
         public string? Email { get; set; }
 
         [StringLength(100)]
+        [Required(ErrorMessage = "The Password field is required.")]
         public string? Password { get; set; }
 
         [StringLength(100)]
         [CompareAttribute("Password", ErrorMessage = "The Password doesn't match.")]
+        [Required(ErrorMessage = "The ConformPassword field is required.")]
         public string? ConformPassword { get; set; }
 
         [StringLength(20)]
@@ -293,13 +299,15 @@ namespace Services.ViewModels
         [StringLength(50)]
         [DataType(DataType.EmailAddress, ErrorMessage = "The Email is not valid")]
         [Required(ErrorMessage = "The Email field is required.")]
-        public string? Email { get; set; } 
+        public string? Email { get; set; }
 
         [StringLength(100)]
+        [Required(ErrorMessage = "The Password field is required.")]
         public string? Password { get; set; }
 
         [StringLength(100)]
         [CompareAttribute("Password", ErrorMessage = "The Password doesn't match.")]
+        [Required(ErrorMessage = "The ConformPassword field is required.")]
         public string? ConformPassword { get; set; }
 
         [StringLength(20)]
@@ -354,10 +362,12 @@ namespace Services.ViewModels
         public string? Email { get; set; }
 
         [StringLength(100)]
+        [Required(ErrorMessage = "The Password field is required.")]
         public string? Password { get; set; }
 
         [StringLength(100)]
         [CompareAttribute("Password", ErrorMessage = "The Password doesn't match.")]
+        [Required(ErrorMessage = "The ConformPassword field is required.")]
         public string? ConformPassword { get; set; }
 
         [StringLength(20)]

@@ -6,7 +6,6 @@
     List<String> requester = new List<String>() { "", "Business", "Patient", "Family", "Concierge", "VIP" };
 }
 
-
 <div class="table-responsive row">
     <table class="table">
         <thead>
@@ -174,8 +173,7 @@
                         </div>
                     </button>
                 </h2>
-                <div id="flush-@data.RequestId" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
-                     data-bs-parent="#accordionFlushExample">
+                <div id="flush-@data.RequestId" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
                     <button class="border border-1 rounded-pill d-flex justify-content-center p-2 border-primary viewcase bg-white fw-bold"
                             onclick="navigatToViewCase(@data.RequestId)">
                         View Case
@@ -184,7 +182,7 @@
                         <div>
                             <i class="bi bi-telephone-fill rounded-circle border border-1 border-primary p-2"></i>
                             <span class="h6">
-                                Date of Borth: @data.BirthDate
+                                Date of Birth: @data.BirthDate
                             </span>
                         </div>
                         <div class="mt-3">

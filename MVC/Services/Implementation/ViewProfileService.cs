@@ -57,7 +57,7 @@ namespace Services.Implementation
             return await _userRepository.UpdateProfile(user);
         }
 
-        public AdminCreaateAndProfile GetAdminViewProfile(int aspNetUserId)
+        public AdminCreateAndProfile GetAdminViewProfile(int aspNetUserId)
         {
             Admin admin = _userRepository.GetAdmionByAspNetUserId(aspNetUserId);
             List<Region> allRegion = _requestClientRepository.GetAllRegions();
@@ -73,7 +73,7 @@ namespace Services.Implementation
             {
                 adminRegions[adminRegion.RegionId] = true;
             }
-            return new AdminCreaateAndProfile()
+            return new AdminCreateAndProfile()
             {
                 FirstName = admin.FirstName,
                 LastName = admin.LastName,
@@ -93,7 +93,7 @@ namespace Services.Implementation
 
         public async Task<bool> EditEditAdministratorInformation(String data, int aspNetUserId)
         {
-            AdminCreaateAndProfile _data = JsonSerializer.Deserialize<AdminCreaateAndProfile>(data);
+            AdminCreateAndProfile _data = JsonSerializer.Deserialize<AdminCreateAndProfile>(data);
             Admin admin = _userRepository.GetAdmionByAspNetUserId(aspNetUserId);
             admin.FirstName = _data.FirstName; 
             admin.LastName = _data.LastName;
@@ -140,7 +140,7 @@ namespace Services.Implementation
 
         public async Task<bool> EditMailingAndBillingInformation(String data, int aspNetUserId)
         {
-            AdminCreaateAndProfile _data = JsonSerializer.Deserialize<AdminCreaateAndProfile>(data);
+            AdminCreateAndProfile _data = JsonSerializer.Deserialize<AdminCreateAndProfile>(data);
             Admin admin = _userRepository.GetAdmionByAspNetUserId(aspNetUserId);
             admin.Address1 = _data.Address1;
             admin.Address2 = _data.Address2;

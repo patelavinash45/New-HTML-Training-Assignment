@@ -32,6 +32,11 @@ namespace Repositories.Implementation
             return _dbContext.Roles.FirstOrDefault(a => a.RoleId == roleId);
         }
 
+        public Role GetRoleByName(string roleName)
+        {
+            return _dbContext.Roles.FirstOrDefault(a => a.Name.ToLower() == roleName.ToLower());
+        }
+
         public List<Menu> GetAllMenus()
         {
             return _dbContext.Menus.ToList();

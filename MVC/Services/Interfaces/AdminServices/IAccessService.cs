@@ -14,9 +14,9 @@ namespace Services.Interfaces.AdminServices
 
         Task<String> DeleteRole(int roleId, int aspNetUserId);
 
-        AdminCreaateAndProfile GetAdminCreateAndProfile();
+        AdminCreateAndProfile GetAdminCreateAndProfile();
 
-        Task<String> CreateAdmin(AdminCreaateAndProfile model);
+        Task<String> CreateAdmin(AdminCreateAndProfile model);
 
         CreateRole GetEditRole(int roleId);
 

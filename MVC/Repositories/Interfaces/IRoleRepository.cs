@@ -10,6 +10,8 @@ namespace Repositories.Interfaces
 
         Role GetRoleByRoleId(int roleId);
 
+        Role GetRoleByName(string roleName);
+
         List<Menu> GetAllMenus();
 
         List<Menu> GetAllMenusByRole(int roleId);

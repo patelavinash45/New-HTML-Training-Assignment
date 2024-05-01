@@ -636,7 +636,7 @@ namespace HelloDoc.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]  /////  create Admin ---  dashboard 
-        public async Task<IActionResult> CreateAdmin(AdminCreaateAndProfile model)
+        public async Task<IActionResult> CreateAdmin(AdminCreateAndProfile model)
         {
             if (ModelState.IsValid)
             {
@@ -651,7 +651,7 @@ namespace HelloDoc.Controllers
                 }
                 return RedirectToAction("Dashboard", "Admin");
             }
-            AdminCreaateAndProfile adminCreaateAndProfile = _accessService.GetAdminCreateAndProfile();
+            AdminCreateAndProfile adminCreaateAndProfile = _accessService.GetAdminCreateAndProfile();
             model.Roles = adminCreaateAndProfile.Roles;
             model.Regions = adminCreaateAndProfile.Regions;
             _notyfService.Warning("Add Required Field.");

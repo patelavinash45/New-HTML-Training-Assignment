@@ -77,7 +77,7 @@
                     <div id="panelsStayOpen-@item.RoleId" class="accordion-collapse collapse"
                         aria-labelledby="panelsStayOpen-headingOne">
                         <div class="accordion-body row mx-0">
-                            Acount Type: @item.AccountType
+                            Account Type: @item.AccountType
                             <div class="d-flex justify-content-end align-items-center mb-2">
                                 <fieldset disabled=@(@item.RoleId == 14 || item.RoleId == 15)>
                                     <a asp-controller="Admin" asp-action="UpdateRole" asp-route-roleId="@item.RoleId">

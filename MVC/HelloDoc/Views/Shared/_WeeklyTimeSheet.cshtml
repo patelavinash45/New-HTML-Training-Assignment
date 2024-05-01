@@ -38,17 +38,15 @@
                             @date.ToString("MM/dd/yyyy")
                         </td>
                         <td>
-                            @{
-                                if (@Model.ShiftHours.ContainsKey(i))
-                                {
-                                    <span>
+                            @if (@Model.ShiftHours.ContainsKey(i))
+                            {
+                                <span>
                                         @Model.ShiftHours[i]
-                                    </span>
-                                }
-                                else
-                                {
-                                    <span>0</span>
-                                }
+                                </span>
+                            }
+                            else
+                            {
+                                <span>0</span>
                             }
                         </td>
                         <td>

@@ -2,7 +2,7 @@
 
 namespace Services.ViewModels.Admin
 {
-    public class AdminCreaateAndProfile
+    public class AdminCreateAndProfile
     {
         [Required(ErrorMessage = "The UserName field is required.")]
         public string? UserName { get; set; }
