@@ -128,6 +128,9 @@ public partial class Physician
     public virtual ICollection<PhysicianRegion> PhysicianRegions { get; set; } = new List<PhysicianRegion>();
 
     [InverseProperty("Physician")]
+    public virtual ICollection<Reimbursement> Reimbursements { get; set; } = new List<Reimbursement>();
+
+    [InverseProperty("Physician")]
     public virtual ICollection<RequestClient> RequestClients { get; set; } = new List<RequestClient>();
 
     [InverseProperty("Physician")]

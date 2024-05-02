@@ -41,20 +41,30 @@ namespace Services.Implementation.PhysicianServices
                         shiftHours.Add(shiftDetail.ShiftDate.Day, shiftHour);
                     }
                 });
+            Invoice invoice = _invoiceRepository.GetInvoiceByPhysician(aspNetUserId, startDate);
             CreateInvoice createInvoice = new CreateInvoice()
             {
                 StartDate = startDate,
                 ShiftHours = shiftHours,
             };
-            Invoice invoice = _invoiceRepository.GetAllInvoiceByPhysician(aspNetUserId, startDate);
             if (invoice != null)
             {
+                foreach(InvoiceDetail invoiceDetail in invoice.InvoiceDetails)
+                {
+                    createInvoice.TotalHours.Add(invoiceDetail.TotalHours);
+                    createInvoice.NoOfPhoneConsults.Add(invoiceDetail.NumberOfHouseCall);
+                    createInvoice.NoOfPhoneConsults.Add(invoiceDetail.NumberOfPhoneConsults);
+                    if(invoiceDetail.IsHoliday)
+                    {
+                        createInvoice.IsHoliday.Add(invoiceDetail.Date.Day);
+                    }
+                }
                 return new InvoicePage()
                 {
                     Date = startDate,
-                    StartDate = invoice.StartDate.Value.ToString("MMM dd,yyyy"),
-                    EndDate = invoice.EndDate.Value.ToString("MMM dd,yyyy"),
-                    Status = invoice.Status.Value ? "Approved" : "Pending",
+                    StartDate = invoice.StartDate.ToString("MMM dd,yyyy"),
+                    EndDate = invoice.EndDate.ToString("MMM dd,yyyy"),
+                    Status = invoice.Status ? "Approved" : "Pending",
                     CreateInvoice = createInvoice
                 };
             }
@@ -63,6 +73,42 @@ namespace Services.Implementation.PhysicianServices
                 Date = startDate,
                 CreateInvoice = createInvoice
             };
+        }
+
+        public Receipts GetReceipts(int aspNetUserId,string date)
+        {
+            DateTime startDate = DateTime.Now;
+            if (startDate.Day < 15)
+            {
+                startDate = startDate.AddDays(1 - startDate.Day);
+            }
+            else
+            {
+                startDate = startDate.AddDays(15 - startDate.Day);
+            }
+            Receipts receipts = new Receipts() 
+            {
+                StartDate = startDate,
+            };
+            List<Reimbursement> reimbursements = _invoiceRepository.GetAllReimbursementByPhysician(aspNetUserId, startDate);
+            if(reimbursements.Count > 0)
+            {
+                foreach(Reimbursement reimbursement in reimbursements)
+                {
+                    receipts.Items.Add(reimbursement.Item);
+                    receipts.Amounts.Add(reimbursement.Amount);
+                    receipts.Path.Add(GetFile(aspNetUserId, reimbursement.Date.Day));
+                }
+            }
+            return receipts;
+        }
+
+        private string GetFile(int aspNetUserId, int day)
+        {
+            String path = Path.Combine($"/Files//Invoice/{ aspNetUserId}/{day}");
+            String _path = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot/Files//Invoice/{aspNetUserId}/{day}");
+            FileInfo[] Files = new DirectoryInfo(_path).GetFiles().OrderBy(p => p.LastWriteTime).ToArray();
+            return Path.Combine(path, Files[^1].Name);
         }
     }
 }

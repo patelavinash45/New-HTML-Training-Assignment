@@ -27,14 +27,14 @@
             </h3>
         }
         <a asp-controller="@role" asp-action="Dashboard">
-            <button class="bg-white px-3 fw-bold" onclick="setTab(4)">
+            <button class="bg-white px-3 fw-bold" onclick="setTab(1)">
                 <i class="bi bi-chevron-left"> </i>
                 Back
             </button>
         </a>
     </div>
     <div class="form">
-        <form id="form1" asp-controller="Admin" asp-action="EditphysicianAccountInformaction">
+        <form id="form1" asp-controller="Admin" asp-action="EditPhysicianAccountInformation">
             <fieldset disabled id="fieldset1">
                 <h5 class="fw-bold">
                     Account Information
@@ -88,7 +88,7 @@
                 </div>
             </div>
         </form>
-        <form asp-controller="Admin" asp-action="EditphysicianPhysicianInformaction" id="InformationForm">
+        <form asp-controller="Admin" asp-action="EditPhysicianPhysicianInformation" id="InformationForm">
             <h5>
                 Physician Information
             </h5>
@@ -138,8 +138,8 @@
                         @foreach (var item in Model.Regions)
                         {
                             <div class="form-check form-check-inline">
-                                <input name="SelectedRegions" class="form-check-input regioncheckBoxs" type="checkbox" value="@item.Key" 
-                                                                                            checked=@Model.SelectedRegions.Contains(item.Key)>
+                                <input name="SelectedRegions" class="form-check-input regioncheckBoxs" type="checkbox" value="@item.Key"
+                                       checked=@Model.SelectedRegions.Contains(item.Key)>
                                 <label class="form-check-label" for="r-1">
                                     @item.Value
                                 </label>
@@ -163,7 +163,7 @@
                 </div>
             </div>
         </form>
-        <form asp-controller="Admin" asp-action="EditphysicianMailAndBillingInformaction">
+        <form asp-controller="Admin" asp-action="EditPhysicianMailAndBillingInformation">
             <h5>
                 Mailing & Billing Information
             </h5>
@@ -224,7 +224,7 @@
                 </div>
             </div>
         </form>
-        <form enctype="multipart/form-data" asp-controller="Admin" asp-action="EditphysicianProviderProfile">
+        <form enctype="multipart/form-data" asp-controller="Admin" asp-action="EditPhysicianProviderProfile">
             <h5>
                 Provider Profile
             </h5>
@@ -294,8 +294,7 @@
                 </div>
                 <div class="row">
                     <div class="form-floating">
-                        <textarea asp-for="AdminNotes" class="form-control h-75" id="notes" placeholder="orderDetils"
-                                  rows="5"></textarea>
+                        <textarea asp-for="AdminNotes" class="form-control h-75" id="notes" placeholder="orderDetils" rows="5"></textarea>
                         <span asp-validation-for="AdminNotes" class="text-danger"></span>
                         <label for="notes">Admin Notes</label>
                     </div>
@@ -316,7 +315,7 @@
             </div>
             <hr>
         </form>
-        <form asp-controller="Admin" asp-action="EditphysicianOnbordingInformaction" enctype="multipart/form-data">
+        <form asp-controller="Admin" asp-action="EditPhysicianOnbordingInformation" enctype="multipart/form-data">
             <h5>
                 Onbording
             </h5>

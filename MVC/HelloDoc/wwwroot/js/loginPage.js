@@ -1,4 +1,10 @@
 var temp = true;
+
+$(document).ready(function () {
+    localStorage.removeItem("tab");
+    localStorage.removeItem("status");
+})
+
 $(document).on("click", "#passwordIcon", function () {
     if (temp) {
         $(this).addClass("bi-eye-slash");

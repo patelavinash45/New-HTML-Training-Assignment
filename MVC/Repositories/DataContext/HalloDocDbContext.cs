@@ -232,7 +232,9 @@ public partial class HalloDocDbContext : DbContext
                 .UseIdentityAlwaysColumn()
                 .HasIdentityOptions(null, null, null, 99999999L, null, null);
 
-            entity.HasOne(d => d.Physician).WithMany(p => p.Invoices).HasConstraintName("PhysicianId");
+            entity.HasOne(d => d.Physician).WithMany(p => p.Invoices)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("PhysicianId");
         });
 
         modelBuilder.Entity<InvoiceDetail>(entity =>
@@ -241,7 +243,9 @@ public partial class HalloDocDbContext : DbContext
 
             entity.Property(e => e.InvoiceDetailsId).ValueGeneratedNever();
 
-            entity.HasOne(d => d.Invoice).WithMany(p => p.InvoiceDetails).HasConstraintName("InvoiceId");
+            entity.HasOne(d => d.Invoice).WithMany(p => p.InvoiceDetails)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("InvoiceId");
         });
 
         modelBuilder.Entity<Menu>(entity =>
@@ -307,11 +311,21 @@ public partial class HalloDocDbContext : DbContext
                 .UseIdentityAlwaysColumn()
                 .HasIdentityOptions(null, null, null, 9999999L, null, null);
 
-            entity.HasOne(d => d.InvoiceDetails).WithMany(p => p.Reimbursements).HasConstraintName("InvoiceDetailsId");
+            entity.HasOne(d => d.InvoiceDetails).WithMany(p => p.Reimbursements)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("InvoiceDetailsId");
 
-            entity.HasOne(d => d.Invoice).WithMany(p => p.Reimbursements).HasConstraintName("InvoiceId");
+            entity.HasOne(d => d.Invoice).WithMany(p => p.Reimbursements)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("InvoiceId");
 
-            entity.HasOne(d => d.RequestWiseFile).WithMany(p => p.Reimbursements).HasConstraintName("RequestWiseFileId");
+            entity.HasOne(d => d.Physician).WithMany(p => p.Reimbursements)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("PhysicianId");
+
+            entity.HasOne(d => d.RequestWiseFile).WithMany(p => p.Reimbursements)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("RequestWiseFileId");
         });
 
         modelBuilder.Entity<Request>(entity =>

@@ -14,10 +14,16 @@ namespace Repositories.Implementation
             _dbContext = dbContext;
         }
 
-        public Invoice GetAllInvoiceByPhysician(int aspNetUserId, DateTime startDate)
+        public Invoice GetInvoiceByPhysician(int aspNetUserId, DateTime startDate)
         {
-            return _dbContext.Invoices.Include(a => a.Physician).FirstOrDefault(a => a.Physician.AspNetUserId == aspNetUserId &&
-                                                                a.StartDate <= startDate && a.EndDate >= startDate.AddDays(15));
+            return _dbContext.Invoices.Include(a => a.Physician).Include(a => a.InvoiceDetails)
+                        .FirstOrDefault(a => a.Physician.AspNetUserId == aspNetUserId && a.StartDate <= startDate && a.EndDate >= startDate.AddDays(15));
+        }
+
+        public List<Reimbursement> GetAllReimbursementByPhysician(int aspNetUserId, DateTime startDate)
+        {
+            return _dbContext.Reimbursements.Include(a => a.Physician).Include(a => a.RequestWiseFile)
+                     .Where(a => a.Physician.AspNetUserId == aspNetUserId && a.Date <= startDate && a.Date >= startDate.AddDays(15)).ToList();
         }
     }
 }

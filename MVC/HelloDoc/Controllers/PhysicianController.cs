@@ -20,8 +20,8 @@ namespace HelloDoc.Controllers
                                                   IAdminDashboardService adminDashboardService, IInvoiceService invoiceService)
         {
             _notyfService = notyfService;
-            _physicianDashboardService = physicianDashboardService;  
-            _adminDashboardService = adminDashboardService; 
+            _physicianDashboardService = physicianDashboardService;
+            _adminDashboardService = adminDashboardService;
             _invoiceService = invoiceService;
         }
 
@@ -30,7 +30,7 @@ namespace HelloDoc.Controllers
             return View();
         }
 
-        [Authorization(25,"Physician")]
+        [Authorization(25, "Physician")]
         public IActionResult Dashboard()
         {
             int aspNetUserId = HttpContext.Session.GetInt32("aspNetUserId").Value;
@@ -85,22 +85,28 @@ namespace HelloDoc.Controllers
             }
             return RedirectToAction("Dashboard", "Physician");
         }
-            
+
         [HttpGet]
-        public async Task<JsonResult> SetEncounter(bool isVideoCall,int requestId)
+        public async Task<JsonResult> SetEncounter(bool isVideoCall, int requestId)
         {
             await _physicianDashboardService.SetEncounter(requestId, isVideoCall);
             return Json(new { redirect = Url.Action("Dashboard", "Physician") });
         }
 
-        public async Task<IActionResult> CreateInvoice(CreateInvoice model)
+        public IActionResult CreateInvoice(CreateInvoice model)
         {
             return View();
         }
 
+        public IActionResult GetReceipts(string date)
+        {
+            int aspNetUserId = HttpContext.Session.GetInt32("aspNetUserId").Value;
+            return PartialView("_ReciptsTableData", _invoiceService.GetReceipts(aspNetUserId, date));
+        }
+
         public async Task<IActionResult> HomeVisit(int requestId)
         {
-            if (await _physicianDashboardService.SetEncounter(requestId,true))
+            if (await _physicianDashboardService.SetEncounter(requestId, true))
             {
                 HttpContext.Session.SetInt32("requestId", requestId);
                 return RedirectToAction("EncounterForm", "Admin");
@@ -151,7 +157,7 @@ namespace HelloDoc.Controllers
         public async Task<IActionResult> FinalConcludeCare(ConcludeCare model)
         {
             int requestId = HttpContext.Session.GetInt32("requestId").Value;
-            if(await _physicianDashboardService.ConcludeCare(requestId, model))
+            if (await _physicianDashboardService.ConcludeCare(requestId, model))
             {
                 _notyfService.Success("Successfully Concluded");
                 return RedirectToAction("Dashboard", "Physician");

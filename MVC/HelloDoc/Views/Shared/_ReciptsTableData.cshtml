@@ -1,0 +1,64 @@
+﻿@model Services.ViewModels.Physician.Receipts
+
+@{
+    DateTime date = Model.StartDate;
+    int totaldays = date.Day < 15 ? 14 : DateTime.DaysInMonth(date.Year, date.Month);
+}
+
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th class="bg-transparent col-2">
+                    Date
+                </th>
+                <th class="bg-transparent col-2">
+                    Item
+                </th>
+                <th class="bg-transparent col-2">
+                    Amount
+                </th>
+                <th class="bg-transparent col-3">
+                    Bill
+                </th>
+                <th class="bg-transparent col-3">
+                    Action
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = date.Day; i < totaldays; i++)
+            {
+                <tr class="align-middle bg-white" id="@date.Day">
+                    <td>
+                        @date.ToString("MM/dd/yyyy")
+                    </td>
+                    <td>
+                        <input name="Receipts.Items" class="w-75 item" />
+                    </td>
+                    <td>
+                        <input name="Receipts.Amounts" class="w-75 amount" type="number" min="0" />
+                    </td>
+                    <td>
+                        <input name="Receipts.Bill" class="w-75 fileInput" type="file" id="@date.Day" />
+                        <div class="fileName"></div>
+                    </td>
+                    <td>
+                        <div class="d-flex buttons d-none">
+                            <button class="editButton" id="@date.Day">
+                                Edit
+                            </button>
+                            <button class="deleteButton" id="@date.Day">
+                                Delete
+                            </button>
+                            <button class="viewButton" id="@date.Day">
+                                View
+                            </button>
+                        </div>  
+                    </td>
+                </tr>
+                date = date.AddDays(1);
+            }
+        </tbody>
+    </table>
+</div>

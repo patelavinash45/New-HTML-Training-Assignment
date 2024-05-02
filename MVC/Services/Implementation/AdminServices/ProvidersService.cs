@@ -360,7 +360,7 @@ namespace Services.Implementation.AdminServices
             return editProvider;
         }
 
-        public async Task<bool> EditphysicianAccountInformaction(EditProvider model, int physicianId, int aspNetUserId)
+        public async Task<bool> EditPhysicianAccountInformation(EditProvider model, int physicianId, int aspNetUserId)
         {
             Physician physician = _userRepository.GetPhysicianWithAspNetUser(physicianId);
             physician.Status = (short)model.Status != null ? (short)model.Status : physician.Status;
@@ -376,7 +376,7 @@ namespace Services.Implementation.AdminServices
             return false;
         }
 
-        public async Task<bool> EditphysicianPhysicianInformaction(EditProvider model, int physicianId, int aspNetUserId)
+        public async Task<bool> EditPhysicianPhysicianInformation(EditProvider model, int physicianId, int aspNetUserId)
         {
             Physician physician = _userRepository.GetPhysicianByPhysicianId(physicianId);
             physician.FirstName = model.FirstName;
@@ -425,7 +425,7 @@ namespace Services.Implementation.AdminServices
             return false;
         }
 
-        public async Task<bool> EditphysicianMailAndBillingInformaction(EditProvider model, int physicianId, int aspNetUserId)
+        public async Task<bool> EditPhysicianMailAndBillingInformation(EditProvider model, int physicianId, int aspNetUserId)
         {
             Physician physician = _userRepository.GetPhysicianByPhysicianId(physicianId);
             physician.Address1 = model.Add1;
@@ -439,7 +439,7 @@ namespace Services.Implementation.AdminServices
             return await _userRepository.UpdatePhysician(physician);
         }
 
-        public async Task<bool> EditphysicianProviderProfile(EditProvider model, int physicianId, int aspNetUserId)
+        public async Task<bool> EditPhysicianProviderProfile(EditProvider model, int physicianId, int aspNetUserId)
         {
             Physician physician = _userRepository.GetPhysicianByPhysicianId(physicianId);
             physician.BusinessName = model.BusinessName;
@@ -457,24 +457,24 @@ namespace Services.Implementation.AdminServices
             return await _userRepository.UpdatePhysician(physician);
         }
 
-        public async Task<bool> EditphysicianOnbordingInformaction(EditProvider model, int physicianId, int aspNetUserId)
+        public async Task<bool> EditPhysicianOnbordingInformation(EditProvider model, int physicianId, int aspNetUserId)
         {
             Physician physician = _userRepository.GetPhysicianByPhysicianId(physicianId);
             if (model.IsAgreementDoc)
             {
-                FilePickUp("AgreementDoc", aspNetUserId, model.AgreementDoc);
+                FilePickUp("AgreementDoc", physician.AspNetUserId.Value, model.AgreementDoc);
             }
             if (model.IsBackgroundDoc)
             {
-                FilePickUp("BackgroundDoc", aspNetUserId, model.BackgroundDoc);
+                FilePickUp("BackgroundDoc", physician.AspNetUserId.Value, model.BackgroundDoc);
             }
             if (model.IsHIPAACompliance)
             {
-                FilePickUp("HIPAACompliance", aspNetUserId, model.HIPAACompliance);
+                FilePickUp("HIPAACompliance", physician.AspNetUserId.Value, model.HIPAACompliance);
             }
             if (model.IsNonDisclosureDoc)
             {
-                FilePickUp("NonDisclosureDoc", aspNetUserId, model.NonDisclosureDoc);
+                FilePickUp("NonDisclosureDoc", physician.AspNetUserId.Value, model.NonDisclosureDoc);
             }
             physician.IsAgreementDoc = new BitArray(1, model.IsAgreementDoc);
             physician.IsBackgroundDoc = new BitArray(1, model.IsBackgroundDoc);
@@ -816,7 +816,7 @@ namespace Services.Implementation.AdminServices
 
         private string GetFile(String folderName, int aspNetUserId)
         {
-            String path = Path.Combine("/Files//Providers/" + folderName + "/" + aspNetUserId.ToString());
+            String path = Path.Combine($"/Files//Providers/{folderName}/{aspNetUserId}");
             String _path = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot/Files/Providers/{folderName}/{aspNetUserId}");
             FileInfo[] Files = new DirectoryInfo(_path).GetFiles().OrderBy(p => p.LastWriteTime).ToArray();
             return Path.Combine(path, Files[^1].Name);

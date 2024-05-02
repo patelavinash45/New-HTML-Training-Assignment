@@ -5,69 +5,85 @@
     int totaldays = date.Day < 15 ? 14 : DateTime.DaysInMonth(date.Year, date.Month);
 }
 
-<div class="table-responsive">
-    <table class="table">
-        <thead>
-            <tr>
-                <th class="bg-transparent">
-                    Date
-                </th>
-                <th class="bg-transparent">
-                    On-Call Hours
-                </th>
-                <th class="bg-transparent">
-                    Total Hours
-                </th>
-                <th class="bg-transparent">
-                    Weekend / Holiday
-                </th>
-                <th class="bg-transparent">
-                    Number Of HouseCall
-                </th>
-                <th class="bg-transparent">
-                    Number of Phone Consults 
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <form asp-controller="Physician" asp-action="CreateInvoice">
-                @for(int i = date.Day; i < totaldays; i++ )
+<form asp-controller="Physician" asp-action="CreateInvoice">
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="bg-transparent col-2">
+                        Date
+                    </th>
+                    <th class="bg-transparent col-1">
+                        On-Call Hours
+                    </th>
+                    <th class="bg-transparent col-2">
+                        Total Hours
+                    </th>
+                    <th class="bg-transparent col-1">
+                        Weekend / Holiday
+                    </th>
+                    <th class="bg-transparent col-3">
+                        Number Of HouseCall
+                    </th>
+                    <th class="bg-transparent col-3">
+                        Number of Phone Consults
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = date.Day; i < totaldays; i++)
                 {
                     <tr class="align-middle bg-white">
                         <td>
                             @date.ToString("MM/dd/yyyy")
                         </td>
+                        @if (@Model.ShiftHours.ContainsKey(i))
+                        {
+                            <td>
+                                @Model.ShiftHours[i]
+                            </td>
+                            <td>
+                                <input name="TotalHours" class="w-75" value="@Model.ShiftHours[i]" type="number" step="0.30" min="0" max="24" />
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                0
+                            </td>
+                            <td>
+                                <input name="TotalHours" class="w-75" value="0" type="number" step="0.01" min="0" max="24" />
+                            </td>
+                        }
                         <td>
-                            @if (@Model.ShiftHours.ContainsKey(i))
-                            {
-                                <span>
-                                        @Model.ShiftHours[i]
-                                </span>
-                            }
-                            else
-                            {
-                                <span>0</span>
-                            }
+                            <input name="IsHoliday" class="w-75" type="checkbox" value="@date.Day" />
                         </td>
                         <td>
-                            <input name="TotalHours" value="0"/>
+                            <input name="NoOfHouseCall" class="w-75" value="0" type="number" step="0.01" min="0" max="50" />
                         </td>
                         <td>
-                            <input name="IsHoliday" type="checkbox" value="@date.Day"/>
-                        </td>
-                        <td>
-                            <input name="NoOfHouseCall" value="0" />
-                        </td>
-                        <td>
-                            <input name="NoOfPhoneConsults" value="0" />
+                            <input name="NoOfPhoneConsults" class="w-75" value="0" type="number" step="0.01" min="0" max="50" />
                         </td>
                     </tr>
                     date = date.AddDays(1);
                 }
-                <button class="btn" type="submit">
-                    submit
-                </button>
-            </form>
-        </tbody>
-    </table>
-</div>
+            </tbody>
+        </table>
+    </div>
+    <div class="d-flex justify-content-end">
+        <button class="bg-white fw-bold px-2" type="submit">
+            submit
+        </button>
+    </div>
+    <button class="bg-white fw-bold px-2 receipts" type="button">
+        Add Receipts 
+    </button>
+    <div id="receipts">
+
+    </div>
+    <div class="d-flex justify-content-end">
+        <button class="bg-white fw-bold px-2" type="submit">
+            Finalize
+        </button>
+    </div>
+</form>

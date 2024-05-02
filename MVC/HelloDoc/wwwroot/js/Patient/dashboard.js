@@ -53,9 +53,24 @@ function NavigatToViewDocument(id) {
     })
 }
 
+$(document).on("click", ".bi", function () {
+    if ($(this).hasClass("bi-caret-up-fill")) {
+        $(this).removeClass("bi-caret-up-fill");
+        $(this).addClass("bi-caret-down-fill");
+    }
+    else {
+        $(this).removeClass("bi-caret-down-fill");
+        $(this).addClass("bi-caret-up-fill");
+    }
+    $('tbody').each(function () {
+        var list = $(this).children('tr');
+        $(this).html(list.get().reverse());
+    });
+})
+
 // header
 
-$(document).ready(function () { 
+$(document).ready(function () {
     var id = localStorage.getItem("tab");
     if (id == null || id == "undefined") {
         id = "tab1";

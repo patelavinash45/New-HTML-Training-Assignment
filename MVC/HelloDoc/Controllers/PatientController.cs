@@ -18,15 +18,15 @@ namespace HelloDoc.Controllers
         private readonly IViewDocumentsServices _viewDocumentsServices;
         private readonly IJwtService _jwtService;
 
-        public PatientController(INotyfService notyfService,ILoginService loginService ,IPatientDashboardService dashboardService,
-                                 IAddRequestService addRequestService,IViewProfileService viewProfileService, 
-                                 IViewDocumentsServices viewDocumentsServices,IJwtService jwtService)
+        public PatientController(INotyfService notyfService, ILoginService loginService, IPatientDashboardService dashboardService,
+                                 IAddRequestService addRequestService, IViewProfileService viewProfileService,
+                                 IViewDocumentsServices viewDocumentsServices, IJwtService jwtService)
         {
             _notyfService = notyfService;
             _loginService = loginService;
             _dashboardService = dashboardService;
             _addRequestService = addRequestService;
-            _viewProfileService= viewProfileService;
+            _viewProfileService = viewProfileService;
             _viewDocumentsServices = viewDocumentsServices;
             _jwtService = jwtService;
         }
@@ -45,7 +45,7 @@ namespace HelloDoc.Controllers
 
         public IActionResult LoginPage()
         {
-            string role = _loginService.IsTokenValid(HttpContext,new List<int> { 1 });
+            string role = _loginService.IsTokenValid(HttpContext, new List<int> { 1 });
             if (role != null)
             {
                 return RedirectToAction("Dashboard", role);
@@ -117,7 +117,7 @@ namespace HelloDoc.Controllers
         {
             int aspNetUserId = HttpContext.Session.GetInt32("aspNetUserId").Value;
             int requestId = HttpContext.Session.GetInt32("requestId").Value;
-            return View(_viewDocumentsServices.GetDocumentList(requestId: requestId,aspNetUserId: aspNetUserId));
+            return View(_viewDocumentsServices.GetDocumentList(requestId: requestId, aspNetUserId: aspNetUserId));
         }
 
         [Auth.Authorization("Patient")]
@@ -146,10 +146,10 @@ namespace HelloDoc.Controllers
         public JsonResult SetRequestId(int requestId)
         {
             HttpContext.Session.SetInt32("requestId", requestId);
-            return Json(new { redirect = Url.Action("ViewDocument","Patient") });
+            return Json(new { redirect = Url.Action("ViewDocument", "Patient") });
         }
 
-        [HttpGet] 
+        [HttpGet]
         public JsonResult CheckEmailExists(string email)
         {
             var emailExists = _addRequestService.IsEmailExists(email);
@@ -179,7 +179,6 @@ namespace HelloDoc.Controllers
                     Expires = DateTime.Now.AddMinutes(20),
                 };
                 Response.Cookies.Append("jwtToken", token, cookieOptions);
-                //HttpContext.Session.SetString("jwtToken", token);
                 _notyfService.Success(user.Message);
                 return RedirectToAction("Dashboard", "Patient");
             }
@@ -191,7 +190,7 @@ namespace HelloDoc.Controllers
         {
             if (ModelState.IsValid)
             {
-                if(await _loginService.ChangePassword(aspNetUserId: model.AspNetUserId,password: model.Password))
+                if (await _loginService.ChangePassword(aspNetUserId: model.AspNetUserId, password: model.Password))
                 {
                     _notyfService.Success("Successfully Password Updated");
                     return RedirectToAction("PatientSite", "Patient");
@@ -222,7 +221,7 @@ namespace HelloDoc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ResetPassword(ResetPassword model)
         {
-            if(await _loginService.ResetPasswordLinkSend(model.Email, HttpContext))
+            if (await _loginService.ResetPasswordLinkSend(model.Email, HttpContext))
             {
                 _notyfService.Success("Successfully Email Send");
                 return RedirectToAction("PatientSite", "Patient");

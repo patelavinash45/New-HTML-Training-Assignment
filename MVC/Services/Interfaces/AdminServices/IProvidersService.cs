@@ -42,14 +42,14 @@ namespace Services.Interfaces.AdminServices
 
         Task<bool> SaveSign(string sign, int physicianId);
 
-        Task<bool> EditphysicianAccountInformaction(EditProvider model, int physicianId, int aspNetUserId);
+        Task<bool> EditPhysicianAccountInformation(EditProvider model, int physicianId, int aspNetUserId);
 
-        Task<bool> EditphysicianPhysicianInformaction(EditProvider model, int physicianId, int aspNetUserId);
+        Task<bool> EditPhysicianPhysicianInformation(EditProvider model, int physicianId, int aspNetUserId);
 
-        Task<bool> EditphysicianMailAndBillingInformaction(EditProvider model, int physicianId, int aspNetUserId);
+        Task<bool> EditPhysicianMailAndBillingInformation(EditProvider model, int physicianId, int aspNetUserId);
 
-        Task<bool> EditphysicianProviderProfile(EditProvider model, int physicianId, int aspNetUserId);
-        
-        Task<bool> EditphysicianOnbordingInformaction(EditProvider model, int physicianId, int aspNetUserId);
+        Task<bool> EditPhysicianProviderProfile(EditProvider model, int physicianId, int aspNetUserId);
+
+        Task<bool> EditPhysicianOnbordingInformation(EditProvider model, int physicianId, int aspNetUserId);
     }
 }

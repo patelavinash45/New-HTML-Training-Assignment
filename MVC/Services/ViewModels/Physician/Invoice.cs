@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using DocumentFormat.OpenXml.Office2010.PowerPoint;
+using Microsoft.AspNetCore.Http;
 
 namespace Services.ViewModels.Physician
 {
@@ -21,7 +22,7 @@ namespace Services.ViewModels.Physician
 
         public Dictionary<int,double> ShiftHours { get; set; }
 
-        public List<int> TotalHours { get; set; }
+        public List<double> TotalHours { get; set; }
 
         public List<int> IsHoliday { get; set; }
 
@@ -29,10 +30,19 @@ namespace Services.ViewModels.Physician
 
         public List<int> NoOfPhoneConsults { get; set; }
 
+        public Receipts Receipts { get; set; }
+    }
+
+    public class Receipts
+    {
+        public DateTime StartDate { get; set; }
+
         public List<string> Items { get; set; }
 
         public List<int> Amounts { get; set; }
 
-        public List<IFormFile> Biil { get; set; }
+        public List<IFormFile> Bill { get; set; }
+
+        public List<string> Path { get; set; }
     }
 }

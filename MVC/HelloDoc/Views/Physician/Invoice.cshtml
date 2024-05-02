@@ -4,6 +4,7 @@
     Layout = "_PhysicianLayout";
     ViewData["Title"] = "Invoice";
     ViewBag.CssFile = "/css/admin/providers.css";
+    ViewBag.JsFile = "/js/Physician/invoice.js";
     ViewBag.Header = "_PhysicianDashboardHeader";
 }
 
@@ -31,18 +32,6 @@
                 </button>
             }
         </div>
-        @if (Model.StartDate != null)
-        {
-            <div>
-                startDate = @Model.StartDate
-            </div>
-            <div>
-                EndDate = @Model.EndDate
-            </div>
-            <div>
-                Status = @Model.Status
-            </div>
-        }
         <partial name="_WeeklyTimeSheet" model="@Model.CreateInvoice" />
     </div>
 </div>
