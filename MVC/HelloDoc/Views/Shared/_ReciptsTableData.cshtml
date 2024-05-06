@@ -34,10 +34,10 @@
                         @date.ToString("MM/dd/yyyy")
                     </td>
                     <td>
-                        <input name="Receipts.Items" class="w-75 item" />
+                        <input name="Receipts.Items" class="w-75 item" id="@date.Day" />
                     </td>
                     <td>
-                        <input name="Receipts.Amounts" class="w-75 amount" type="number" min="0" />
+                        <input name="Receipts.Amounts" class="w-75 amount" type="number" min="0" id="@date.Day" value="0"/>
                     </td>
                     <td>
                         <input name="Receipts.Bill" class="w-75 fileInput" type="file" id="@date.Day" />
@@ -45,13 +45,13 @@
                     </td>
                     <td>
                         <div class="d-flex buttons d-none">
-                            <button class="editButton" id="@date.Day">
+                            <button class="editButton me-2 bg-white" id="@date.Day" type="button">
                                 Edit
                             </button>
-                            <button class="deleteButton" id="@date.Day">
+                            <button class="deleteButton me-2 bg-white" id="@date.Day" type="button">
                                 Delete
                             </button>
-                            <button class="viewButton" id="@date.Day">
+                            <button class="viewButton me-2 bg-white" id="@date.Day" type="button">
                                 View
                             </button>
                         </div>  

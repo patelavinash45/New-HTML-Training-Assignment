@@ -1,11 +1,10 @@
-﻿using DocumentFormat.OpenXml.Office2010.PowerPoint;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 
 namespace Services.ViewModels.Physician
 {
     public class InvoicePage
     {
-        public DateTime Date { get; set; }
+        public Dictionary<DateTime, DateTime> Dates { get; set; }
 
         public string StartDate { get; set; }
 

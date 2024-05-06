@@ -56,7 +56,7 @@ namespace HelloDoc.Controllers
         public IActionResult Invoice()
         {
             int aspNetUserId = HttpContext.Session.GetInt32("aspNetUserId").Value;
-            return View(_invoiceService.GetInvoice(aspNetUserId));
+            return View(_invoiceService.GetInvoice(aspNetUserId,new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1)));
         }
 
         public async Task<IActionResult> AcceptRequest(int requestId)
@@ -95,7 +95,7 @@ namespace HelloDoc.Controllers
 
         public IActionResult CreateInvoice(CreateInvoice model)
         {
-            return View();
+            return View();  
         }
 
         public IActionResult GetReceipts(string date)

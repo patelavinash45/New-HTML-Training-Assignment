@@ -11,7 +11,7 @@
 <div class="container">
     <div class="d-flex justify-content-between align-items-center mt-2 mb-3">
         <h3>
-            Scheduling
+            Invoice
         </h3>
         <a asp-controller="Physician" asp-action="Dashboard">
             <button class="bg-white px-3 fw-bold py-2" onclick="setTab(4)">
@@ -23,7 +23,11 @@
     <div class="providerList">
         <div class="d-flex justify-content-between align-items-center mt-2 mb-3">
             <select>
-                <option value="@Model.StartDate" selected>@Model.Date.ToString("MM/dd/yyy") - @Model.Date.AddDays(15).ToString("MM/dd/yyy")</option>
+                @foreach(var date in Model.Dates)
+                {
+                    <option value="@date.Key">@date.Key.ToString("MM/dd/yyy") - @date.Key.AddDays(14).ToString("MM/dd/yyy")</option>
+                    <option value="@date.Key.AddDays(15)">@date.Key.AddDays(15).ToString("MM/dd/yyy") - @date.Value.ToString("MM/dd/yyy")</option>
+                }
             </select>
             @if(Model.StartDate == null)
             {

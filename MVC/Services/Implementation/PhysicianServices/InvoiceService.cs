@@ -16,9 +16,9 @@ namespace Services.Implementation.PhysicianServices
             _shiftRepository = shiftRepository;
         }
 
-        public InvoicePage GetInvoice(int aspNetUserId)
+        public InvoicePage GetInvoice(int aspNetUserId, DateTime startDate)
         {
-            DateTime startDate = DateTime.Now;
+            Dictionary<DateTime, DateTime> dates = new Dictionary<DateTime, DateTime>();
             if (startDate.Day < 15)
             {
                 startDate = startDate.AddDays(1 - startDate.Day);
@@ -42,6 +42,14 @@ namespace Services.Implementation.PhysicianServices
                     }
                 });
             Invoice invoice = _invoiceRepository.GetInvoiceByPhysician(aspNetUserId, startDate);
+            for (int i = 0; i > -4 ; i--)
+            {
+                DateTime currentDate = startDate.AddMonths(i);
+                int daysInMonth = DateTime.DaysInMonth(currentDate.Year, currentDate.Month);
+                DateTime firstPartStart = new DateTime(currentDate.Year, currentDate.Month, 1);
+                DateTime secondPartEnd = new DateTime(currentDate.Year, currentDate.Month, daysInMonth);
+                dates.Add(firstPartStart, secondPartEnd);
+            }
             CreateInvoice createInvoice = new CreateInvoice()
             {
                 StartDate = startDate,
@@ -49,19 +57,19 @@ namespace Services.Implementation.PhysicianServices
             };
             if (invoice != null)
             {
-                foreach(InvoiceDetail invoiceDetail in invoice.InvoiceDetails)
+                foreach (InvoiceDetail invoiceDetail in invoice.InvoiceDetails)
                 {
                     createInvoice.TotalHours.Add(invoiceDetail.TotalHours);
                     createInvoice.NoOfPhoneConsults.Add(invoiceDetail.NumberOfHouseCall);
                     createInvoice.NoOfPhoneConsults.Add(invoiceDetail.NumberOfPhoneConsults);
-                    if(invoiceDetail.IsHoliday)
+                    if (invoiceDetail.IsHoliday)
                     {
                         createInvoice.IsHoliday.Add(invoiceDetail.Date.Day);
                     }
                 }
                 return new InvoicePage()
                 {
-                    Date = startDate,
+                    Dates = dates,
                     StartDate = invoice.StartDate.ToString("MMM dd,yyyy"),
                     EndDate = invoice.EndDate.ToString("MMM dd,yyyy"),
                     Status = invoice.Status ? "Approved" : "Pending",
@@ -70,12 +78,12 @@ namespace Services.Implementation.PhysicianServices
             }
             return new InvoicePage()
             {
-                Date = startDate,
+                Dates = dates,
                 CreateInvoice = createInvoice
             };
         }
 
-        public Receipts GetReceipts(int aspNetUserId,string date)
+        public Receipts GetReceipts(int aspNetUserId, string date)
         {
             DateTime startDate = DateTime.Now;
             if (startDate.Day < 15)
@@ -86,14 +94,14 @@ namespace Services.Implementation.PhysicianServices
             {
                 startDate = startDate.AddDays(15 - startDate.Day);
             }
-            Receipts receipts = new Receipts() 
+            Receipts receipts = new Receipts()
             {
                 StartDate = startDate,
             };
             List<Reimbursement> reimbursements = _invoiceRepository.GetAllReimbursementByPhysician(aspNetUserId, startDate);
-            if(reimbursements.Count > 0)
+            if (reimbursements.Count > 0)
             {
-                foreach(Reimbursement reimbursement in reimbursements)
+                foreach (Reimbursement reimbursement in reimbursements)
                 {
                     receipts.Items.Add(reimbursement.Item);
                     receipts.Amounts.Add(reimbursement.Amount);
@@ -103,9 +111,14 @@ namespace Services.Implementation.PhysicianServices
             return receipts;
         }
 
+        //Task<bool> CreateInvoice(CreateInvoice createInvoice)
+        //{
+
+        //}
+
         private string GetFile(int aspNetUserId, int day)
         {
-            String path = Path.Combine($"/Files//Invoice/{ aspNetUserId}/{day}");
+            String path = Path.Combine($"/Files//Invoice/{aspNetUserId}/{day}");
             String _path = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot/Files//Invoice/{aspNetUserId}/{day}");
             FileInfo[] Files = new DirectoryInfo(_path).GetFiles().OrderBy(p => p.LastWriteTime).ToArray();
             return Path.Combine(path, Files[^1].Name);
