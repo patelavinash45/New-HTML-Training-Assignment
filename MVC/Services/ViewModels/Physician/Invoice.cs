@@ -17,7 +17,7 @@ namespace Services.ViewModels.Physician
 
     public class CreateInvoice
     {
-        public DateTime StartDate { get; set; }
+        public DateOnly StartDate { get; set; }
 
         public Dictionary<int,double> ShiftHours { get; set; }
 

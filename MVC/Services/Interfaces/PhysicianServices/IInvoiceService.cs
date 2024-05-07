@@ -8,6 +8,6 @@ namespace Services.Interfaces.PhysicianServices
 
         Receipts GetReceipts(int aspNetUserId, string date);
 
-        //Task<bool> CreateInvoice(CreateInvoice createInvoice);
+        Task<bool> CreateInvoice(CreateInvoice model, int aspnetUserId);
     }
 }

@@ -9,11 +9,13 @@ namespace Services.Implementation.PhysicianServices
     {
         private readonly IInvoiceRepository _invoiceRepository;
         private readonly IShiftRepository _shiftRepository;
+        private readonly IUserRepository _userRepository;
 
-        public InvoiceService(IInvoiceRepository invoiceRepository, IShiftRepository shiftRepository)
+        public InvoiceService(IInvoiceRepository invoiceRepository, IShiftRepository shiftRepository, IUserRepository userRepository)
         {
             _invoiceRepository = invoiceRepository;
             _shiftRepository = shiftRepository;
+            _userRepository = userRepository;
         }
 
         public InvoicePage GetInvoice(int aspNetUserId, DateTime startDate)
@@ -41,8 +43,8 @@ namespace Services.Implementation.PhysicianServices
                         shiftHours.Add(shiftDetail.ShiftDate.Day, shiftHour);
                     }
                 });
-            Invoice invoice = _invoiceRepository.GetInvoiceByPhysician(aspNetUserId, startDate);
-            for (int i = 0; i > -4 ; i--)
+            Invoice invoice = _invoiceRepository.GetInvoiceByPhysician(aspNetUserId, DateOnly.FromDateTime(startDate));
+            for (int i = 0; i > -4; i--)
             {
                 DateTime currentDate = startDate.AddMonths(i);
                 int daysInMonth = DateTime.DaysInMonth(currentDate.Year, currentDate.Month);
@@ -52,7 +54,7 @@ namespace Services.Implementation.PhysicianServices
             }
             CreateInvoice createInvoice = new CreateInvoice()
             {
-                StartDate = startDate,
+                StartDate = DateOnly.FromDateTime(startDate),
                 ShiftHours = shiftHours,
             };
             if (invoice != null)
@@ -111,10 +113,42 @@ namespace Services.Implementation.PhysicianServices
             return receipts;
         }
 
-        //Task<bool> CreateInvoice(CreateInvoice createInvoice)
-        //{
-
-        //}
+        public async Task<bool> CreateInvoice(CreateInvoice model, int aspnetUserId)
+        {
+            Physician physician = _userRepository.GetPhysicianByAspNetUserId(aspnetUserId);
+            Invoice invoice = new Invoice()
+            {
+                PhysicianId = physician.PhysicianId,
+                StartDate = model.StartDate,
+                EndDate = model.StartDate.AddDays(14),
+                Status = false,
+                CreatedDate = DateTime.Now,
+                CreatedBy = aspnetUserId,
+            };
+            if (await _invoiceRepository.AddInvoice(invoice))
+            {
+                List<InvoiceDetail> invoiceDetails = new List<InvoiceDetail>();
+                for (int i = 0; i < model.TotalHours.Count; i++)
+                {
+                    invoiceDetails.Add(new InvoiceDetail()
+                    {
+                        InvoiceId = invoice.InvoiceId,
+                        Date = model.StartDate.AddDays(i),
+                        TotalHours = model.TotalHours[i],
+                        IsHoliday = model.IsHoliday != null ? model.IsHoliday.Contains(model.StartDate.AddDays(i).Day) : false,
+                        NumberOfHouseCall = model.NoOfHouseCall[i],
+                        NumberOfPhoneConsults = model.NoOfPhoneConsults[i],
+                        CreatedDate = DateTime.Now,
+                        CreatedBy = aspnetUserId,
+                    });
+                }
+                if (await _invoiceRepository.AddInvoiceDetails(invoiceDetails))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
 
         private string GetFile(int aspNetUserId, int day)
         {

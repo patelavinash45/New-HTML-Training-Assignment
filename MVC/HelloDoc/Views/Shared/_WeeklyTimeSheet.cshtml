@@ -1,12 +1,12 @@
 ﻿@model Services.ViewModels.Physician.CreateInvoice
 
 @{
-    DateTime date = Model.StartDate;
+    DateOnly date = Model.StartDate;
     int totaldays = date.Day < 15 ? 14 : DateTime.DaysInMonth(date.Year, date.Month);
 }
 
-<form asp-controller="Physician" asp-action="CreateInvoice" enctype="multipart/form-data">
-    <input asp-for="StartDate"  type="date" class="d-none" value="@Model.StartDate" />
+<form asp-controller="Physician" asp-action="CreateInvoice" enctype="multipart/form-data" id="invoiceForm">
+    <input asp-for="StartDate" type="date" class="d-none" value="@Model.StartDate.ToString("yyyy-MM-dd")" />
     <div class="table-responsive">
         <table class="table">
             <thead>
@@ -32,7 +32,7 @@
                 </tr>
             </thead>
             <tbody>
-                @for (int i = date.Day; i < totaldays; i++)
+                @for (int i = date.Day; i <= totaldays; i++)
                 {
                     <tr class="align-middle bg-white">
                         <td>
@@ -78,7 +78,7 @@
     </div>
     <div id="receipts">
         <button class="bg-white fw-bold px-2 receipts" type="button">
-            Add Receipts 
+            Add Receipts
         </button>
     </div>
     <div class="d-flex justify-content-end">

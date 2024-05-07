@@ -5,7 +5,7 @@
     int totaldays = date.Day < 15 ? 14 : DateTime.DaysInMonth(date.Year, date.Month);
 }
 
-<div class="table-responsive">
+<div class="table-responsive mt-3">
     <table class="table">
         <thead>
             <tr>
@@ -27,9 +27,9 @@
             </tr>
         </thead>
         <tbody>
-            @for (int i = date.Day; i < totaldays; i++)
+            @for (int i = date.Day; i <= totaldays; i++)
             {
-                <tr class="align-middle bg-white" id="@date.Day">
+                <tr class="align-middle bg-white reciptsTable" id="@date.Day">
                     <td>
                         @date.ToString("MM/dd/yyyy")
                     </td>
@@ -54,7 +54,10 @@
                             <button class="viewButton me-2 bg-white" id="@date.Day" type="button">
                                 View
                             </button>
-                        </div>  
+                        </div> 
+                        <div class="validation d-none">
+                            Please, Enter Proper Details 
+                        </div>
                     </td>
                 </tr>
                 date = date.AddDays(1);

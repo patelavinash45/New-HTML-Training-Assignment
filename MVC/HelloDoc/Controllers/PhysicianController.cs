@@ -93,9 +93,11 @@ namespace HelloDoc.Controllers
             return Json(new { redirect = Url.Action("Dashboard", "Physician") });
         }
 
-        public IActionResult CreateInvoice(CreateInvoice model)
+        public async Task<IActionResult> CreateInvoice(CreateInvoice model)
         {
-            return View();  
+            int aspNetUserId = HttpContext.Session.GetInt32("aspNetUserId").Value;
+            await _invoiceService.CreateInvoice(model, aspNetUserId);
+            return RedirectToAction("Dashboard", "Physician");
         }
 
         public IActionResult GetReceipts(string date)

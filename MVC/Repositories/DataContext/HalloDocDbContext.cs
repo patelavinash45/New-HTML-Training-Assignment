@@ -241,7 +241,7 @@ public partial class HalloDocDbContext : DbContext
         {
             entity.HasKey(e => e.InvoiceDetailsId).HasName("InvoiceDetail_pkey");
 
-            entity.Property(e => e.InvoiceDetailsId).ValueGeneratedNever();
+            entity.Property(e => e.InvoiceDetailsId).HasIdentityOptions(null, null, null, 999999999L, null, null);
 
             entity.HasOne(d => d.Invoice).WithMany(p => p.InvoiceDetails)
                 .OnDelete(DeleteBehavior.ClientSetNull)
