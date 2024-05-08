@@ -14,7 +14,7 @@ public partial class RequestWiseFile
     [Column("RequestWiseFileID")]
     public int RequestWiseFileId { get; set; }
 
-    public int RequestId { get; set; }
+    public int? RequestId { get; set; }
 
     [StringLength(500)]
     public string FileName { get; set; } = null!;
@@ -63,5 +63,5 @@ public partial class RequestWiseFile
 
     [ForeignKey("RequestId")]
     [InverseProperty("RequestWiseFiles")]
-    public virtual Request Request { get; set; } = null!;
+    public virtual Request? Request { get; set; }
 }

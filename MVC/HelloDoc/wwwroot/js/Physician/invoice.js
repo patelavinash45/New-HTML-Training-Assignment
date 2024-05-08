@@ -5,10 +5,54 @@
         contentType: "application/json",
         async: true,
         data: {
-            time: "",
+            date: localStorage.getItem("date"),
         },
         success: function (response) {
             $("#receipts").html(response);
+        }
+    })
+})
+
+$(document).on("change", ".changeDate", function () {
+    $.ajax({
+        url: "/Physician/GetInvoice",
+        type: "Get",
+        contentType: "application/json",
+        async: true,
+        data: {
+            date: $(this).val(),
+        },
+        success: function (response) {
+            if (response.endDate == null) {
+                $("#statusTable").addClass("d-none");
+                $(".noData").removeClass("d-none");
+            }
+            else {
+                $(".noData").addClass("d-none");
+                $("#statusTable").removeClass("d-none");
+                $("#startDate").html(response.startDate);
+                $("#endDate").html(response.endDate);
+                $("#status").html(response.status);
+                if (response.status == "Pending") {
+                    $(".status").removeClass("d-none");
+                }
+            }
+        }
+    })
+})
+
+$(document).on("click", ".openSheet", function () {
+    $.ajax({
+        url: "/Physician/GetWeeklyTimeSheet",
+        type: "Get",
+        contentType: "application/json",
+        async: true,
+        data: {
+            date: $(".changeDate").val(),
+        },
+        success: function (response) {
+            localStorage.setItem("date", $(".changeDate").val());
+            $("#timeSheet").html(response);
         }
     })
 })
@@ -68,14 +112,10 @@ $(document).on("submit", "#invoiceForm", function (e) {
     console.log("hi");
     $(".reciptsTable").each(function () {
         var id = $(this).attr("id");
-        console.log(id);
         if (!$(`#${id} .buttons`).hasClass("d-none")) {
             var item = $(`#${id} .item`).val();
             var amount = $(`#${id} .amount`).val();
             var file = $(`#${id} .fileInput`).val();
-            console.log(item);
-            console.log(amount);
-            console.log(file);
             if (item.length <= 0 || amount.length <= 0 || file.length <= 0 || amount == 0) {
                 $(`#${id} .validation`).removeClass("d-none");
                 e.preventDefault();

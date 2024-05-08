@@ -30,6 +30,8 @@ public partial class Invoice
     [Column(TypeName = "timestamp without time zone")]
     public DateTime? ModifyDate { get; set; }
 
+    public bool? Approved { get; set; }
+
     [InverseProperty("Invoice")]
     public virtual ICollection<InvoiceDetail> InvoiceDetails { get; set; } = new List<InvoiceDetail>();
 

@@ -2,7 +2,7 @@
 
 @{
     DateOnly date = Model.StartDate;
-    int totaldays = date.Day < 15 ? 14 : DateTime.DaysInMonth(date.Year, date.Month);
+    int totaldays = date.Day < 15 ? 14 : DateTime.DaysInMonth(date.Year, date.Month) - 14;
 }
 
 <form asp-controller="Physician" asp-action="CreateInvoice" enctype="multipart/form-data" id="invoiceForm">
@@ -32,7 +32,7 @@
                 </tr>
             </thead>
             <tbody>
-                @for (int i = date.Day; i <= totaldays; i++)
+                @for (int i = 1; i <= totaldays; i++)
                 {
                     <tr class="align-middle bg-white">
                         <td>
@@ -44,7 +44,7 @@
                                 @Model.ShiftHours[i]
                             </td>
                             <td>
-                                <input name="TotalHours" class="w-75" value="@Model.ShiftHours[i]" type="number" step="0.01" min="0" max="24" />
+                                <input name="TotalHours" class="w-75" value="@Model.TotalHours[i - 1]" type="number" step="0.01" min="0" max="24" />
                             </td>
                         }
                         else
@@ -53,17 +53,17 @@
                                 0
                             </td>
                             <td>
-                                <input name="TotalHours" class="w-75" value="0" type="number" step="0.01" min="0" max="24" />
+                                <input name="TotalHours" class="w-75" value="@Model.TotalHours[i - 1]" type="number" step="0.01" min="0" max="24" />
                             </td>
                         }
                         <td>
-                            <input name="IsHoliday" class="w-75" type="checkbox" value="@date.Day" />
+                            <input name="IsHoliday" class="w-75 h-100" type="checkbox" value="@date.Day" checked="@Model.IsHoliday.Contains(i)" />
                         </td>
                         <td>
-                            <input name="NoOfHouseCall" class="w-75" value="0" type="number" step="0.01" min="0" max="50" />
+                            <input name="NoOfHouseCall" class="w-75" value="@Model.NoOfHouseCall[i - 1]" type="number" step="0.01" min="0" max="50" />
                         </td>
                         <td>
-                            <input name="NoOfPhoneConsults" class="w-75" value="0" type="number" step="0.01" min="0" max="50" />
+                            <input name="NoOfPhoneConsults" class="w-75" value="@Model.NoOfPhoneConsults[i - 1]" type="number" step="0.01" min="0" max="50" />
                         </td>
                     </tr>
                     date = date.AddDays(1);
@@ -71,18 +71,16 @@
             </tbody>
         </table>
     </div>
-    <div class="d-flex justify-content-end">
-        <button class="bg-white fw-bold px-2" type="submit">
-            submit
-        </button>
-    </div>
     <div id="receipts">
         <button class="bg-white fw-bold px-2 receipts" type="button">
             Add Receipts
         </button>
     </div>
     <div class="d-flex justify-content-end">
-        <button class="bg-white fw-bold px-2" type="submit">
+        <button class="bg-white fw-bold px-2 me-2" type="submit">
+            submit
+        </button>
+        <button class="bg-white fw-bold px-2" type="submit" asp-controller="Physician" asp-action="FinalizeInvoice">
             Finalize
         </button>
     </div>

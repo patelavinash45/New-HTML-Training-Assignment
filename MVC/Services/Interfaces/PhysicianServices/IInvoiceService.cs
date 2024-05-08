@@ -4,10 +4,12 @@ namespace Services.Interfaces.PhysicianServices
 {
     public interface IInvoiceService
     {
-        InvoicePage GetInvoice(int aspNetUserId, DateTime startDate);
+        InvoicePage GetInvoice(int aspNetUserId, string startDate);
+
+        CreateInvoice GetWeeklyTimeSheet(int aspNetUserId, DateTime startDate);
 
         Receipts GetReceipts(int aspNetUserId, string date);
 
-        Task<bool> CreateInvoice(CreateInvoice model, int aspnetUserId);
+        Task<bool> SaveInvoice(CreateInvoice model, int aspNetUserId, bool isFinalize);
     }
 }

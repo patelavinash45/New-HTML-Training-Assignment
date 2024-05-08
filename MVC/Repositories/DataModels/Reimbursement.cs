@@ -14,7 +14,7 @@ public partial class Reimbursement
 
     public int InvoiceId { get; set; }
 
-    public int InvoiceDetailsId { get; set; }
+    public int? InvoiceDetailsId { get; set; }
 
     [StringLength(100)]
     public string Item { get; set; } = null!;
@@ -23,8 +23,7 @@ public partial class Reimbursement
 
     public int RequestWiseFileId { get; set; }
 
-    [Column(TypeName = "timestamp without time zone")]
-    public DateTime Date { get; set; }
+    public DateOnly Date { get; set; }
 
     public int PhysicianId { get; set; }
 
@@ -44,7 +43,7 @@ public partial class Reimbursement
 
     [ForeignKey("InvoiceDetailsId")]
     [InverseProperty("Reimbursements")]
-    public virtual InvoiceDetail InvoiceDetails { get; set; } = null!;
+    public virtual InvoiceDetail? InvoiceDetails { get; set; }
 
     [ForeignKey("PhysicianId")]
     [InverseProperty("Reimbursements")]

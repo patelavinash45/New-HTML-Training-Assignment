@@ -56,7 +56,7 @@ namespace HelloDoc.Controllers
         public IActionResult Invoice()
         {
             int aspNetUserId = HttpContext.Session.GetInt32("aspNetUserId").Value;
-            return View(_invoiceService.GetInvoice(aspNetUserId,new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1)));
+            return View(_invoiceService.GetInvoice(aspNetUserId, null));
         }
 
         public async Task<IActionResult> AcceptRequest(int requestId)
@@ -96,14 +96,33 @@ namespace HelloDoc.Controllers
         public async Task<IActionResult> CreateInvoice(CreateInvoice model)
         {
             int aspNetUserId = HttpContext.Session.GetInt32("aspNetUserId").Value;
-            await _invoiceService.CreateInvoice(model, aspNetUserId);
+            await _invoiceService.SaveInvoice(model, aspNetUserId, false);
             return RedirectToAction("Dashboard", "Physician");
+        }
+
+        public async Task<IActionResult> FinalizeInvoice(CreateInvoice model)
+        {
+            int aspNetUserId = HttpContext.Session.GetInt32("aspNetUserId").Value;
+            await _invoiceService.SaveInvoice(model, aspNetUserId, true);
+            return RedirectToAction("Dashboard", "Physician");
+        }
+
+        public IActionResult GetWeeklyTimeSheet(string date)
+        {
+            int aspNetUserId = HttpContext.Session.GetInt32("aspNetUserId").Value;
+            return PartialView("_WeeklyTimeSheet", _invoiceService.GetWeeklyTimeSheet(aspNetUserId, DateTime.Parse(date)));
         }
 
         public IActionResult GetReceipts(string date)
         {
             int aspNetUserId = HttpContext.Session.GetInt32("aspNetUserId").Value;
             return PartialView("_ReciptsTableData", _invoiceService.GetReceipts(aspNetUserId, date));
+        }
+
+        public JsonResult GetInvoice(string date)
+        {
+            int aspNetUserId = HttpContext.Session.GetInt32("aspNetUserId").Value;
+            return Json(_invoiceService.GetInvoice(aspNetUserId, date));
         }
 
         public async Task<IActionResult> HomeVisit(int requestId)

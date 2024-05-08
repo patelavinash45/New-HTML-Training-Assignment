@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 using Repositories.DataModels;
 
 namespace Repositories.DataContext;
@@ -231,6 +233,7 @@ public partial class HalloDocDbContext : DbContext
             entity.Property(e => e.InvoiceId)
                 .UseIdentityAlwaysColumn()
                 .HasIdentityOptions(null, null, null, 99999999L, null, null);
+            entity.Property(e => e.Approved).HasDefaultValueSql("false");
 
             entity.HasOne(d => d.Physician).WithMany(p => p.Invoices)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -311,9 +314,7 @@ public partial class HalloDocDbContext : DbContext
                 .UseIdentityAlwaysColumn()
                 .HasIdentityOptions(null, null, null, 9999999L, null, null);
 
-            entity.HasOne(d => d.InvoiceDetails).WithMany(p => p.Reimbursements)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("InvoiceDetailsId");
+            entity.HasOne(d => d.InvoiceDetails).WithMany(p => p.Reimbursements).HasConstraintName("InvoiceDetailsId");
 
             entity.HasOne(d => d.Invoice).WithMany(p => p.Reimbursements)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -417,9 +418,7 @@ public partial class HalloDocDbContext : DbContext
 
             entity.HasOne(d => d.Physician).WithMany(p => p.RequestWiseFiles).HasConstraintName("RequestWiseFile_PhysicianId_fkey");
 
-            entity.HasOne(d => d.Request).WithMany(p => p.RequestWiseFiles)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("RequestWiseFile_RequestId_fkey");
+            entity.HasOne(d => d.Request).WithMany(p => p.RequestWiseFiles).HasConstraintName("RequestWiseFile_RequestId_fkey");
         });
 
         modelBuilder.Entity<Role>(entity =>

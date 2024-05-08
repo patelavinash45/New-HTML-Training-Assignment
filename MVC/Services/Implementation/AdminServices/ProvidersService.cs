@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Repositories.DataModels;
+using Repositories.Implementation;
 using Repositories.Interface;
 using Repositories.Interfaces;
 using Services.Interfaces;
 using Services.Interfaces.AdminServices;
 using Services.ViewModels.Admin;
+using Services.ViewModels.Physician;
 using System.Collections;
 using System.Net;
 using System.Net.Mail;
@@ -23,9 +25,11 @@ namespace Services.Implementation.AdminServices
         private readonly IShiftRepository _shiftRepository;
         private readonly ILogsService _logsService;
         private readonly IFileService _fileService;
+        private readonly IInvoiceRepository _invoiceRepository;
 
         public ProvidersService(IUserRepository userRepository, IRequestClientRepository requestClientRepository, IRoleRepository roleRepository,
-                                 IAspRepository aspRepository, IShiftRepository shiftRepository, ILogsService logsService, IFileService fileService)
+                                 IAspRepository aspRepository, IShiftRepository shiftRepository, ILogsService logsService, IFileService fileService,
+                                   IInvoiceRepository invoiceRepository)
         {
             _userRepository = userRepository;
             _requestClientRepository = requestClientRepository;
@@ -34,6 +38,52 @@ namespace Services.Implementation.AdminServices
             _shiftRepository = shiftRepository;
             _logsService = logsService;
             _fileService = fileService;
+            _invoiceRepository = invoiceRepository;
+        }
+
+        public InvoicePage GetInvoiceDetails()
+        {
+            DateTime startDate = DateTime.Now;
+            Dictionary<DateTime, DateTime> dates = new Dictionary<DateTime, DateTime>();
+            if (startDate.Day < 15)
+            {
+                startDate = startDate.AddDays(1 - startDate.Day);
+            }
+            else
+            {
+                startDate = startDate.AddDays(15 - startDate.Day);
+                int daysInMonth = DateTime.DaysInMonth(startDate.Year, startDate.Month);
+                DateTime firstPartStart = new DateTime(startDate.Year, startDate.Month, 1);
+                DateTime secondPartEnd = new DateTime(startDate.Year, startDate.Month, daysInMonth);
+                dates.Add(firstPartStart, secondPartEnd);
+            }
+            for (int i = -1; i > -4; i--)
+            {
+                DateTime currentDate = startDate.AddMonths(i);
+                int daysInMonth = DateTime.DaysInMonth(currentDate.Year, currentDate.Month);
+                DateTime firstPartStart = new DateTime(currentDate.Year, currentDate.Month, 1);
+                DateTime secondPartEnd = new DateTime(currentDate.Year, currentDate.Month, daysInMonth);
+                dates.Add(firstPartStart, secondPartEnd);
+            }
+            List<Physician> physicians = _userRepository.GetAllPhysiciansByRegionId(0);
+            Invoice invoice = _invoiceRepository.GetInvoiceByPhysician(physicians[0].AspNetUserId.Value, DateOnly.FromDateTime(startDate));
+            if (invoice != null)
+            {
+                return new InvoicePage()
+                {
+                    Physicians = physicians.ToDictionary(physician => physician.PhysicianId, physician => $"{physician.FirstName} {physician.LastName}"),
+                    StartDate = invoice.StartDate,
+                    EndDate = invoice.EndDate,
+                    Dates = dates,
+                    Status = invoice.Status ? "Approve" : "Pending",
+                };
+            }
+            return new InvoicePage()
+            {
+                Physicians = physicians.ToDictionary(physician => physician.PhysicianId, physician => $"{physician.FirstName} {physician.LastName}"),
+                StartDate = DateOnly.FromDateTime(startDate),
+                Dates = dates,
+            };
         }
 
         public Task<bool> EditShiftDetails(string data, int aspNetUserId)

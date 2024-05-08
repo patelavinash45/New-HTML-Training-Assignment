@@ -1,4 +1,5 @@
 ﻿using Services.ViewModels.Admin;
+using Services.ViewModels.Physician;
 
 namespace Services.Interfaces.AdminServices
 {
@@ -51,5 +52,7 @@ namespace Services.Interfaces.AdminServices
         Task<bool> EditPhysicianProviderProfile(EditProvider model, int physicianId, int aspNetUserId);
 
         Task<bool> EditPhysicianOnbordingInformation(EditProvider model, int physicianId, int aspNetUserId);
+
+        InvoicePage GetInvoiceDetails();
     }
 }

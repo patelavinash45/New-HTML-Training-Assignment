@@ -24,6 +24,16 @@ button {
     border-radius: 10px;
 }
 
+.input-group,
+.btn-outline-secondary,
+input {
+    height: 40px;
+}
+
+::-webkit-file-upload-button {
+    display: none;
+}
+
 .accordion {
     display: none;
 }

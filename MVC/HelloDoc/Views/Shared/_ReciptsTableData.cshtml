@@ -1,8 +1,8 @@
 ﻿@model Services.ViewModels.Physician.Receipts
 
 @{
-    DateTime date = Model.StartDate;
-    int totaldays = date.Day < 15 ? 14 : DateTime.DaysInMonth(date.Year, date.Month);
+    DateOnly date = Model.StartDate;
+    int totaldays = date.Day < 15 ? 14 : DateTime.DaysInMonth(date.Year, date.Month) - 14;
 }
 
 <div class="table-responsive mt-3">
@@ -27,21 +27,27 @@
             </tr>
         </thead>
         <tbody>
-            @for (int i = date.Day; i <= totaldays; i++)
+            @for (int i = 1; i <= totaldays; i++)
             {
                 <tr class="align-middle bg-white reciptsTable" id="@date.Day">
                     <td>
                         @date.ToString("MM/dd/yyyy")
                     </td>
                     <td>
-                        <input name="Receipts.Items" class="w-75 item" id="@date.Day" />
+                        <input name="Receipts.Items" class="w-75 item" value="@Model.Items[i -1]" id="@date.Day" />
                     </td>
                     <td>
-                        <input name="Receipts.Amounts" class="w-75 amount" type="number" min="0" id="@date.Day" value="0"/>
+                        <input name="Receipts.Amounts" class="w-75 amount" type="number" min="0" id="@date.Day" value="@Model.Amounts[i - 1]" />
                     </td>
                     <td>
-                        <input name="Receipts.Bill" class="w-75 fileInput" type="file" id="@date.Day" />
-                        <div class="fileName"></div>
+                        @if (@Model.Paths[i - 1] == "")
+                        {
+                            <div class="input-group">
+                                <input name="Receipts.Bill" class="form-control fileInput" type="file" id="@date.Day">
+                                <label class="input-group-text" for="@date.Day">Upload</label>
+                            </div>
+                            <div class="fileName"></div>
+                        }
                     </td>
                     <td>
                         <div class="d-flex buttons d-none">
@@ -54,9 +60,9 @@
                             <button class="viewButton me-2 bg-white" id="@date.Day" type="button">
                                 View
                             </button>
-                        </div> 
-                        <div class="validation d-none">
-                            Please, Enter Proper Details 
+                        </div>
+                        <div class="validation d-none text-danger">
+                            Please, Enter Proper Details
                         </div>
                     </td>
                 </tr>
