@@ -25,8 +25,7 @@
     <form class="w-100" id="form" asp-controller="Admin" asp-action="SendOrder">
         <div class="row">
             <div class="form-floating col-xl-6 col-md-6 col-lg-6">
-                <select class="form-select" id="selectedProfession" asp-for="SelectedProfession"
-                    onchange="changeSelect()">
+                <select class="form-select" id="selectedProfession" asp-for="SelectedProfession" onchange="changeSelect()">
                     <option disabled selected value="">Select Profession</option>
                     @foreach (var item in Model.Professions)
                     {
@@ -37,8 +36,7 @@
                 <span asp-validation-for="SelectedProfession" class="text-danger"></span>
             </div>
             <div class="form-floating col-xl-6 col-md-6 col-lg-6">
-                <select class="form-select" id="selectedBusiness" asp-for="SelectedBusiness"
-                    onchange="changeBussiness()">
+                <select class="form-select" id="selectedBusiness" asp-for="SelectedBusiness" onchange="changeBussiness()">
                     <option disabled selected value="">Select Business</option>
                 </select>
                 <label for="selectedBusiness">Business</label>
@@ -66,12 +64,12 @@
         </div>
         <div class="row">
             <div class="form-floating">
-                <textarea class="form-control h-75" id="orderDetils" rows="3" asp-for="OrderDetails"
-                    placeholder="OrderDeatails"></textarea>
+                <textarea class="form-control h-75" id="orderDetils" rows="3" asp-for="OrderDetails" placeholder="OrderDeatails"></textarea>
                 <label for="orderDetils">Prescription or Order details</label>
                 <span asp-validation-for="OrderDetails" class="text-danger"></span>
-                <span id="orderDetailsValidation" class="text-danger validation">The Prescription&OrderDetails field is
-                    required.</span>
+                <span id="orderDetailsValidation" class="text-danger validation">
+                    The Prescription&OrderDetails field is required.
+                </span>
             </div>
         </div>
         <div class="row">

@@ -51,8 +51,7 @@
             </h5>
             <div class="row">
                 <div class="form-floating col-xl-6 col-md-6 col-lg-6">
-                    <input asp-for="Email" class="form-control" id="email" type="email" placeholder="Email"
-                        onfocusout="checkEmail(this)" />
+                    <input asp-for="Email" class="form-control" id="email" type="email" placeholder="Email" onfocusout="checkEmail(this)" />
                     <label for="email">Email</label>
                     <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
@@ -63,14 +62,12 @@
             </div>
             <div class="row" id="input-password">
                 <div class="form-floating col-xl-6 col-md-6 col-lg-6">
-                    <input asp-for="Password" class="form-control" id="password" type="password"
-                        placeholder="Password" />
+                    <input asp-for="Password" class="form-control" id="password" type="password" placeholder="Password" />
                     <label for="password">Password</label>
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
                 <div class="form-floating col-xl-6 col-md-6 col-lg-6">
-                    <input asp-for="ConformPassword" class="form-control" id="conform" type="password"
-                        placeholder="ConformPassword" />
+                    <input asp-for="ConformPassword" class="form-control" id="conform" type="password" placeholder="ConformPassword" />
                     <label for="conform">Conform Password</label>
                     <span asp-validation-for="ConformPassword" class="text-danger"></span>
                 </div>

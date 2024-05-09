@@ -1,10 +1,13 @@
-﻿$(document).on("click", ".receipts", function () {
+﻿
+var url = "/Physician/GetReceipts";
+$(document).on("click", ".receipts", async function () {
     $.ajax({
-        url: "/Physician/GetReceipts",
+        url: url,
         type: "Get",
         contentType: "application/json",
         async: true,
         data: {
+            physicianId: $("#physicianSelect").val(),
             date: localStorage.getItem("date"),
         },
         success: function (response) {
@@ -23,20 +26,7 @@ $(document).on("change", ".changeDate", function () {
             date: $(this).val(),
         },
         success: function (response) {
-            if (response.endDate == null) {
-                $("#statusTable").addClass("d-none");
-                $(".noData").removeClass("d-none");
-            }
-            else {
-                $(".noData").addClass("d-none");
-                $("#statusTable").removeClass("d-none");
-                $("#startDate").html(response.startDate);
-                $("#endDate").html(response.endDate);
-                $("#status").html(response.status);
-                if (response.status == "Pending") {
-                    $(".status").removeClass("d-none");
-                }
-            }
+            setData(response);
         }
     })
 })
@@ -109,7 +99,6 @@ function showButtons(temp) {
 }
 
 $(document).on("submit", "#invoiceForm", function (e) {
-    console.log("hi");
     $(".reciptsTable").each(function () {
         var id = $(this).attr("id");
         if (!$(`#${id} .buttons`).hasClass("d-none")) {
@@ -122,4 +111,91 @@ $(document).on("submit", "#invoiceForm", function (e) {
             }
         }
     })
+})
+
+function setData(response) {
+    if (response.endDate == null) {
+        $("#statusTable").addClass("d-none");
+        $(".noData").removeClass("d-none");
+    }
+    else {
+        $(".noData").addClass("d-none");
+        $("#statusTable").removeClass("d-none");
+        $("#startDate").html(response.startDate);
+        $("#endDate").html(response.endDate);
+        $("#status").html(response.status);
+        $(".approve").attr("id", response.invoiceId);
+        if (response.status == "Pending") {
+            $(".status").removeClass("d-none");
+        }
+    }
+}
+
+
+//// Admin Side
+
+function adminInvoiceGetData() {
+    $.ajax({
+        url: "/Admin/GetInvoice",
+        type: "Get",
+        contentType: "application/json",
+        async: true,
+        data: {
+            physicianId: $("#physicianSelect").val(),
+            date: $("#timeSelect").val(),
+        },
+        success: async function (response) {
+            localStorage.setItem("date", $("#timeSelect").val());
+            if (response.endDate != null && response.isApprove) {
+                $("#statusTable").addClass("d-none");
+                $.ajax({
+                    url: "/Admin/GetWeeklyTimeSheet",
+                    type: "Get",
+                    contentType: "application/json",
+                    async: true,
+                    data: {
+                        physicianId: $("#physicianSelect").val(),
+                        date: $("#timeSelect").val(),
+                    },
+                    success: async function (response) {
+                        $("#timeSheet").html(response);
+                        url = "/Admin/GetReceipts";
+                        await $(".receipts").click();
+                        $(".physicianColumn").remove();
+                        $("#timeSheet").prop("disabled", true);
+                        $("#svaeButtons").html("");
+                    }
+                })
+            }
+            else {
+                $("#timeSheet").html("");
+                setData(response);
+            }
+        }
+    })
+}
+
+$(document).on("change", ".adminSelect", async function () {
+    adminInvoiceGetData();
+})
+
+$(document).on("click", ".approve", function () {
+    $.ajax({
+        url: "/Admin/ApproveInvoice",
+        type: "Get",
+        contentType: "application/json",
+        async: true,
+        data: {
+            invoiceId: $(this).attr("id"),
+        },
+        success: function (response) {
+            window.location.href = response.redirect;
+        }
+    })
+})
+
+$(document).ready(function () {
+    if ($("#AdminStatus").length) {
+        adminInvoiceGetData();
+    }
 })

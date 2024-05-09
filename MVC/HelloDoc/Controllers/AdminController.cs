@@ -237,6 +237,12 @@ namespace HelloDoc.Controllers
             return View();
         }
 
+        [Authorization(18, "Admin")]
+        public IActionResult Invoice()
+        {
+            return View(_providersService.GetInvoiceDetails(0,null));
+        }
+
         [Authorization("Admin", "Physician")]
         [HttpGet("/Case/ViewDocument")]
         public IActionResult ViewDocument()
@@ -1222,6 +1228,28 @@ namespace HelloDoc.Controllers
                 _notyfService.Error("Failed");
             }
             return Json(new { redirect = Url.Action("EditProvider", "Admin") });
+        }
+
+        public JsonResult GetInvoice(int physicianId, string date)
+        {
+            int aspNetUserId = HttpContext.Session.GetInt32("aspNetUserId").Value;
+            return Json(_providersService.GetInvoiceDetails(physicianId,date));
+        }
+
+        public IActionResult GetWeeklyTimeSheet(int physicianId, string date)
+        {
+            return PartialView("_WeeklyTimeSheet", _providersService.GetWeeklyTimeSheet(physicianId,date));
+        }
+
+        public async Task<JsonResult> ApproveInvoice(int invoiceId)
+        {
+            await _providersService.ApproveInvoice(invoiceId); 
+            return Json(new { redirect = Url.Action("Invoice", "Admin") });
+        }
+
+        public IActionResult GetReceipts(int physicianId, string date)
+        {
+            return PartialView("_ReciptsTableData", _providersService.GetReceipts(physicianId,date));
         }
     }
 }

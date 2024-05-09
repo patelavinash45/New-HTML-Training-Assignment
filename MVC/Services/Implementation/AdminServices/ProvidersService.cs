@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Repositories.DataModels;
-using Repositories.Implementation;
 using Repositories.Interface;
 using Repositories.Interfaces;
 using Services.Interfaces;
 using Services.Interfaces.AdminServices;
+using Services.Interfaces.PhysicianServices;
 using Services.ViewModels.Admin;
 using Services.ViewModels.Physician;
 using System.Collections;
@@ -26,10 +26,11 @@ namespace Services.Implementation.AdminServices
         private readonly ILogsService _logsService;
         private readonly IFileService _fileService;
         private readonly IInvoiceRepository _invoiceRepository;
+        private readonly IInvoiceService _invoiceService;
 
         public ProvidersService(IUserRepository userRepository, IRequestClientRepository requestClientRepository, IRoleRepository roleRepository,
                                  IAspRepository aspRepository, IShiftRepository shiftRepository, ILogsService logsService, IFileService fileService,
-                                   IInvoiceRepository invoiceRepository)
+                                   IInvoiceRepository invoiceRepository, IInvoiceService invoiceService)
         {
             _userRepository = userRepository;
             _requestClientRepository = requestClientRepository;
@@ -39,11 +40,16 @@ namespace Services.Implementation.AdminServices
             _logsService = logsService;
             _fileService = fileService;
             _invoiceRepository = invoiceRepository;
+            _invoiceService = invoiceService;
         }
 
-        public InvoicePage GetInvoiceDetails()
+        public InvoicePage GetInvoiceDetails(int physicianId, string date)
         {
             DateTime startDate = DateTime.Now;
+            if(date != null)
+            {
+                startDate = DateTime.Parse(date);
+            }
             Dictionary<DateTime, DateTime> dates = new Dictionary<DateTime, DateTime>();
             if (startDate.Day < 15)
             {
@@ -66,7 +72,16 @@ namespace Services.Implementation.AdminServices
                 dates.Add(firstPartStart, secondPartEnd);
             }
             List<Physician> physicians = _userRepository.GetAllPhysiciansByRegionId(0);
-            Invoice invoice = _invoiceRepository.GetInvoiceByPhysician(physicians[0].AspNetUserId.Value, DateOnly.FromDateTime(startDate));
+            Invoice invoice = new Invoice();
+            if(physicianId == 0)
+            {
+                invoice = _invoiceRepository.GetInvoiceByPhysician(physicians[0].AspNetUserId.Value, DateOnly.FromDateTime(startDate));
+            }
+            else
+            {
+                Physician physician = physicians.First( a => a.PhysicianId == physicianId);
+                invoice = _invoiceRepository.GetInvoiceByPhysician(physician.AspNetUserId.Value, DateOnly.FromDateTime(startDate));
+            }
             if (invoice != null)
             {
                 return new InvoicePage()
@@ -75,7 +90,9 @@ namespace Services.Implementation.AdminServices
                     StartDate = invoice.StartDate,
                     EndDate = invoice.EndDate,
                     Dates = dates,
-                    Status = invoice.Status ? "Approve" : "Pending",
+                    Status = invoice.Status ? "Finalize" : "Pending",
+                    IsApprove = invoice.Approved,
+                    InvoiceId = invoice.InvoiceId,
                 };
             }
             return new InvoicePage()
@@ -84,6 +101,25 @@ namespace Services.Implementation.AdminServices
                 StartDate = DateOnly.FromDateTime(startDate),
                 Dates = dates,
             };
+        }
+
+        public async Task<bool> ApproveInvoice(int invoiceId)
+        {
+            Invoice invoice = _invoiceRepository.GetInvoiceByInvoiceId(invoiceId);
+            invoice.Approved = true;
+            return await _invoiceRepository.UpdateInvoice(invoice); 
+        }
+
+        public CreateInvoice GetWeeklyTimeSheet(int physicianId, string date)
+        {
+            Physician physician = _userRepository.GetPhysicianByPhysicianId(physicianId);
+            return _invoiceService.GetWeeklyTimeSheet(physician.AspNetUserId.Value, DateTime.Parse(date));
+        }
+
+        public Receipts GetReceipts(int physicianId, string date)
+        {
+            Physician physician = _userRepository.GetPhysicianByPhysicianId(physicianId);
+            return _invoiceService.GetReceipts(physician.AspNetUserId.Value, date);
         }
 
         public Task<bool> EditShiftDetails(string data, int aspNetUserId)

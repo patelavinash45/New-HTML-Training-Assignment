@@ -53,6 +53,12 @@ namespace Services.Interfaces.AdminServices
 
         Task<bool> EditPhysicianOnbordingInformation(EditProvider model, int physicianId, int aspNetUserId);
 
-        InvoicePage GetInvoiceDetails();
+        InvoicePage GetInvoiceDetails(int physicianId, string date);
+
+        Task<bool> ApproveInvoice(int invoiceId);
+
+        CreateInvoice GetWeeklyTimeSheet(int physicianId, string date);
+
+        Receipts GetReceipts(int physicianId, string date);
     }
 }

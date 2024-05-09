@@ -13,6 +13,10 @@ namespace Services.ViewModels.Physician
         public DateOnly? EndDate { get; set; }
 
         public string? Status { get; set; }
+
+        public bool? IsApprove { get; set; }
+
+        public int? InvoiceId { get; set; }
     }
 
     public class CreateInvoice

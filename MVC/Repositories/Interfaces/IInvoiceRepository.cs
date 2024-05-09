@@ -4,6 +4,8 @@ namespace Repositories.Interfaces
 {
     public interface IInvoiceRepository
     {
+        Invoice GetInvoiceByInvoiceId(int invoiceId);
+
         Invoice GetInvoiceByPhysician(int aspNetUserId, DateOnly startDate);
 
         List<Reimbursement> GetAllReimbursementByPhysician(int aspNetUserId, DateOnly startDate, DateOnly endDate);

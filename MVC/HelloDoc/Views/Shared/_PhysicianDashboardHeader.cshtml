@@ -28,11 +28,9 @@
                     <i id="button-icon" class="bi bi-box-arrow-right"> </i>
                 </button>
             </a>
-            <a asp-controller="Physician" asp-action="Invoice">
-                <button id="them-icon" class="bg-transparent ">
-                    <i class="bi-moon"> </i>
-                </button>
-            </a>
+            <button id="them-icon" class="bg-transparent ">
+                <i class="bi-moon"> </i>
+            </button>
         </div>
     </div>
     <hr class="h5 m-1" />
@@ -52,6 +50,11 @@
                 My Profile
             </div>
         </a>
+        <a asp-controller="Physician" asp-action="Invoice" class="mx-2 headerTab" id="tab4">
+            <div class="mx-2 h6">
+                Invoice
+            </div>
+        </a>
     </div>
 </header>
 <div id="side-bar" class="w-100">
@@ -68,6 +71,11 @@
     <a class="d-flex justify-content-center border m-2 rounded-start" asp-controller="Physician" asp-action="ViewProfile">
         <div class="mt-1 h6 ">
             My Profile
+        </div>
+    </a>
+    <a class="d-flex justify-content-center border m-2 rounded-start" asp-controller="Physician" asp-action="Invoice">
+        <div class="mt-1 h6 ">
+            Invoice
         </div>
     </a>
 </div>

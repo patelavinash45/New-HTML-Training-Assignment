@@ -25,8 +25,7 @@
             </h5>
             <div class="row">
                 <div class="form-floating">
-                    <textarea asp-for="Symptoms" class="form-control h-75" id="Symptoms" placeholder="Symptoms"
-                        rows="3"></textarea>
+                    <textarea asp-for="Symptoms" class="form-control h-75" id="Symptoms" placeholder="Symptoms" rows="3"></textarea>
                     <label for="Symptoms">Enter Brief Details Of Symptoms(Optional)</label>
                 </div>
             </div>
@@ -54,8 +53,7 @@
             </h5>
             <div class="row">
                 <div class="form-floating col-xl-6 col-md-6 col-lg-6">
-                    <input asp-for="Email" class="form-control" id="email" type="email" onfocusout="checkEmail(this)"
-                        placeholder="Email" />
+                    <input asp-for="Email" class="form-control" id="email" type="email" onfocusout="checkEmail(this)" placeholder="Email" />
                     <label for="email">Email</label>
                     <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
@@ -66,14 +64,12 @@
             </div>
             <div class="row" id="input-password">
                 <div class="form-floating col-xl-6 col-md-6 col-lg-6">
-                    <input asp-for="Password" class="form-control" id="password" type="password"
-                        placeholder="Password" />
+                    <input asp-for="Password" class="form-control" id="password" type="password" placeholder="Password" />
                     <label for="password">Password</label>
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
                 <div class="form-floating col-xl-6 col-md-6 col-lg-6">
-                    <input asp-for="ConformPassword" class="form-control" id="conform" type="password"
-                        placeholder="ConformPassword" />
+                    <input asp-for="ConformPassword" class="form-control" id="conform" type="password" placeholder="ConformPassword" />
                     <label for="conform">Conform Password</label>
                     <span asp-validation-for="ConformPassword" class="text-danger"></span>
                 </div>

@@ -14,6 +14,11 @@ namespace Repositories.Implementation
             _dbContext = dbContext;
         }
 
+        public Invoice GetInvoiceByInvoiceId(int invoiceId)
+        {
+            return _dbContext.Invoices.FirstOrDefault(a => a.InvoiceId == invoiceId);
+        }
+
         public Invoice GetInvoiceByPhysician(int aspNetUserId, DateOnly startDate)
         {
             return _dbContext.Invoices.Include(a => a.Physician).Include(a => a.InvoiceDetails).Include(a => a.Reimbursements)
