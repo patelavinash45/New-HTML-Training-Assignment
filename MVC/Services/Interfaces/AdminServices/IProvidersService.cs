@@ -60,5 +60,7 @@ namespace Services.Interfaces.AdminServices
         CreateInvoice GetWeeklyTimeSheet(int physicianId, string date);
 
         Receipts GetReceipts(int physicianId, string date);
+
+        PayRate GetPayRate(int physicianId);
     }
 }

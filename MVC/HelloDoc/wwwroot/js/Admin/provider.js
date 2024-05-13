@@ -142,3 +142,15 @@ $(document).on("change", ".regioncheckBoxs", function () {
         $("#checkboxValidation").text("");
     }
 })
+
+$(document).on("click", ".edit", function () {
+    var temp = $(this).attr("id");
+    $(`.${temp}`).css("display", "none");
+    $(this).css("display", "block");
+})
+
+$(document).on("click", ".cancel", function () {
+    var temp = $(this).attr("id");
+    $(`.${temp}`).css("display", "block");
+    $(`#${temp}`).css("display", "none");
+})

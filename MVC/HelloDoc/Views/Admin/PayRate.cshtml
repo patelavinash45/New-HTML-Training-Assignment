@@ -1,0 +1,214 @@
+﻿@model Services.ViewModels.Admin.PayRate
+
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Physician Account";
+    ViewBag.JsFile = "/js/Admin/provider.js";
+    ViewBag.CssFile = "/css/Admin/createProvider.css";
+    ViewBag.Header = "_AdminDashboardHeader";
+}
+
+<div class="container">
+    <div class="d-flex justify-content-end align-items-center mt-2 mb-3">
+        <a asp-controller="Admin" asp-action="Providers">
+            <button class="bg-white px-3 fw-bold" onclick="setTab(4)">
+                <i class="bi bi-chevron-left"> </i>
+                Back
+            </button>
+        </a>
+    </div>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Category
+                    </th>
+                    <th>
+                        Pay-rate
+                    </th>
+                    <th>
+                        Action
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <form asp-controller="Admin" asp-action="EditPayRate">
+                    <tr>
+                        <td>
+                            NightShift_Weekend
+                        </td>
+                        <td>
+                            <input asp-for="NightShiftWeekend" />
+                            <input asp-for="Type" value="1" class="d-none" />
+                            <span asp-validation-for="NightShiftWeekend" class="text-danger"></span>
+                        </td>
+                        <td>
+                            <button class="btn editpayrate1" type="button">
+                                Edit
+                            </button>
+                            <div class="edit" id="editpayrate1">
+                                <button class="btn" type="submit">
+                                    Save
+                                </button>
+                                <button class="btn" type="reset" id="editpayrate1">
+                                    Cancel
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </form>
+                <form asp-controller="Admin" asp-action="EditPayRate">
+                    <tr>
+                        <td>
+                            Shift
+                        </td>
+                        <td>
+                            <input asp-for="Shift" />
+                            <input asp-for="Type" value="2" class="d-none" />
+                            <span asp-validation-for="Shift" class="text-danger"></span>
+                        </td>
+                        <td>
+                            <button class="btn editpayrate2" type="button">
+                                Edit
+                            </button>
+                            <div class="edit" id="editpayrate2">
+                                <button class="btn" type="submit">
+                                    Save
+                                </button>
+                                <button class="btn" type="reset" id="editpayrate2">
+                                    Cancel
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </form>
+                <form asp-controller="Admin" asp-action="EditPayRate">
+                    <tr>
+                        <td>
+                            Housecall_Night_Weekend
+                        </td>
+                        <td>
+                            <input asp-for="HouseCallNightWeekend" />
+                            <input asp-for="Type" value="3" class="d-none" />
+                            <span asp-validation-for="HouseCallNightWeekend" class="text-danger"></span>
+                        </td>
+                        <td>
+                            <button class="btn editpayrate3" type="button">
+                                Edit
+                            </button>
+                            <div class="edit" id="editpayrate3">
+                                <button class="btn" type="submit">
+                                    Save
+                                </button>
+                                <button class="btn" type="reset" id="editpayrate3">
+                                    Cancel
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </form>
+                <form asp-controller="Admin" asp-action="EditPayRate">
+                    <tr>
+                        <td>
+                            PhoneConsult_Night_Weekend
+                        </td>
+                        <td>
+                            <input asp-for="PhoneConsults" />
+                            <input asp-for="Type" value="4" class="d-none" />
+                            <span asp-validation-for="PhoneConsults" class="text-danger"></span>
+                        </td>
+                        <td>
+                            <button class="btn editpayrate4" type="button">
+                                Edit
+                            </button>
+                            <div class="edit" id="editpayrate4">
+                                <button class="btn" type="submit">
+                                    Save
+                                </button>
+                                <button class="btn" type="reset" id="editpayrate4">
+                                    Cancel
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </form>
+                <form asp-controller="Admin" asp-action="EditPayRate">
+                    <tr>
+                        <td>
+                            PhoneConsult
+                        </td>
+                        <td>
+                            <input asp-for="PhoneConsults" />
+                            <input asp-for="Type" value="5" class="d-none"/>
+                            <span asp-validation-for="PhoneConsults" class="text-danger"></span>
+                        </td>
+                        <td>
+                            <button class="btn editpayrate5" type="button">
+                                Edit
+                            </button>
+                            <div class="edit" id="editpayrate5">
+                                <button class="btn" type="submit">
+                                    Save
+                                </button>
+                                <button class="btn" type="reset" id="editpayrate5">
+                                    Cancel
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </form>
+                <form asp-controller="Admin" asp-action="EditPayRate">
+                    <tr>
+                        <td>
+                            BatchTesting
+                        </td>
+                        <td>
+                            <input asp-for="PhoneConsults" />
+                            <input asp-for="Type" value="6" class="d-none" />
+                            <span asp-validation-for="PhoneConsults" class="text-danger"></span>
+                        </td>
+                        <td>
+                            <button class="btn editpayrate6" type="button">
+                                Edit
+                            </button>
+                            <div class="edit" id="editpayrate6">
+                                <button class="btn" type="submit">
+                                    Save
+                                </button>
+                                <button class="btn" type="reset" id="editpayrate6">
+                                    Cancel
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </form>
+                <form asp-controller="Admin" asp-action="EditPayRate">
+                    <tr>
+                        <td>
+                            HouseCall
+                        </td>
+                        <td>
+                            <input asp-for="HouseCall" />
+                            <input asp-for="Type" value="7" class="d-none"/>
+                            <span asp-validation-for="HouseCall" class="text-danger"></span>
+                        </td>
+                        <td>
+                            <button class="btn editpayrate7" type="button">
+                                Edit
+                            </button>
+                            <div class="edit" id="editpayrate7">
+                                <button class="btn" type="submit">
+                                    Save
+                                </button>
+                                <button class="btn cancel" type="reset" id="editpayrate7">
+                                    Cancel
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </form>
+            </tbody>
+        </table>
+    </div>
+</div>

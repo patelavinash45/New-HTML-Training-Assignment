@@ -150,6 +150,12 @@
                 </div>
             </fieldset>
             <div class="d-flex justify-content-end mt-3 mb-2">
+                @if (role == "Admin")
+                {
+                    <a class="btn" asp-controller="Admin" asp-action="PayRate">
+                        Edit PayRate
+                    </a>
+                }
                 <button class="px-3 text-white fw-bold bottomButtons" type="button" id="editbutton2">
                     Edit
                 </button>

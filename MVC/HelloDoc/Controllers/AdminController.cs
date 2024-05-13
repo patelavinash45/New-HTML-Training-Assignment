@@ -168,6 +168,13 @@ namespace HelloDoc.Controllers
             return View(_accessService.GetCreateRole());
         }
 
+        [Authorization("Admin")]
+        public IActionResult PayRate()
+        {
+            int physicianId = HttpContext.Session.GetInt32("physicianId").Value;
+            return View(_providersService.GetPayRate(physicianId));
+        }
+
         [Authorization(20, "Admin")]
         public IActionResult Records()
         {
@@ -1248,6 +1255,11 @@ namespace HelloDoc.Controllers
         }
 
         public IActionResult GetReceipts(int physicianId, string date)
+        {
+            return PartialView("_ReciptsTableData", _providersService.GetReceipts(physicianId,date));
+        }
+        
+        public IActionResult EditPayRate(int physicianId, string date)
         {
             return PartialView("_ReciptsTableData", _providersService.GetReceipts(physicianId,date));
         }

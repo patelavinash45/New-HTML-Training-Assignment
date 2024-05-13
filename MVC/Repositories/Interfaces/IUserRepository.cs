@@ -61,5 +61,9 @@ namespace Repositories.Interfaces
         List<PhysicianLocation> GetAllProviderLocation();
 
         List<Physician> GetAllPhysicianWithCurrentShift(int regionId);
+
+        PhysicianPayRate GetPhysicianPayRate(int physicianId);
+
+        Task<bool> EditPhysicianPayRate(PhysicianPayRate physicianPayRate);
     }
 }

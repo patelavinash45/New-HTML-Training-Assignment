@@ -480,4 +480,34 @@ namespace Services.ViewModels.Admin
 
         public string? LastName { get; set; }
     }
+
+    public class PayRate
+    {
+        public int PhysicianId { get; set; }
+
+        public int PayRateId { get; set; }
+
+        public int Type { get; set; }
+
+        [Required(ErrorMessage = "The NightShift-Weekend field is required.")]
+        public double? NightShiftWeekend { get; set; } = 0.0;
+
+        [Required(ErrorMessage = "The Shift field is required.")]
+        public double? Shift { get; set; } = 0.0;
+
+        [Required(ErrorMessage = "The HouseCallNight-Weekend field is required.")]
+        public double? HouseCallNightWeekend { get; set; } = 0.0;
+
+        [Required(ErrorMessage = "The PhoneConsults field is required.")]
+        public double? PhoneConsults { get; set; } = 0.0;
+
+        [Required(ErrorMessage = "The PhoneConsultsNight-Weekend field is required.")]
+        public double? PhoneConsultsNightWeekend { get; set; } = 0.0;
+
+        [Required(ErrorMessage = "The BatchTesting field is required.")]
+        public double? BatchTesting { get; set; } = 0.0;
+
+        [Required(ErrorMessage = "The HouseCall field is required.")]
+        public double? HouseCall { get; set; } = 0.0;
+    }
 }

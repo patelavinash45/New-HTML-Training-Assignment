@@ -122,6 +122,30 @@ namespace Services.Implementation.AdminServices
             return _invoiceService.GetReceipts(physician.AspNetUserId.Value, date);
         }
 
+        public PayRate GetPayRate(int physicianId)
+        {
+            PhysicianPayRate physicianPayRate = _userRepository.GetPhysicianPayRate(physicianId);
+            if(physicianPayRate == null)
+            {
+                return new PayRate();
+            }
+            else
+            {
+                return new PayRate()
+                {
+                    PhysicianId = physicianPayRate.PhysicianId,
+                    PayRateId = physicianPayRate.PayRateId,
+                    NightShiftWeekend = physicianPayRate.NightShiftWeekend,
+                    Shift = physicianPayRate.Shift,
+                    HouseCallNightWeekend = physicianPayRate.NightShiftWeekend,
+                    PhoneConsults = physicianPayRate.PhoneConsults,
+                    PhoneConsultsNightWeekend = physicianPayRate.PhoneConsultsNightWeekend,
+                    BatchTesting = physicianPayRate.BatchTesting,
+                    HouseCall = physicianPayRate.HouseCall,
+                };
+            }
+        }
+
         public Task<bool> EditShiftDetails(string data, int aspNetUserId)
         {
             ViewShift viewShift = JsonSerializer.Deserialize<ViewShift>(data);

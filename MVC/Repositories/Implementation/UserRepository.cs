@@ -178,6 +178,17 @@ namespace Repositories.Implementation
                          .Where(a => (regionId == 0 || a.RegionId == regionId) && DateOnly.FromDateTime(a.ShiftDate) == date && a.StartTime <= time
                                                                   && a.EndTime >= time)).ToList();
         }
+
+        public PhysicianPayRate GetPhysicianPayRate(int physicianId)
+        {
+            return _dbContext.PhysicianPayRates.FirstOrDefault(a => a.PhysicianId == physicianId);
+        }
+
+        public async Task<bool> EditPhysicianPayRate(PhysicianPayRate physicianPayRate)
+        {
+            _dbContext.PhysicianPayRates.Update(physicianPayRate);
+            return await _dbContext.SaveChangesAsync() > 0;
+        }
     }
 }
 
