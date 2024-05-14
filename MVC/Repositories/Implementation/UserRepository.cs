@@ -44,6 +44,11 @@ namespace Repositories.Implementation
             return _dbContext.Users.FirstOrDefault(a => a.AspNetUserId == aspNetUserID);
         }
 
+        public User GetUserByUserId(int userId)
+        {
+            return _dbContext.Users.FirstOrDefault(a => a.UserId == userId);
+        }
+
         public async Task<bool> UpdateProfile(User user)
         {
             _dbContext.Users.Update(user);
@@ -182,6 +187,11 @@ namespace Repositories.Implementation
         public PhysicianPayRate GetPhysicianPayRate(int physicianId)
         {
             return _dbContext.PhysicianPayRates.FirstOrDefault(a => a.PhysicianId == physicianId);
+        }
+
+        public PhysicianPayRate GetPhysicianPayRateByAspNetUserId(int aspNetUserId)
+        {
+           return _dbContext.PhysicianPayRates.Include(a => a.Physician).FirstOrDefault(a => a.Physician.AspNetUserId == aspNetUserId);
         }
 
         public async Task<bool> EditPhysicianPayRate(PhysicianPayRate physicianPayRate)

@@ -68,6 +68,11 @@ namespace HelloDoc.Controllers
             return RedirectToAction("LoginPage", "Admin");
         }
 
+        public IActionResult Chat()
+        {
+            return View();
+        }
+
         public IActionResult AccessDenied()
         {
             return View();
@@ -286,6 +291,12 @@ namespace HelloDoc.Controllers
         {
             HttpContext.Session.SetInt32("physicianId", physicianId);
             return RedirectToAction("EditProvider", "Admin");
+        }
+
+        public JsonResult OpenChat(int userId)
+        {
+            HttpContext.Session.SetInt32("userId", userId);
+            return Json(new { redirect = Url.Action("Chat", "Admin") });
         }
 
         [Authorization("Admin", "Physician")]
@@ -1248,9 +1259,9 @@ namespace HelloDoc.Controllers
             return PartialView("_WeeklyTimeSheet", _providersService.GetWeeklyTimeSheet(physicianId,date));
         }
 
-        public async Task<JsonResult> ApproveInvoice(int invoiceId)
+        public async Task<JsonResult> ApproveInvoice(int invoiceId, double totalAmount, double bounsAmount, string notes)
         {
-            await _providersService.ApproveInvoice(invoiceId); 
+            await _providersService.ApproveInvoice(invoiceId, totalAmount, bounsAmount, notes); 
             return Json(new { redirect = Url.Action("Invoice", "Admin") });
         }
 
@@ -1259,9 +1270,12 @@ namespace HelloDoc.Controllers
             return PartialView("_ReciptsTableData", _providersService.GetReceipts(physicianId,date));
         }
         
-        public IActionResult EditPayRate(int physicianId, string date)
+        public async Task<IActionResult> EditPayRate(PayRate model)
         {
-            return PartialView("_ReciptsTableData", _providersService.GetReceipts(physicianId,date));
+            int aspNetUserId = HttpContext.Session.GetInt32("aspNetUserId").Value;
+            int physicianId = HttpContext.Session.GetInt32("physicianId").Value;
+            await _providersService.EditPayRate(model, physicianId, aspNetUserId);
+            return RedirectToAction("PayRate", "Admin");
         }
     }
 }

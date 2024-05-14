@@ -55,12 +55,14 @@ namespace Services.Interfaces.AdminServices
 
         InvoicePage GetInvoiceDetails(int physicianId, string date);
 
-        Task<bool> ApproveInvoice(int invoiceId);
+        Task<bool> ApproveInvoice(int invoiceId, double totalAmount, double bounsAmount, string notes);
 
         CreateInvoice GetWeeklyTimeSheet(int physicianId, string date);
 
         Receipts GetReceipts(int physicianId, string date);
 
         PayRate GetPayRate(int physicianId);
+
+        Task<bool> EditPayRate(PayRate model, int physicianId, int aspNetUserId);
     }
 }

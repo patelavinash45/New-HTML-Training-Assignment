@@ -16,11 +16,25 @@ namespace Services.ViewModels.Physician
 
         public bool? IsApprove { get; set; }
 
-        public int? InvoiceId { get; set; }
+         public int? InvoiceId { get; set; }
     }
 
     public class CreateInvoice
     {
+        public int? InvoiceId { get; set; }
+
+        public List<double> PayRates { get; set; }
+
+        public double TotalOfShift { get; set; } = 0.0;
+
+        public double TotalOfweekend { get; set; } = 0.0;
+
+        public double TotalOfhouseCall { get; set; } = 0.0;
+
+        public double TotalOfPhone { get; set; } = 0.0;
+
+        public double TotalAmount { get; set; } = 0.0;
+
         public DateOnly StartDate { get; set; }
 
         public Dictionary<int,double> ShiftHours { get; set; }

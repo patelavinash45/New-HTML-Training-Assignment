@@ -39,7 +39,7 @@ namespace Services.Implementation.PatientServices
             return aspNetUserId == 0 ? false : true;
         }
 
-        public Dictionary<int,String> GetRegions()
+        public Dictionary<int, String> GetRegions()
         {
             return _requestClientRepository.GetAllRegions().ToDictionary(region => region.RegionId, region => region.Name);
         }
@@ -114,7 +114,7 @@ namespace Services.Implementation.PatientServices
             int requestId = await _requestRepository.AddRequest(request);
             if (model.File != null)
             {
-                await _fileService.AddFile(requestId: requestId, file: model.File, firstName: model.FirstName, lastName:model.LastName);
+                await _fileService.AddFile(requestId: requestId, file: model.File, firstName: model.FirstName, lastName: model.LastName);
             }
             RequestClient requestClient = new()
             {
@@ -135,7 +135,7 @@ namespace Services.Implementation.PatientServices
                 RegionId = model.Region,
             };
             return await _requestClientRepository.AddRequestClient(requestClient);
-        }  
+        }
 
         public AddRequestByPatient GetModelForRequestByMe(int aspNetUserId)
         {
@@ -406,7 +406,7 @@ namespace Services.Implementation.PatientServices
             int requestId = await _requestRepository.AddRequest(request);
             if (model.File != null)
             {
-                await _fileService.AddFile(requestId: requestId, file: model.File, firstName: model.FamilyFriendFirstName, 
+                await _fileService.AddFile(requestId: requestId, file: model.File, firstName: model.FamilyFriendFirstName,
                                                                                                       lastName: model.FamilyFriendLastName);
             }
             RequestClient requestClient = new()

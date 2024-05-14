@@ -14,6 +14,8 @@ namespace Repositories.Interfaces
 
         User GetUser(int aspNetUserID);
 
+        User GetUserByUserId(int userId);
+
         Task<bool> UpdateProfile(User user);
 
         Admin GetAdmionByAspNetUserId(int aspNetUserId);
@@ -63,6 +65,8 @@ namespace Repositories.Interfaces
         List<Physician> GetAllPhysicianWithCurrentShift(int regionId);
 
         PhysicianPayRate GetPhysicianPayRate(int physicianId);
+
+        PhysicianPayRate GetPhysicianPayRateByAspNetUserId(int aspNetUserId);
 
         Task<bool> EditPhysicianPayRate(PhysicianPayRate physicianPayRate);
     }

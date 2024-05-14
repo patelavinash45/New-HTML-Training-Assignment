@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 using Repositories.DataModels;
 
 namespace Repositories.DataContext;
@@ -29,6 +31,8 @@ public partial class HalloDocDbContext : DbContext
     public virtual DbSet<Business> Businesses { get; set; }
 
     public virtual DbSet<CaseTag> CaseTags { get; set; }
+
+    public virtual DbSet<Chat> Chats { get; set; }
 
     public virtual DbSet<CloseRequest> CloseRequests { get; set; }
 
@@ -176,6 +180,15 @@ public partial class HalloDocDbContext : DbContext
             entity.HasKey(e => e.CaseTagId).HasName("CaseTag_pkey");
         });
 
+        modelBuilder.Entity<Chat>(entity =>
+        {
+            entity.HasKey(e => e.ChatId).HasName("Chat_pkey");
+
+            entity.Property(e => e.ChatId)
+                .UseIdentityAlwaysColumn()
+                .HasIdentityOptions(null, null, null, 999999999L, null, null);
+        });
+
         modelBuilder.Entity<CloseRequest>(entity =>
         {
             entity.HasKey(e => e.RequestClosedId).HasName("RequestClosed_pkey");
@@ -290,10 +303,22 @@ public partial class HalloDocDbContext : DbContext
 
         modelBuilder.Entity<PhysicianPayRate>(entity =>
         {
+            entity.HasKey(e => e.PayRateId).HasName("PhysicianPayRate_pkey");
+
             entity.Property(e => e.PayRateId)
-                .ValueGeneratedOnAdd()
                 .UseIdentityAlwaysColumn()
                 .HasIdentityOptions(null, null, null, 999999999L, null, null);
+            entity.Property(e => e.BatchTesting).HasDefaultValueSql("0.0");
+            entity.Property(e => e.HouseCall).HasDefaultValueSql("0.0");
+            entity.Property(e => e.HouseCallNightWeekend).HasDefaultValueSql("0.0");
+            entity.Property(e => e.NightShiftWeekend).HasDefaultValueSql("0.0");
+            entity.Property(e => e.PhoneConsults).HasDefaultValueSql("0.0");
+            entity.Property(e => e.PhoneConsultsNightWeekend).HasDefaultValueSql("0.0");
+            entity.Property(e => e.Shift).HasDefaultValueSql("0.0");
+
+            entity.HasOne(d => d.Physician).WithMany(p => p.PhysicianPayRates)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("PhysicianId");
         });
 
         modelBuilder.Entity<PhysicianRegion>(entity =>

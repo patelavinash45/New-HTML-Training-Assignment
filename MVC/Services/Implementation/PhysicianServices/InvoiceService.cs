@@ -106,16 +106,25 @@ namespace Services.Implementation.PhysicianServices
             Invoice invoice = _invoiceRepository.GetInvoiceByPhysician(aspNetUserId, DateOnly.FromDateTime(startDate));
             if (invoice != null)
             {
+                createInvoice.InvoiceId = invoice.InvoiceId;
+                PhysicianPayRate physicianPayRate = _userRepository.GetPhysicianPayRateByAspNetUserId(aspNetUserId);
+                createInvoice.PayRates = new List<double>{physicianPayRate.Shift.Value,physicianPayRate.NightShiftWeekend.Value,physicianPayRate.HouseCall.Value,physicianPayRate.PhoneConsults.Value};
                 foreach (InvoiceDetail invoiceDetail in invoice.InvoiceDetails)
                 {
                     createInvoice.TotalHours.Add(invoiceDetail.TotalHours);
+                    createInvoice.TotalOfShift += (invoiceDetail.TotalHours * createInvoice.PayRates[0]);
                     createInvoice.NoOfHouseCall.Add(invoiceDetail.NumberOfHouseCall);
+                    createInvoice.TotalOfhouseCall += (invoiceDetail.NumberOfHouseCall * createInvoice.PayRates[2]);
                     createInvoice.NoOfPhoneConsults.Add(invoiceDetail.NumberOfPhoneConsults);
+                    createInvoice.TotalOfPhone += (invoiceDetail.NumberOfPhoneConsults * createInvoice.PayRates[3]);
                     if (invoiceDetail.IsHoliday)
                     {
+                        createInvoice.TotalOfweekend += createInvoice.PayRates[3];
                         createInvoice.IsHoliday.Add(invoiceDetail.Date.Day);
                     }
                 }
+                createInvoice.TotalAmount = createInvoice.TotalOfShift + createInvoice.TotalOfhouseCall + 
+                                                  createInvoice.TotalOfPhone + createInvoice.TotalOfweekend;
             }
             else
             {

@@ -152,8 +152,10 @@
             <div class="d-flex justify-content-end mt-3 mb-2">
                 @if (role == "Admin")
                 {
-                    <a class="btn" asp-controller="Admin" asp-action="PayRate">
-                        Edit PayRate
+                    <a class="m-0" asp-controller="Admin" asp-action="PayRate">
+                        <button class="px-3 text-white fw-bold bottomButtons me-2" type="button">
+                            Edit PayRate
+                        </button>
                     </a>
                 }
                 <button class="px-3 text-white fw-bold bottomButtons" type="button" id="editbutton2">

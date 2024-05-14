@@ -11,11 +11,11 @@ namespace Services.Implementation.AdminServices
     public class RecordService : IRecordService
     {
         private readonly IRequestClientRepository _requestClientRepository;
-        private readonly ILogsService _logsService;
+        private readonly ILogsRepository _logsService;
         private readonly IRoleRepository _roleRepository;
         private readonly IUserRepository _userRepository;
 
-        public RecordService(IRequestClientRepository requestClientRepository,ILogsService logsService, IRoleRepository roleRepository,
+        public RecordService(IRequestClientRepository requestClientRepository,ILogsRepository logsService, IRoleRepository roleRepository,
                                        IUserRepository userRepository)
         {
             _requestClientRepository = requestClientRepository;

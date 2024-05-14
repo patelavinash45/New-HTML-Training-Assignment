@@ -20,10 +20,10 @@ namespace Services.Implementation.AuthServices
         private readonly IUserRepository _userRepository;
         private readonly IJwtService _jwtService;
         private readonly IRoleRepository _roleRepository;
-        private readonly ILogsService _logsService;
+        private readonly ILogsRepository _logsService;
 
         public LoginService(IAspRepository aspRepository, IUserRepository userRepository, IJwtService jwtService, IRoleRepository roleRepository, 
-                                                                 ILogsService logsService)
+                                                                 ILogsRepository logsService)
         {
             _aspRepository = aspRepository;
             _userRepository = userRepository;

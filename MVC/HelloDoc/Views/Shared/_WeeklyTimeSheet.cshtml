@@ -5,7 +5,8 @@
     int totaldays = date.Day < 15 ? 14 : DateTime.DaysInMonth(date.Year, date.Month) - 14;
 }
 
-<form asp-controller="Physician" asp-action="CreateInvoice" enctype="multipart/form-data" id="invoiceForm">
+<fieldset class="timeSheet">
+    <form asp-controller="Physician" asp-action="CreateInvoice" enctype="multipart/form-data" id="invoiceForm">
     <input asp-for="StartDate" type="date" class="d-none" value="@Model.StartDate.ToString("yyyy-MM-dd")" />
     <div class="table-responsive">
         <table class="table">
@@ -68,6 +69,43 @@
                     </tr>
                     date = date.AddDays(1);
                 }
+                @if(@Model.PayRates != null)
+                {
+                    <tr class="d-none adminRows w-100">
+                        <td>
+                            PayRates
+                        </td>
+                        <td>
+                            <input value="@Model.PayRates[0]" disabled />
+                        </td>
+                        <td>
+                            <input value="@Model.PayRates[1]" disabled />
+                        </td>
+                        <td>
+                            <input value="@Model.PayRates[2]" disabled />
+                        </td>
+                        <td>
+                            <input value="@Model.PayRates[3]" disabled />
+                        </td>
+                    </tr>
+                    <tr class="d-none adminRows w-100">
+                        <td>
+                            Invoice Total
+                        </td>
+                        <td>
+                            <input value="@Model.TotalOfShift" disabled />
+                        </td>
+                        <td>
+                            <input value="@Model.TotalOfweekend" disabled />
+                        </td>
+                        <td>
+                            <input value="@Model.TotalOfhouseCall" disabled />
+                        </td>
+                        <td>
+                            <input value="@Model.TotalOfPhone" disabled />
+                        </td>
+                    </tr>
+                }
             </tbody>
         </table>
     </div>
@@ -76,12 +114,30 @@
             Add Receipts
         </button>
     </div>
-    <div class="d-flex justify-content-end" id="svaeButtons">
+    <div class="d-flex justify-content-end" id="saveButtons">
         <button class="bg-white fw-bold px-2 me-2" type="submit">
-            submit
+            Submit
         </button>
         <button class="bg-white fw-bold px-2" type="submit" asp-controller="Physician" asp-action="FinalizeInvoice">
             Finalize
         </button>
     </div>
 </form>
+</fieldset>
+    <div class="d-flex justify-content-end finalSubmit d-none">
+        <div class="form-floating me-2">
+            <input class="form-control" id="totalAmount" placeholder="Amount" asp-for="TotalAmount" disabled/>
+            <label for="lastName">Total Amount</label>
+        </div>
+        <div class="form-floating me-2">
+            <input class="form-control" id="bounsAmount" placeholder="bounsAmount" />
+            <label for="lastName">Bouns Amount</label>
+        </div>
+        <div class="form-floating me-2">
+            <input class="form-control" id="notes" placeholder="notes" />
+            <label for="lastName">Notes</label>
+        </div>
+        <button class="bg-white fw-bold px-2 me-2 finalSubmit" type="button" id=@Model.InvoiceId>
+            Submit
+        </button>
+    </div>

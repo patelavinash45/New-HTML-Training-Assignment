@@ -32,6 +32,7 @@ $(document).on("change", ".changeDate", function () {
 })
 
 $(document).on("click", ".openSheet", function () {
+    localStorage.setItem("date", $(".changeDate").val());
     $.ajax({
         url: "/Physician/GetWeeklyTimeSheet",
         type: "Get",
@@ -41,7 +42,6 @@ $(document).on("click", ".openSheet", function () {
             date: $(".changeDate").val(),
         },
         success: function (response) {
-            localStorage.setItem("date", $(".changeDate").val());
             $("#timeSheet").html(response);
         }
     })
@@ -162,8 +162,8 @@ function adminInvoiceGetData() {
                         url = "/Admin/GetReceipts";
                         await $(".receipts").click();
                         $(".physicianColumn").remove();
+                        $("#saveButtons").html("");
                         $("#timeSheet").prop("disabled", true);
-                        $("#svaeButtons").html("");
                     }
                 })
             }
@@ -181,12 +181,40 @@ $(document).on("change", ".adminSelect", async function () {
 
 $(document).on("click", ".approve", function () {
     $.ajax({
+        url: "/Admin/GetWeeklyTimeSheet",
+        type: "Get",
+        contentType: "application/json",
+        async: true,
+        data: {
+            physicianId: $("#physicianSelect").val(),
+            date: $("#timeSelect").val(),
+        },
+        success: async function (response) {
+            $("#timeSheet").html(response);
+            url = "/Admin/GetReceipts";
+            await $(".receipts").click();
+            $(".physicianColumn").remove();
+            $("#statusTable").addClass("d-none");
+            $("#saveButtons").html("");
+            $(".adminRows").removeClass("d-none");
+            $(".finalSubmit").removeClass("d-none");
+            $("#timeSheet").prop("disabled", false);   
+            $(".timeSheet").prop("disabled", true);
+        }
+    })
+})
+
+$(document).on("click", ".finalSubmit", function () {
+    $.ajax({
         url: "/Admin/ApproveInvoice",
         type: "Get",
         contentType: "application/json",
         async: true,
         data: {
             invoiceId: $(this).attr("id"),
+            totalAmount: $("#totalAmount").val(),
+            bounsAmount: $("#bounsAmount").val(),
+            notes: $("#notes").val(),
         },
         success: function (response) {
             window.location.href = response.redirect;

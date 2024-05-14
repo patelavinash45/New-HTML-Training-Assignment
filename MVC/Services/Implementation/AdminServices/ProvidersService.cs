@@ -10,6 +10,7 @@ using Services.ViewModels.Physician;
 using System.Collections;
 using System.Net;
 using System.Net.Mail;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
@@ -23,13 +24,13 @@ namespace Services.Implementation.AdminServices
         private readonly IRoleRepository _roleRepository;
         private readonly IAspRepository _aspRepository;
         private readonly IShiftRepository _shiftRepository;
-        private readonly ILogsService _logsService;
+        private readonly ILogsRepository _logsService;
         private readonly IFileService _fileService;
         private readonly IInvoiceRepository _invoiceRepository;
         private readonly IInvoiceService _invoiceService;
 
         public ProvidersService(IUserRepository userRepository, IRequestClientRepository requestClientRepository, IRoleRepository roleRepository,
-                                 IAspRepository aspRepository, IShiftRepository shiftRepository, ILogsService logsService, IFileService fileService,
+                                 IAspRepository aspRepository, IShiftRepository shiftRepository, ILogsRepository logsService, IFileService fileService,
                                    IInvoiceRepository invoiceRepository, IInvoiceService invoiceService)
         {
             _userRepository = userRepository;
@@ -42,6 +43,17 @@ namespace Services.Implementation.AdminServices
             _invoiceRepository = invoiceRepository;
             _invoiceService = invoiceService;
         }
+
+        private Dictionary<int, string> PayRateList { get; set; } = new Dictionary<int, string>()
+            {
+                {1, "NightShiftWeekend"},
+                {2, "Shift"},
+                {3, "HouseCallNightWeekend"},
+                {4, "PhoneConsultsNightWeekend"},
+                {5, "PhoneConsults"},
+                {6, "BatchTesting"},
+                {7, "HouseCall"},
+            };
 
         public InvoicePage GetInvoiceDetails(int physicianId, string date)
         {
@@ -103,10 +115,14 @@ namespace Services.Implementation.AdminServices
             };
         }
 
-        public async Task<bool> ApproveInvoice(int invoiceId)
+        public async Task<bool> ApproveInvoice(int invoiceId, double totalAmount, double bounsAmount, string notes)
         {
             Invoice invoice = _invoiceRepository.GetInvoiceByInvoiceId(invoiceId);
             invoice.Approved = true;
+            invoice.TotalAmount = totalAmount;
+            invoice.BonusAmount = bounsAmount;
+            invoice.Notes = notes;
+            invoice.ModifyDate = DateTime.Now;
             return await _invoiceRepository.UpdateInvoice(invoice); 
         }
 
@@ -135,15 +151,43 @@ namespace Services.Implementation.AdminServices
                 {
                     PhysicianId = physicianPayRate.PhysicianId,
                     PayRateId = physicianPayRate.PayRateId,
-                    NightShiftWeekend = physicianPayRate.NightShiftWeekend,
-                    Shift = physicianPayRate.Shift,
-                    HouseCallNightWeekend = physicianPayRate.NightShiftWeekend,
-                    PhoneConsults = physicianPayRate.PhoneConsults,
-                    PhoneConsultsNightWeekend = physicianPayRate.PhoneConsultsNightWeekend,
-                    BatchTesting = physicianPayRate.BatchTesting,
-                    HouseCall = physicianPayRate.HouseCall,
+                    NightShiftWeekend = physicianPayRate.NightShiftWeekend ?? 0.0,
+                    Shift = physicianPayRate.Shift ?? 0.0,
+                    HouseCallNightWeekend = physicianPayRate.HouseCallNightWeekend ?? 0.0,
+                    PhoneConsults = physicianPayRate.PhoneConsults ?? 0.0,
+                    PhoneConsultsNightWeekend = physicianPayRate.PhoneConsultsNightWeekend ?? 0.0,
+                    BatchTesting = physicianPayRate.BatchTesting ?? 0.0,
+                    HouseCall = physicianPayRate.HouseCall ?? 0.0,
                 };
             }
+        }
+
+        public async Task<bool> EditPayRate(PayRate model, int physicianId, int aspNetUserId)
+        {
+            PhysicianPayRate physicianPayRate = _userRepository.GetPhysicianPayRate(physicianId);
+            string type = PayRateList[model.Type];
+            PropertyInfo property = typeof(PayRate).GetProperty(type);
+            string value = property.GetValue(model).ToString();
+            property = typeof(PhysicianPayRate).GetProperty(type);
+            if(physicianPayRate == null)
+            {
+                physicianPayRate = new PhysicianPayRate()
+                {
+                    PhysicianId = physicianId,
+                    CreatedDate = DateTime.Now,
+                    CreatedBy = aspNetUserId,
+                };
+            }
+            else
+            {
+                physicianPayRate.ModifyBy = aspNetUserId;
+                physicianPayRate.ModifyDate = DateTime.Now;
+            }
+            if (property != null && property.CanWrite)
+            {
+                property.SetValue(physicianPayRate, double.Parse(value));
+            }
+            return await _userRepository.EditPhysicianPayRate(physicianPayRate);
         }
 
         public Task<bool> EditShiftDetails(string data, int aspNetUserId)

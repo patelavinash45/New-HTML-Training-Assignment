@@ -87,6 +87,30 @@ $(document).on("click", "#cancel5", function () {
     $("#fieldset5").prop("disabled", true);
 })
 
+$(document).on("click", "#editbutton6", function () {
+    $(this).css("display", "none");
+    $("#edit6").css("display", "block");
+    $("#fieldset6").prop("disabled", false);
+})
+
+$(document).on("click", "#cancel6", function () {
+    $("#editbutton6").css("display", "block");
+    $("#edit6").css("display", "none");
+    $("#fieldset6").prop("disabled", true);
+})
+
+$(document).on("click", "#editbutton7", function () {
+    $(this).css("display", "none");
+    $("#edit7").css("display", "block");
+    $("#fieldset7").prop("disabled", false);
+})
+
+$(document).on("click", "#cancel7", function () {
+    $("#editbutton7").css("display", "block");
+    $("#edit7").css("display", "none");
+    $("#fieldset7").prop("disabled", true);
+})
+
 $(document).on("click", ".createButton", function () {
     $("#signaturePad").css("display", "block");
 })
@@ -143,7 +167,7 @@ $(document).on("change", ".regioncheckBoxs", function () {
     }
 })
 
-$(document).on("click", ".edit", function () {
+$(document).on("click", ".editButton", function () {
     var temp = $(this).attr("id");
     $(`.${temp}`).css("display", "none");
     $(this).css("display", "block");

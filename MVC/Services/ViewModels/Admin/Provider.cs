@@ -377,7 +377,7 @@ namespace Services.ViewModels.Admin
         [Display(Name = "Region")]
         public int SelectedRegion { get; set; }
 
-        public Dictionary<int, string>? Regions { get; set; }
+        public Dictionary<int, string> Regions { get; set; }
 
         [Display(Name = "Physician")]
         public int SelectedPhysician { get; set; }

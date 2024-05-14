@@ -5,12 +5,12 @@ using Repositories.Interfaces;
 
 namespace Repositories.Implementation
 {
-    public class LogsService : ILogsService
+    public class LogsRepository : ILogsRepository
     {
 
         private readonly HalloDocDbContext _dbContext;
 
-        public LogsService(HalloDocDbContext dbContext)
+        public LogsRepository(HalloDocDbContext dbContext)
         {
             _dbContext = dbContext;   
         }
@@ -29,6 +29,12 @@ namespace Repositories.Implementation
         public List<Smslog> GetAllSMSLogs(Func<Smslog, bool> predicate)
         {
             return _dbContext.Smslogs.Include(a => a.Role).Where(predicate).ToList();
+        }
+
+        public async Task<bool> AddChat(Chat chat)
+        {
+            _dbContext.Chats.Add(chat);
+            return await _dbContext.SaveChangesAsync() > 0;
         }
     }
 }

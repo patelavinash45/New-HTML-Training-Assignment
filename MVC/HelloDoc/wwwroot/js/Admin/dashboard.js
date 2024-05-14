@@ -120,3 +120,19 @@ $(document).on("click", "#exportData", function () {
     })
 })
 
+//// chat
+
+$(document).on("click", ".chat", function () {
+    $.ajax({
+        url: "/Admin/OpenChat",
+        type: "Get",
+        contentType: "application/json",
+        data: {
+            userId: $(this).attr("id"),
+        },
+        success: function (response) {
+            window.location.href = response.redirect;
+        }
+    })
+})
+

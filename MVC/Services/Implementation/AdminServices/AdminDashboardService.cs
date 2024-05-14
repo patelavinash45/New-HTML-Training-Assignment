@@ -497,6 +497,7 @@ namespace Services.Implementation.AdminServices
                 .Select(requestClient => new TablesData()
                 {
                     RequestId = requestClient.RequestId,
+                    UserId = requestClient.Request.UserId.Value,
                     FirstName = requestClient.FirstName,
                     LastName = requestClient.LastName,
                     Requester = requestClient.Request.RequestTypeId,

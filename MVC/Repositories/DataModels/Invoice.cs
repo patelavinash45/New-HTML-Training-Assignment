@@ -32,6 +32,13 @@ public partial class Invoice
 
     public bool? Approved { get; set; }
 
+    public double? TotalAmount { get; set; }
+
+    public double? BonusAmount { get; set; }
+
+    [StringLength(100)]
+    public string? Notes { get; set; }
+
     [InverseProperty("Invoice")]
     public virtual ICollection<InvoiceDetail> InvoiceDetails { get; set; } = new List<InvoiceDetail>();
 

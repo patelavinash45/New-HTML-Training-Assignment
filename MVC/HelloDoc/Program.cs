@@ -1,5 +1,6 @@
 using AspNetCoreHero.ToastNotification;
 using AspNetCoreHero.ToastNotification.Extensions;
+using HelloDoc.Hubs;
 using Repositories.Implementation;
 using Repositories.Interface;
 using Repositories.Interfaces;
@@ -55,10 +56,15 @@ builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IShiftRepository , ShiftRepository>();
 builder.Services.AddScoped<IPartnersService, PartnersService>();
 builder.Services.AddScoped<IRecordService, RecordService>();
-builder.Services.AddScoped<ILogsService, LogsService>();
+builder.Services.AddScoped<ILogsRepository, LogsRepository>();
 builder.Services.AddScoped<IPhysicianDashboardService, PhysicianDashboardService>();
 builder.Services.AddScoped<IInvoiceService, InvoiceService>();
 builder.Services.AddScoped<IInvoiceRepository, InvoiceRepository>();
+builder.Services.AddScoped<IChatService, ChatService>();
+builder.Services.AddSignalR(o =>
+{
+    o.EnableDetailedErrors = true;
+});
 
 
 var app = builder.Build();
@@ -86,4 +92,5 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Patient}/{action=PatientSite}/{id?}");
 
+app.MapHub<ChatHub>("/chatHub");
 app.Run();

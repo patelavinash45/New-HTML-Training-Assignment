@@ -17,196 +17,210 @@
             </button>
         </a>
     </div>
-    <div class="table-responsive">
+    <div class="table-responsive payrate">
         <table class="table">
             <thead>
                 <tr>
-                    <th>
+                    <th class="col-4">
                         Category
                     </th>
-                    <th>
+                    <th class="col-4">
                         Pay-rate
                     </th>
-                    <th>
+                    <th class="col-4">
                         Action
                     </th>
                 </tr>
             </thead>
             <tbody>
-                <form asp-controller="Admin" asp-action="EditPayRate">
-                    <tr>
+                <tr>
+                    <form asp-controller="Admin" asp-action="EditPayRate">
                         <td>
                             NightShift_Weekend
                         </td>
                         <td>
-                            <input asp-for="NightShiftWeekend" />
-                            <input asp-for="Type" value="1" class="d-none" />
-                            <span asp-validation-for="NightShiftWeekend" class="text-danger"></span>
+                            <fieldset disabled id="fieldset1">
+                                <input asp-for="NightShiftWeekend" />
+                                <input asp-for="Type" value="1" class="d-none" />
+                                <span asp-validation-for="NightShiftWeekend" class="text-danger"></span>
+                            </fieldset>
                         </td>
                         <td>
-                            <button class="btn editpayrate1" type="button">
+                            <button class="px-3 text-white fw-bold bottomButtons" type="button" id="editbutton1">
                                 Edit
                             </button>
-                            <div class="edit" id="editpayrate1">
-                                <button class="btn" type="submit">
-                                    Save
+                            <div class="edit" id="edit1">
+                                <button class="px-3 me-2 text-white fw-bold bottomButtons" type="submit" id="save1">
+                                    Save Changes
                                 </button>
-                                <button class="btn" type="reset" id="editpayrate1">
+                                <button class="px-3 bg-white cancleButton fw-bold" type="reset" onclick="" id="cancel1">
                                     Cancel
                                 </button>
                             </div>
                         </td>
-                    </tr>
-                </form>
+                    </form>
+                </tr>
                 <form asp-controller="Admin" asp-action="EditPayRate">
-                    <tr>
-                        <td>
-                            Shift
-                        </td>
-                        <td>
+                <tr>
+                    <td>
+                        Shift
+                    </td>
+                    <td>
+                        <fieldset disabled id="fieldset2">
                             <input asp-for="Shift" />
                             <input asp-for="Type" value="2" class="d-none" />
                             <span asp-validation-for="Shift" class="text-danger"></span>
-                        </td>
-                        <td>
-                            <button class="btn editpayrate2" type="button">
-                                Edit
+                        </fieldset>
+                    </td>
+                    <td>
+                        <button class="px-3 text-white fw-bold bottomButtons" type="button" id="editbutton2">
+                            Edit
+                        </button>
+                        <div class="edit" id="edit2">
+                            <button class="px-3 me-2 text-white fw-bold bottomButtons" type="submit">
+                                Save Changes
                             </button>
-                            <div class="edit" id="editpayrate2">
-                                <button class="btn" type="submit">
-                                    Save
-                                </button>
-                                <button class="btn" type="reset" id="editpayrate2">
-                                    Cancel
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
+                            <button class="px-3 bg-white cancleButton fw-bold" type="reset" id="cancel2">
+                                Cancel
+                            </button>
+                        </div>
+                    </td>
+                </tr>
                 </form>
                 <form asp-controller="Admin" asp-action="EditPayRate">
-                    <tr>
-                        <td>
-                            Housecall_Night_Weekend
-                        </td>
-                        <td>
+                <tr>
+                    <td>
+                        Housecall_Night_Weekend
+                    </td>
+                    <td>
+                        <fieldset disabled id="fieldset3">
                             <input asp-for="HouseCallNightWeekend" />
                             <input asp-for="Type" value="3" class="d-none" />
                             <span asp-validation-for="HouseCallNightWeekend" class="text-danger"></span>
-                        </td>
-                        <td>
-                            <button class="btn editpayrate3" type="button">
-                                Edit
+                        </fieldset>
+                    </td>
+                    <td>
+                        <button class="px-3 text-white fw-bold bottomButtons" type="button" id="editbutton3">
+                            Edit
+                        </button>
+                        <div class="edit" id="edit3">
+                            <button class="px-3 me-2 text-white fw-bold bottomButtons" type="submit">
+                                Save Changes
                             </button>
-                            <div class="edit" id="editpayrate3">
-                                <button class="btn" type="submit">
-                                    Save
-                                </button>
-                                <button class="btn" type="reset" id="editpayrate3">
-                                    Cancel
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
+                            <button class="px-3 bg-white cancleButton fw-bold" type="reset" id="cancel3">
+                                Cancel
+                            </button>
+                        </div>
+                    </td>
+                </tr>
                 </form>
                 <form asp-controller="Admin" asp-action="EditPayRate">
-                    <tr>
-                        <td>
-                            PhoneConsult_Night_Weekend
-                        </td>
-                        <td>
-                            <input asp-for="PhoneConsults" />
+                <tr>
+                    <td>
+                        PhoneConsult_Night_Weekend
+                    </td>
+                    <td>
+                        <fieldset disabled id="fieldset4">
+                            <input asp-for="PhoneConsultsNightWeekend" />
                             <input asp-for="Type" value="4" class="d-none" />
-                            <span asp-validation-for="PhoneConsults" class="text-danger"></span>
-                        </td>
-                        <td>
-                            <button class="btn editpayrate4" type="button">
-                                Edit
+                            <span asp-validation-for="PhoneConsultsNightWeekend" class="text-danger"></span>
+                        </fieldset>
+                    </td>
+                    <td>
+                        <button class="px-3 text-white fw-bold bottomButtons" type="button" id="editbutton4">
+                            Edit
+                        </button>
+                        <div class="edit" id="edit4">
+                            <button class="px-3 me-2 text-white fw-bold bottomButtons" type="submit">
+                                Save Changes
                             </button>
-                            <div class="edit" id="editpayrate4">
-                                <button class="btn" type="submit">
-                                    Save
-                                </button>
-                                <button class="btn" type="reset" id="editpayrate4">
-                                    Cancel
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
+                            <button class="px-3 bg-white cancleButton fw-bold" type="reset" id="cancel4">
+                                Cancel
+                            </button>
+                        </div>
+                    </td>
+                </tr>
                 </form>
                 <form asp-controller="Admin" asp-action="EditPayRate">
-                    <tr>
-                        <td>
-                            PhoneConsult
-                        </td>
-                        <td>
+                <tr>
+                    <td>
+                        PhoneConsult
+                    </td>
+                    <td>
+                        <fieldset disabled id="fieldset5">
                             <input asp-for="PhoneConsults" />
-                            <input asp-for="Type" value="5" class="d-none"/>
+                            <input asp-for="Type" value="5" class="d-none" />
                             <span asp-validation-for="PhoneConsults" class="text-danger"></span>
-                        </td>
-                        <td>
-                            <button class="btn editpayrate5" type="button">
-                                Edit
+                        </fieldset>
+                    </td>
+                    <td>
+                        <button class="px-3 text-white fw-bold bottomButtons me-2" type="button" id="editbutton5">
+                            Edit
+                        </button>
+                        <div class="edit" id="edit5">
+                            <button class="px-3 me-2 text-white fw-bold bottomButtons" type="submit">
+                                Save Changes
                             </button>
-                            <div class="edit" id="editpayrate5">
-                                <button class="btn" type="submit">
-                                    Save
-                                </button>
-                                <button class="btn" type="reset" id="editpayrate5">
-                                    Cancel
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
+                            <button class="px-3 bg-white cancleButton fw-bold me-2" type="reset" id="cancel5">
+                                Cancel
+                            </button>
+                        </div>
+                    </td>
+                </tr>
                 </form>
                 <form asp-controller="Admin" asp-action="EditPayRate">
-                    <tr>
-                        <td>
-                            BatchTesting
-                        </td>
-                        <td>
-                            <input asp-for="PhoneConsults" />
+                <tr>
+                    <td>
+                        BatchTesting
+                    </td>
+                    <td>
+                        <fieldset disabled id="fieldset6">
+                            <input asp-for="BatchTesting" />
                             <input asp-for="Type" value="6" class="d-none" />
-                            <span asp-validation-for="PhoneConsults" class="text-danger"></span>
-                        </td>
-                        <td>
-                            <button class="btn editpayrate6" type="button">
-                                Edit
+                            <span asp-validation-for="BatchTesting" class="text-danger"></span>
+                        </fieldset>
+                    </td>
+                    <td>
+                        <button class="px-3 text-white fw-bold bottomButtons me-2" type="button" id="editbutton6">
+                            Edit
+                        </button>
+                        <div class="edit" id="edit6">
+                            <button class="px-3 me-2 text-white fw-bold bottomButtons" type="submit">
+                                Save Changes
                             </button>
-                            <div class="edit" id="editpayrate6">
-                                <button class="btn" type="submit">
-                                    Save
-                                </button>
-                                <button class="btn" type="reset" id="editpayrate6">
-                                    Cancel
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
+                            <button class="px-3 bg-white cancleButton fw-bold me-2" type="reset" id="cancel6">
+                                Cancel
+                            </button>
+                        </div>
+                    </td>
+                </tr>
                 </form>
                 <form asp-controller="Admin" asp-action="EditPayRate">
-                    <tr>
-                        <td>
-                            HouseCall
-                        </td>
-                        <td>
+                <tr>
+                    <td>
+                        HouseCall
+                    </td>
+                    <td>
+                        <fieldset disabled id="fieldset7">
                             <input asp-for="HouseCall" />
-                            <input asp-for="Type" value="7" class="d-none"/>
+                            <input asp-for="Type" value="7" class="d-none" />
                             <span asp-validation-for="HouseCall" class="text-danger"></span>
-                        </td>
-                        <td>
-                            <button class="btn editpayrate7" type="button">
-                                Edit
+                        </fieldset>
+                    </td>
+                    <td>
+                        <button class="px-3 text-white fw-bold bottomButtons me-2" type="button" id="editbutton7">
+                            Edit
+                        </button>
+                        <div class="edit" id="edit7">
+                            <button class="px-3 me-2 text-white fw-bold bottomButtons" type="submit">
+                                Save Changes
                             </button>
-                            <div class="edit" id="editpayrate7">
-                                <button class="btn" type="submit">
-                                    Save
-                                </button>
-                                <button class="btn cancel" type="reset" id="editpayrate7">
-                                    Cancel
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
+                            <button class="px-3 bg-white cancleButton fw-bold me-2" type="reset" id="cancel7">
+                                Cancel
+                            </button>
+                        </div>
+                    </td>
+                </tr>
                 </form>
             </tbody>
         </table>
