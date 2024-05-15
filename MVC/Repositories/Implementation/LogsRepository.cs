@@ -33,8 +33,15 @@ namespace Repositories.Implementation
 
         public async Task<bool> AddChat(Chat chat)
         {
-            _dbContext.Chats.Add(chat);
-            return await _dbContext.SaveChangesAsync() > 0;
+            try{
+                _dbContext.Chats.Add(chat);
+                return await _dbContext.SaveChangesAsync() > 0;
+            }
+            catch(Exception e)
+            {
+                
+                return false;
+            }
         }
     }
 }

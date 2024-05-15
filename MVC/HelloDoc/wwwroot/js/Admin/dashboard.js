@@ -131,7 +131,7 @@ $(document).on("click", ".chat", function () {
             userId: $(this).attr("id"),
         },
         success: function (response) {
-            window.location.href = response.redirect;
+            $("#chatDiv").html(response);
         }
     })
 })

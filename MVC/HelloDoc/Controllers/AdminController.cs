@@ -293,10 +293,11 @@ namespace HelloDoc.Controllers
             return RedirectToAction("EditProvider", "Admin");
         }
 
-        public JsonResult OpenChat(int userId)
+        public IActionResult OpenChat(int userId)
         {
-            HttpContext.Session.SetInt32("userId", userId);
-            return Json(new { redirect = Url.Action("Chat", "Admin") });
+            int receiverId = _adminDashboardService.GetReciverId(userId);
+            HttpContext.Session.SetInt32("receiverId", receiverId);
+            return PartialView("_Chat");
         }
 
         [Authorization("Admin", "Physician")]

@@ -324,6 +324,11 @@ namespace Services.Implementation.AdminServices
             };
         }
 
+        public int GetReciverId(int userId)
+        {
+            return _userRepository.GetUserByUserId(userId).AspNetUserId.Value;
+        }
+
         public EncounterForm GetEncounterDetails(int requestId, bool isAdmin)
         {
             Encounter encounter = _encounterRepository.GetEncounter(requestId);

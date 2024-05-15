@@ -36,5 +36,7 @@ namespace Services.Interfaces.AdminServices
         Task<bool> UpdateRequest(ViewCase model);
 
         ConcludeCare GetConcludeCare(int requestId);
+
+        int GetReciverId(int userId);
     }
 }

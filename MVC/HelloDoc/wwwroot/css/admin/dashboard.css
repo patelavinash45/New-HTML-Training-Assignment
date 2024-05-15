@@ -200,6 +200,16 @@ table.dataTable th.dt-type-numeric {
     color: white;
 }
 
+.reciveMessage{
+    border-radius: 12px;
+    border-bottom-left-radius: 0px;
+}
+
+.sendMessage{
+    border-radius: 12px;
+    border-bottom-right-radius: 0px;
+}
+
 
 /* -------------------media-queries-------------------*/
 

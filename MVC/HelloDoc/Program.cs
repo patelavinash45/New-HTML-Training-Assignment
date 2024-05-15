@@ -27,6 +27,11 @@ builder.Services.AddSession(
     }
 );
 builder.Services.AddControllersWithViews();
+builder.Services.AddSignalR(o =>
+{
+    o.EnableDetailedErrors = true;
+});
+builder.Services.AddHostedService<BackgroundServices>();
 builder.Services.AddNotyf(config => { config.DurationInSeconds = 5; config.IsDismissable = true; config.Position = NotyfPosition.TopRight; });
 builder.Services.AddDbContext<Repositories.DataContext.HalloDocDbContext>();
 builder.Services.AddScoped<ILoginService, LoginService>();
@@ -61,10 +66,6 @@ builder.Services.AddScoped<IPhysicianDashboardService, PhysicianDashboardService
 builder.Services.AddScoped<IInvoiceService, InvoiceService>();
 builder.Services.AddScoped<IInvoiceRepository, InvoiceRepository>();
 builder.Services.AddScoped<IChatService, ChatService>();
-builder.Services.AddSignalR(o =>
-{
-    o.EnableDetailedErrors = true;
-});
 
 
 var app = builder.Build();
@@ -76,18 +77,12 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-
-
-
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseNotyf();
 app.UseRouting();
 app.UseSession();
-
 app.UseAuthorization();
-
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Patient}/{action=PatientSite}/{id?}");

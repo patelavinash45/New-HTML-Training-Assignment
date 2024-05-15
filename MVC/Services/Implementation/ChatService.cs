@@ -1,6 +1,10 @@
-﻿using Repositories.DataModels;
+﻿using Microsoft.Extensions.Configuration;
+using Repositories.DataModels;
 using Repositories.Interfaces;
 using Services.Interfaces;
+using Npgsql;
+using Services.ViewModels;
+using DocumentFormat.OpenXml.Drawing.Diagrams;
 
 namespace Services.Implementation
 {
@@ -8,23 +12,30 @@ namespace Services.Implementation
     {
         private readonly ILogsRepository _logsRepository;
         private readonly IUserRepository _userRepository;
+        private readonly IConfiguration _configuration;
+        private string connectionString;
 
-        public ChatService(ILogsRepository logsRepository, IUserRepository userRepository)
+        public ChatService(ILogsRepository logsRepository, IUserRepository userRepository, IConfiguration configuration)
         {
             _logsRepository = logsRepository;
             _userRepository = userRepository;
+            _configuration = configuration;
+            connectionString = _configuration["ConnectionStrings:ConnectionStrings"];
         }
 
-        public void AddChat(int senderId, int userId, string message)
+        public async Task<bool> AddChat(int senderId, int reciverId, string message)
         {
-            User user = _userRepository.GetUserByUserId(userId);
-            _logsRepository.AddChat(new Chat()
+            await _logsRepository.AddChat(new Chat()
             {
                 SenderId = senderId,
-                ReceiverId = user.AspNetUserId,
+                ReceiverId = reciverId,
                 Message = message,
                 Time = DateTime.Now,
             });
+            return true;
         }
     }
 }
+
+
+

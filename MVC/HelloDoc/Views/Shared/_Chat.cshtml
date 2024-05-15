@@ -1,0 +1,25 @@
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    int user = HttpContextAccessor.HttpContext.Session.GetInt32("aspNetUserId").Value;
+}
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="ChatCanvas" aria-labelledby="ChatCanvas">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Chat</h5>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <div class="chatDisplay d-flex flex-reverse pb-5 w-100 h-100 flex-column justify-content-end">
+    </div>
+    <div class="w-100 position-absolute bottom-0 mb-3">
+        <input id="messageInput">
+        <button class="bg-white py-2" id="sendButton"><i class="bi bi-send"></i></button>
+    </div>
+  </div>
+</div>
+<script>
+    localStorage.setItem("user", @user);
+</script>
+<script src="~/js/microsoft/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/chat.js"></script>

@@ -4,6 +4,6 @@ namespace Services.Interfaces
 {
     public interface IChatService
     {
-        void AddChat(int senderId, int userId, string message);
+        Task<bool> AddChat(int senderId, int reciverId, string message);
     }
 }
