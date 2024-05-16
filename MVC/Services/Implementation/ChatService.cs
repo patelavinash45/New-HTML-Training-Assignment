@@ -2,9 +2,7 @@
 using Repositories.DataModels;
 using Repositories.Interfaces;
 using Services.Interfaces;
-using Npgsql;
 using Services.ViewModels;
-using DocumentFormat.OpenXml.Drawing.Diagrams;
 
 namespace Services.Implementation
 {
@@ -12,27 +10,34 @@ namespace Services.Implementation
     {
         private readonly ILogsRepository _logsRepository;
         private readonly IUserRepository _userRepository;
-        private readonly IConfiguration _configuration;
-        private string connectionString;
 
-        public ChatService(ILogsRepository logsRepository, IUserRepository userRepository, IConfiguration configuration)
+        public ChatService(ILogsRepository logsRepository, IUserRepository userRepository)
         {
             _logsRepository = logsRepository;
             _userRepository = userRepository;
-            _configuration = configuration;
-            connectionString = _configuration["ConnectionStrings:ConnectionStrings"];
         }
+        
 
-        public async Task<bool> AddChat(int senderId, int reciverId, string message)
+        public async Task<bool> AddChat(int senderId, int requestId, string message, short type)
         {
-            await _logsRepository.AddChat(new Chat()
+            return await _logsRepository.AddChat(new Chat()
             {
                 SenderId = senderId,
-                ReceiverId = reciverId,
+                RequestId = requestId,
                 Message = message,
                 Time = DateTime.Now,
+                Type = type,
             });
-            return true;
+        }
+
+        public List<ChatMessage> GetChat(int aspNetUserId, int requestId, int type)
+        {
+            return _logsRepository.GetChats(requestId, type)
+                  .Select(chat => new ChatMessage(){
+                    Message = chat.Message,
+                    Time = chat.Time.Value.ToString("hh:MM"),
+                    IsSend = chat.SenderId == aspNetUserId,
+                  }).ToList();
         }
     }
 }

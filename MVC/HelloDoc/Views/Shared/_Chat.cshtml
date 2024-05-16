@@ -1,8 +1,5 @@
-@inject IHttpContextAccessor HttpContextAccessor
-
-@{
-    int user = HttpContextAccessor.HttpContext.Session.GetInt32("aspNetUserId").Value;
-}
+@model List<Services.ViewModels.ChatMessage>
+@inject IHttpContextAccessor httpContextAccessor
 
 <div class="offcanvas offcanvas-end" tabindex="-1" id="ChatCanvas" aria-labelledby="ChatCanvas">
   <div class="offcanvas-header">
@@ -11,15 +8,40 @@
   </div>
   <div class="offcanvas-body">
     <div class="chatDisplay d-flex flex-reverse pb-5 w-100 h-100 flex-column justify-content-end">
+      @foreach(var item in Model)
+      {
+        if(item.IsSend)
+        {
+          <div class="mb-4 ms-auto text-break border-2 border sendMessage p-2 border-dark">
+            <span>
+                @item.Message
+            </span>
+            <span class="time">
+                @item.Time
+            </span>
+          </div>
+        }
+        else
+        {
+          <div class="mb-4 me-auto text-break border-2 border reciveMessage p-2 border-dark">
+            <span>
+                 @item.Message
+              </span>
+              <span class="time">
+                @item.Time
+              </span>
+          </div>
+        }
+      }
     </div>
-    <div class="w-100 position-absolute bottom-0 mb-3">
+    <div class="w-100 position-absolute bottom-0 mb-3 d-flex">
         <input id="messageInput">
-        <button class="bg-white py-2" id="sendButton"><i class="bi bi-send"></i></button>
+        <button class="bg-white py-2 d-block mx-2 px-3" id="sendButton"><i class="bi bi-send"></i></button>
     </div>
   </div>
 </div>
 <script>
-    localStorage.setItem("user", @user);
+  localStorage.setItem("user", @httpContextAccessor.HttpContext.Session.GetInt32("aspNetUserId").Value);
 </script>
 <script src="~/js/microsoft/signalr/dist/browser/signalr.js"></script>
 <script src="~/js/chat.js"></script>

@@ -37,11 +37,15 @@ namespace Repositories.Implementation
                 _dbContext.Chats.Add(chat);
                 return await _dbContext.SaveChangesAsync() > 0;
             }
-            catch(Exception e)
-            {
-                
+            catch(Exception e){
                 return false;
             }
         }
+
+        public List<Chat> GetChats(int requestId, int type)
+        {
+            return _dbContext.Chats.Include(a => a.Request.RequestClients).Where(a => a.RequestId == requestId && type == type).ToList();
+        }
+
     }
 }

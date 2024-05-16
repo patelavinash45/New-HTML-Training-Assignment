@@ -196,11 +196,13 @@ table.dataTable th.dt-type-numeric {
 }
 
 .activeButton{
+    max-width: 350px;
     background-color:cadetblue;
     color: white;
 }
 
 .reciveMessage{
+    max-width: 350px;
     border-radius: 12px;
     border-bottom-left-radius: 0px;
 }
@@ -208,6 +210,12 @@ table.dataTable th.dt-type-numeric {
 .sendMessage{
     border-radius: 12px;
     border-bottom-right-radius: 0px;
+}
+
+.time{
+    font-size: 10px;
+    position: relative;
+    bottom: -5px;
 }
 
 

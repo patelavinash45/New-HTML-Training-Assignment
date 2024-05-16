@@ -17,10 +17,11 @@ namespace HelloDoc.Controllers
         private readonly IViewProfileService _viewProfileService;
         private readonly IViewDocumentsServices _viewDocumentsServices;
         private readonly IJwtService _jwtService;
+        private readonly IChatService _chatService;
 
         public PatientController(INotyfService notyfService, ILoginService loginService, IPatientDashboardService dashboardService,
                                  IAddRequestService addRequestService, IViewProfileService viewProfileService,
-                                 IViewDocumentsServices viewDocumentsServices, IJwtService jwtService)
+                                 IViewDocumentsServices viewDocumentsServices, IJwtService jwtService, IChatService chatService)
         {
             _notyfService = notyfService;
             _loginService = loginService;
@@ -29,6 +30,7 @@ namespace HelloDoc.Controllers
             _viewProfileService = viewProfileService;
             _viewDocumentsServices = viewDocumentsServices;
             _jwtService = jwtService;
+            _chatService = chatService;
         }
 
         [Route("/")]
@@ -134,6 +136,13 @@ namespace HelloDoc.Controllers
             Response.Cookies.Delete("jwtToken");
             _notyfService.Success("Successfully Logout");
             return RedirectToAction("LoginPage", "Patient");
+        }
+
+        public IActionResult OpenChat()
+        {
+            HttpContext.Session.SetInt32("requestId", 130);
+            int aspNetUserId = HttpContext.Session.GetInt32("aspNetUserId").Value;
+            return PartialView("_Chat", _chatService.GetChat(aspNetUserId, 130, 1));
         }
 
         [HttpGet]

@@ -11,5 +11,7 @@ namespace Repositories.Interfaces
         List<Smslog> GetAllSMSLogs(Func<Smslog, bool> predicate);
 
         Task<bool> AddChat(Chat chat);
+
+        List<Chat> GetChats(int requestId, int type);
     }
 }

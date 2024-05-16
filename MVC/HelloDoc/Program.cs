@@ -1,6 +1,7 @@
 using AspNetCoreHero.ToastNotification;
 using AspNetCoreHero.ToastNotification.Extensions;
 using HelloDoc.Hubs;
+using Microsoft.AspNet.SignalR;
 using Repositories.Implementation;
 using Repositories.Interface;
 using Repositories.Interfaces;
@@ -30,8 +31,10 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddSignalR(o =>
 {
     o.EnableDetailedErrors = true;
-});
-builder.Services.AddHostedService<BackgroundServices>();
+});              
+builder.Services.AddHttpContextAccessor();
+// builder.Services.AddScoped<ChatHub>();
+// builder.Services.AddHostedService<BackgroundServices>();
 builder.Services.AddNotyf(config => { config.DurationInSeconds = 5; config.IsDismissable = true; config.Position = NotyfPosition.TopRight; });
 builder.Services.AddDbContext<Repositories.DataContext.HalloDocDbContext>();
 builder.Services.AddScoped<ILoginService, LoginService>();

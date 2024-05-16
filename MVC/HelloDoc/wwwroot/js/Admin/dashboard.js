@@ -128,7 +128,7 @@ $(document).on("click", ".chat", function () {
         type: "Get",
         contentType: "application/json",
         data: {
-            userId: $(this).attr("id"),
+            requestId: $(this).attr("id"),
         },
         success: function (response) {
             $("#chatDiv").html(response);

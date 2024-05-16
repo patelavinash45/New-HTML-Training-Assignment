@@ -92,6 +92,9 @@ public partial class Request
     public virtual CaseTag? CaseTag { get; set; }
 
     [InverseProperty("Request")]
+    public virtual ICollection<Chat> Chats { get; set; } = new List<Chat>();
+
+    [InverseProperty("Request")]
     public virtual ICollection<CloseRequest> CloseRequests { get; set; } = new List<CloseRequest>();
 
     [InverseProperty("Request")]

@@ -187,6 +187,8 @@ public partial class HalloDocDbContext : DbContext
             entity.Property(e => e.ChatId)
                 .UseIdentityAlwaysColumn()
                 .HasIdentityOptions(null, null, null, 999999999L, null, null);
+
+            entity.HasOne(d => d.Request).WithMany(p => p.Chats).HasConstraintName("ReuqestId");
         });
 
         modelBuilder.Entity<CloseRequest>(entity =>

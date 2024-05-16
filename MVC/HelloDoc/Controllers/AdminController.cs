@@ -27,12 +27,14 @@ namespace HelloDoc.Controllers
         private readonly IAccessService _accessService;
         private readonly IPartnersService _partnersService;
         private readonly IRecordService _recordService;
+        private readonly IChatService _chatService;
 
         public AdminController(INotyfService notyfService, IAdminDashboardService adminDashboardService,
                                 IViewNotesService viewNotesService, ILoginService loginService, IViewDocumentsServices viewDocumentsServices,
                                 IJwtService jwtService, ISendOrderService sendOrderService, ICloseCaseService closeCaseService,
                                 IViewProfileService viewProfileService, IPartnersService partnersService,
-                                IProvidersService providersService, IAccessService accessService, IRecordService recordService)
+                                IProvidersService providersService, IAccessService accessService, IRecordService recordService, 
+                                IChatService chatService)
         {
             _notyfService = notyfService;
             _loginService = loginService;
@@ -47,6 +49,7 @@ namespace HelloDoc.Controllers
             _providersService = providersService;
             _accessService = accessService;
             _recordService = recordService;
+            _chatService = chatService;
         }
 
         public IActionResult LoginPage()
@@ -66,11 +69,6 @@ namespace HelloDoc.Controllers
             Response.Cookies.Delete("jwtToken");
             _notyfService.Success("Successfully Logout");
             return RedirectToAction("LoginPage", "Admin");
-        }
-
-        public IActionResult Chat()
-        {
-            return View();
         }
 
         public IActionResult AccessDenied()
@@ -293,11 +291,11 @@ namespace HelloDoc.Controllers
             return RedirectToAction("EditProvider", "Admin");
         }
 
-        public IActionResult OpenChat(int userId)
+        public IActionResult OpenChat(int requestId)
         {
-            int receiverId = _adminDashboardService.GetReciverId(userId);
-            HttpContext.Session.SetInt32("receiverId", receiverId);
-            return PartialView("_Chat");
+            HttpContext.Session.SetInt32("requestId", requestId);
+            int aspNetUserId = HttpContext.Session.GetInt32("aspNetUserId").Value;
+            return PartialView("_Chat", _chatService.GetChat(aspNetUserId, requestId, 1));
         }
 
         [Authorization("Admin", "Physician")]

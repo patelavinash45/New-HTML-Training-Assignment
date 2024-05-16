@@ -91,3 +91,17 @@ $(document).on("click", "#log-out", function () {
 function setTab(temp) {
     localStorage.setItem("tab", `tab${temp}`);
 }
+
+
+/// chat
+
+$(document).on("click", "#chat", function () {
+    $.ajax({
+        url: "/Patient/OpenChat",
+        type: "Get",
+        contentType: "application/json",
+        success: function (response) {
+            $("#chatDiv").html(response);
+        }
+    })
+})

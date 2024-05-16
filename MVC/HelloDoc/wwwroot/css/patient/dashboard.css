@@ -222,6 +222,31 @@ select {
     font-weight: 600;
 }
 
+.reciveMessage{
+    border-radius: 12px;
+    border-bottom-left-radius: 0px;
+}
+
+.sendMessage{
+    border-radius: 12px;
+    border-bottom-right-radius: 0px;
+}
+
+#messageInput{
+    height: 40px;
+    width: 300px;
+}
+
+#sendButton{
+    height: 40px;
+}
+
+.time{
+    font-size: 10px;
+    position: relative;
+    bottom: -5px;
+}
+
 /* -------------------media-queries-------------------*/
 @media screen and (max-width: 778px) {
     #document {

@@ -14,11 +14,17 @@ public partial class Chat
 
     public int? SenderId { get; set; }
 
-    public int? ReceiverId { get; set; }
+    public int? RequestId { get; set; }
 
     [Column(TypeName = "character varying")]
     public string? Message { get; set; }
 
     [Column(TypeName = "timestamp without time zone")]
     public DateTime? Time { get; set; }
+
+    public short? Type { get; set; }
+
+    [ForeignKey("RequestId")]
+    [InverseProperty("Chats")]
+    public virtual Request? Request { get; set; }
 }
