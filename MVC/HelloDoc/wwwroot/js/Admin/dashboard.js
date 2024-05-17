@@ -122,17 +122,31 @@ $(document).on("click", "#exportData", function () {
 
 //// chat
 
-$(document).on("click", ".chat", function () {
+function OpenChat(requestId, type){
     $.ajax({
-        url: "/Admin/OpenChat",
+        url: "/Patient/OpenChat",
         type: "Get",
         contentType: "application/json",
         data: {
-            requestId: $(this).attr("id"),
+            requestId: requestId,
+            type: type,
         },
         success: function (response) {
             $("#chatDiv").html(response);
         }
     })
+}
+
+$(document).on("click", ".chat", function () {
+    if ($("#physician").length > 0) {
+        OpenChat($(this).attr("id"), 3);
+    }
+    else
+    {
+        OpenChat($(this).attr("id"), 1);
+    }
 })
 
+$(document).on("click", ".chatPhysician", function () {
+    OpenChat($(this).attr("id"), 2);
+})

@@ -1,7 +1,6 @@
 using AspNetCoreHero.ToastNotification;
 using AspNetCoreHero.ToastNotification.Extensions;
 using HelloDoc.Hubs;
-using Microsoft.AspNet.SignalR;
 using Repositories.Implementation;
 using Repositories.Interface;
 using Repositories.Interfaces;

@@ -6,7 +6,6 @@ namespace Services.ViewModels
     {
         public int? RequestId { get; set; }
 
-        [StringLength(20)]
         public string? StrMonth { get; set; }
 
         public int? IntYear { get; set; }
@@ -16,5 +15,7 @@ namespace Services.ViewModels
         public int? Status { get; set; }
 
         public int Document { get; set; }
+
+        public bool IsAssigned { get; set; }
     }
 }

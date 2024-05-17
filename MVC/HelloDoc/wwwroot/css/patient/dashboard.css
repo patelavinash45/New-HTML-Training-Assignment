@@ -22,7 +22,8 @@ a {
     display: none;
 }
 
-
+.chat,
+.chatPhysician,
 #document {
     width: 150px;
     height: 35px;

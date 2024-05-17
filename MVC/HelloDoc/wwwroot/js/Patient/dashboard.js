@@ -53,7 +53,7 @@ function NavigatToViewDocument(id) {
     })
 }
 
-$(document).on("click", ".bi", function () {
+$(document).on("click", "#short", function () {
     if ($(this).hasClass("bi-caret-up-fill")) {
         $(this).removeClass("bi-caret-up-fill");
         $(this).addClass("bi-caret-down-fill");
@@ -95,13 +95,25 @@ function setTab(temp) {
 
 /// chat
 
-$(document).on("click", "#chat", function () {
+function OpenChat(requestId, isPatient){
     $.ajax({
         url: "/Patient/OpenChat",
         type: "Get",
         contentType: "application/json",
+        data: {
+            requestId: requestId,
+            type: isPatient ? 1 : 3,
+        },
         success: function (response) {
             $("#chatDiv").html(response);
         }
     })
+}
+
+$(document).on("click", ".chat", function () {
+    OpenChat($(this).attr("id"), true);
+})
+
+$(document).on("click", ".chatPhysician", function () {
+    OpenChat($(this).attr("id"), false);
 })

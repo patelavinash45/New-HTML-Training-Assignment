@@ -44,7 +44,8 @@ namespace Repositories.Implementation
 
         public List<Chat> GetChats(int requestId, int type)
         {
-            return _dbContext.Chats.Include(a => a.Request.RequestClients).Where(a => a.RequestId == requestId && type == type).ToList();
+            return _dbContext.Chats.Include(a => a.Request.RequestClients).Where(a => a.RequestId == requestId && type == a.Type)
+                                   .OrderBy(a => a.Time).ToList();
         }
 
     }

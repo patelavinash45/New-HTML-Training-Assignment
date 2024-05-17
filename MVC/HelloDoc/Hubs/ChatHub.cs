@@ -16,28 +16,49 @@ namespace HelloDoc.Hubs
         {
             var httpContext = Context.GetHttpContext();
             int requestId = httpContext.Session.GetInt32("requestId").Value;
-            string role = httpContext.Session.GetString("role");
-            if(role == "Admin")
+            int chatType = httpContext.Session.GetInt32("chatType").Value;
+            string groupName;
+            switch(chatType)
             {
-                string groupName = $"AdminPatient{requestId}";
-                await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
+                case 1: groupName = $"AdminPatient{requestId}"; break;
+                case 2: groupName = $"AdminPhysician{requestId}"; break;
+                default: groupName = $"PhysicianPatient{requestId}"; break; 
             }
-            else
-            {
-                string groupName = $"AdminPatient{requestId}";
-                await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
-            }
+            await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
             await base.OnConnectedAsync();
         }
 
-        public async Task SendMessage(string user, string message)
+        public override async Task OnDisconnectedAsync(Exception? exception)
         {
             var httpContext = Context.GetHttpContext();
             int requestId = httpContext.Session.GetInt32("requestId").Value;
-            string groupName = $"AdminPatient{requestId}";
+            int chatType = httpContext.Session.GetInt32("chatType").Value;
+            string groupName;
+            switch(chatType)
+            {
+                case 1: groupName = $"AdminPatient{requestId}"; break;
+                case 2: groupName = $"AdminPhysician{requestId}"; break;
+                default: groupName = $"PhysicianPatient{requestId}"; break; 
+            }
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, groupName);
+            await base.OnDisconnectedAsync(exception);
+        }
+
+        public async Task SendMessage(string message)
+        {
+            var httpContext = Context.GetHttpContext();
+            int requestId = httpContext.Session.GetInt32("requestId").Value;
+            int chatType = httpContext.Session.GetInt32("chatType").Value;
+            string groupName;
+            switch(chatType)
+            {
+                case 1: groupName = $"AdminPatient{requestId}"; break;
+                case 2: groupName = $"AdminPhysician{requestId}"; break;
+                default: groupName = $"PhysicianPatient{requestId}"; break; 
+            }
             int aspNetUserId = httpContext.Session.GetInt32("aspNetUserId").Value;
-            await Clients.Group(groupName).SendAsync("ReceiveMessage", message, DateTime.Now.ToString("hh: MM"), aspNetUserId.ToString());
-            await _chatService.AddChat(aspNetUserId, requestId, message, 1);
+            await Clients.Group(groupName).SendAsync("ReceiveMessage", message, DateTime.Now.ToString("h:mm tt"), aspNetUserId.ToString());
+            await _chatService.AddChat(aspNetUserId, requestId, message, chatType);
         }
     }
 

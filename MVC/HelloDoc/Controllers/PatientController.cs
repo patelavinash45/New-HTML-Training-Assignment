@@ -138,11 +138,12 @@ namespace HelloDoc.Controllers
             return RedirectToAction("LoginPage", "Patient");
         }
 
-        public IActionResult OpenChat()
+        public IActionResult OpenChat(int requestId, int type)
         {
-            HttpContext.Session.SetInt32("requestId", 130);
+            HttpContext.Session.SetInt32("requestId", requestId);
+            HttpContext.Session.SetInt32("chatType", type);
             int aspNetUserId = HttpContext.Session.GetInt32("aspNetUserId").Value;
-            return PartialView("_Chat", _chatService.GetChat(aspNetUserId, 130, 1));
+            return PartialView("_Chat", _chatService.GetChat(aspNetUserId, requestId, type));
         }
 
         [HttpGet]

@@ -27,14 +27,12 @@ namespace HelloDoc.Controllers
         private readonly IAccessService _accessService;
         private readonly IPartnersService _partnersService;
         private readonly IRecordService _recordService;
-        private readonly IChatService _chatService;
 
         public AdminController(INotyfService notyfService, IAdminDashboardService adminDashboardService,
                                 IViewNotesService viewNotesService, ILoginService loginService, IViewDocumentsServices viewDocumentsServices,
                                 IJwtService jwtService, ISendOrderService sendOrderService, ICloseCaseService closeCaseService,
                                 IViewProfileService viewProfileService, IPartnersService partnersService,
-                                IProvidersService providersService, IAccessService accessService, IRecordService recordService, 
-                                IChatService chatService)
+                                IProvidersService providersService, IAccessService accessService, IRecordService recordService)
         {
             _notyfService = notyfService;
             _loginService = loginService;
@@ -49,7 +47,6 @@ namespace HelloDoc.Controllers
             _providersService = providersService;
             _accessService = accessService;
             _recordService = recordService;
-            _chatService = chatService;
         }
 
         public IActionResult LoginPage()
@@ -289,13 +286,6 @@ namespace HelloDoc.Controllers
         {
             HttpContext.Session.SetInt32("physicianId", physicianId);
             return RedirectToAction("EditProvider", "Admin");
-        }
-
-        public IActionResult OpenChat(int requestId)
-        {
-            HttpContext.Session.SetInt32("requestId", requestId);
-            int aspNetUserId = HttpContext.Session.GetInt32("aspNetUserId").Value;
-            return PartialView("_Chat", _chatService.GetChat(aspNetUserId, requestId, 1));
         }
 
         [Authorization("Admin", "Physician")]

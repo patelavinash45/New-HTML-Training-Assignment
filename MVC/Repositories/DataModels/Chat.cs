@@ -22,7 +22,7 @@ public partial class Chat
     [Column(TypeName = "timestamp without time zone")]
     public DateTime? Time { get; set; }
 
-    public short? Type { get; set; }
+    public int? Type { get; set; }
 
     [ForeignKey("RequestId")]
     [InverseProperty("Chats")]

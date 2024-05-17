@@ -27,6 +27,7 @@ namespace Services.Implementation.PatientServices
                         IntDate = requestClient.IntDate,
                         Status = requestClient.Status,
                         Document = requestClient.Request.RequestWiseFiles == null ? 0 : requestClient.Request.RequestWiseFiles.Count(),
+                        IsAssigned = requestClient.PhysicianId != null,
                     }).ToList();
         }
     }

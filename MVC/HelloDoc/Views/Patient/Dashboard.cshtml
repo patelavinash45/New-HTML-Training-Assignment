@@ -39,12 +39,12 @@
         </div>
     </div>
 </div>
-<div class="position-fixed bottom-0 end-0 mx-5 mb-3">
+@* <div class="position-fixed bottom-0 end-0 mx-5 mb-3">
     <button class="bg-primary border border-1 p-3 rounded-circle text-white" id="chat">
         <i class="bi bi-chat-dots"></i>
     </div>
-</div>
-<div id="chatDiv">
+</div> *@
+<div id="chatDiv"> 
     
 </div>
 <div class="tab-content" id="dashboard_content">
@@ -65,12 +65,15 @@
                     <tr>
                         <th class="col-2">
                             Created Date
-                            <i class="bi bi-caret-up-fill"></i>
+                            <i class="bi bi-caret-up-fill" id="short"></i>
                         </th>
                         <th class="col-2">
                             Current Status
                         </th>
-                        <th class="col-8 ">
+                        <th class="col-4">
+                            Chat With
+                        </th>
+                        <th class="col-4">
                             Document
                         </th>
                     </tr>
@@ -84,6 +87,17 @@
                             </td>
                             <td>
                                 @status[int.Parse(@item.Status.ToString())]
+                            </td>
+                            <td class="d-flex">
+                                <button class="px-3 chat me-2" id="@item.RequestId">
+                                    Admin
+                                </button>
+                                @if(item.IsAssigned)
+                                {
+                                    <button class="px-3 chatPhysician" id="@item.RequestId">
+                                        Physician
+                                    </button>
+                                }
                             </td>
                             <td>
                                 @{
@@ -132,6 +146,20 @@
                                 }
                             </div>
                         </div>
+                        <div class="d-flex justify-content-end align-items-center mb-2">
+                            Chat With :
+                            <button class="px-3 chat mx-2" id="@item.RequestId">
+                                <i class="bi bi-person"></i>
+                                Admin
+                            </button>
+                             @if(item.IsAssigned)
+                            {
+                                <button class="px-3 chat" id="@item.RequestId">
+                                    <i class="bi bi-person"></i>
+                                    Provider
+                                </button>
+                            }
+                    </div>
                     </div>
                 </div>
             }
