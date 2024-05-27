@@ -1,0 +1,26 @@
+----1)Create a query to count the number of Colors and an average score for each Place
+
+SELECT COUNT(ColourID) AS "Count" , AVG(Score) AS "Avereage"
+FROM Table_3 GROUP BY PlaceId
+
+
+----2) Print the `New York` score(s) of the Colors(s) with an average score higher than 500.
+
+SELECT Score FROM Table_3 WHERE ClourId IN (
+SELECT ColorId FROM Table_3 WHERE AVG(Score) > 500 
+) AND PlaceId = 8
+
+
+----3)  Create a query for Jakarta’s average MAROON score.
+
+SELECT AVG(Score) FROM Table_3 as T3
+LEFT JOIN Table_1 AS T1 ON T1.ColourID = T3.ColourID
+LEFT JOIN Table_2 AS T2 ON T2.PlaceId = T2.PlaceId
+WHERE T3.PlaceId = 3 AND T3.ColourID = 4 GROUP BY T3.ColourID
+
+
+---- 4) Print the colours name and sum of `Karachi` and sum of `London` scores
+
+SELECT SUM(Score) AS "Sum_Of_Karachi" , SUM(Score) AS "Sum_Of_Londan", T1.ColourName FROM Table_3 as T3
+LEFT JOIN Table_1 AS T1 ON T1.ColourID = T3.ColourID
+WHERE T3.PlaceId = 4 AND PlaceId = 5 GROUP BY T3.PlaceId
